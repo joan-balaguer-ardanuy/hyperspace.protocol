@@ -11,12 +11,11 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Random;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
+import jakarta.xml.bind.Unmarshaller;
 
 /**
  * @author joan
@@ -53,7 +52,6 @@ public abstract class XML implements Listener {
 	private String name;
 
 	@Override
-	@XmlAttribute
 	public String getName() {
 		return name;
 	}
@@ -61,7 +59,6 @@ public abstract class XML implements Listener {
 	public void setName(String name) {
 		this.name  = name;
 	}
-	@XmlElement
 	public String getCommand() {
 		return command;
 	}
@@ -156,7 +153,9 @@ public abstract class XML implements Listener {
 	public Thread newThread(Runnable r) {
 		return new Thread(r);
 	}
-	
+	public void test() {
+		System.out.println("test");
+	}
 	/**
 	 * The randomness.
 	 */
