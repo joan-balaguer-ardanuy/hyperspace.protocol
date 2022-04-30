@@ -24,11 +24,10 @@ package hyperspace;
  */
 public interface Listener
 	extends Message,
-		Cloneable,
-			Runnable,
-				java.util.EventListener,
-					java.util.concurrent.Executor,
-						java.util.concurrent.ThreadFactory {
+		Runnable,
+			java.util.EventListener,
+				java.util.concurrent.Executor,
+					java.util.concurrent.ThreadFactory {
 
 	/**
 	 * Returns the command.

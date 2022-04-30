@@ -153,9 +153,7 @@ public abstract class XML implements Listener {
 	public Thread newThread(Runnable r) {
 		return new Thread(r);
 	}
-	public void test() {
-		System.out.println("test");
-	}
+	
 	/**
 	 * The randomness.
 	 */

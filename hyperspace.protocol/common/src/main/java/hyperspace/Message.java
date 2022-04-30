@@ -1,7 +1,7 @@
 package hyperspace;
 
 public interface Message 
-	extends java.io.Serializable {
+	extends Cloneable, java.io.Serializable {
 
 	/**
 	 * Returns the name of this instance.
