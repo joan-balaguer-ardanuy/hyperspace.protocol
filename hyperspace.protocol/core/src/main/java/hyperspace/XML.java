@@ -21,30 +21,12 @@ import jakarta.xml.bind.Unmarshaller;
  * @author joan
  *
  */
-public abstract class XML implements Listener {
+public abstract class XML implements Message {
 
 	/**
 	 * 7585153185633646322L
 	 */
 	private static final long serialVersionUID = 7585153185633646322L;
-
-	/**
-	 * The maximum size of array to allocate.
-	 * Some VMs reserve some header words in an array.
-	 * Attempts to allocate larger arrays may result in
-	 * OutOfMemoryError: Requested array size exceeds VM limit
-	 */
-	protected static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
-	
-	/**
-	 * The event listeners array.
-	 */
-	private Listener[] eventListeners;
-
-	/**
-	 * The command.
-	 */
-	private String command;
 
 	/**
 	 * The name.
@@ -58,12 +40,6 @@ public abstract class XML implements Listener {
 	@Override
 	public void setName(String name) {
 		this.name  = name;
-	}
-	public String getCommand() {
-		return command;
-	}
-	public void setCommand(String command) {
-		this.command = command;
 	}
 
 	/**
@@ -85,87 +61,7 @@ public abstract class XML implements Listener {
 	@Override
 	public abstract Object clone();
 	
-	public final void addEventListener(Listener listener) {
-		if(eventListeners == null) {
-			eventListeners = new Listener[] { listener };
-			return;
-		}
-		else if(listener == null) {
-			return;
-		}
-		else {
-			eventListeners = Arrays.copyOf(eventListeners, eventListeners.length+1);
-			eventListeners[eventListeners.length-1] = listener;	
-		}
-	}
-	public final void removeEventListener(Listener listener) {
-		if(eventListeners == null) {
-			return;
-		}
-		else if (listener == null) {
-			return;
-        }
-		else for (int index = 0; index < eventListeners.length; index++) {
-            if (listener == eventListeners[index]) {
-                int numMoved = eventListeners.length - index - 1;
-                if (numMoved > 0) {
-                    System.arraycopy(eventListeners, index + 1, eventListeners, index, numMoved);
-                }
-                eventListeners[eventListeners.length-1] = null;
-            }
-		}
-	}
-	/**
-	 * Sends event to all event {@link Listener} added in the set.
-	 * @param e {@link EventArgs} the arguments of the event
-	 */
-	protected void sendEvent(EventArgs e) {
-		for(Listener listener : eventListeners) {
-			// send event to all event listeners
-			listener.event(e);
-		}
-	}
-	@Override
-	public void event(EventArgs e) {
-		sendEvent(e);
-	}
-	@Override
-	public void run() {
-		switch (getCommand()) {
-		case Command.LISTEN:
-			setCommand(Command.TRANSFER);
-			break;
-		default:
-			setCommand(Command.LISTEN);
-			break;
-		}
-	}
-	@Override
-	public void execute(Runnable command) {
-		try {
-			newThread(command).start();
-		}
-		catch (Throwable t) {
-			throw new Error(t);
-		}
-	}
-	@Override
-	public Thread newThread(Runnable r) {
-		return new Thread(r);
-	}
 	
-	/**
-	 * The randomness.
-	 */
-	transient Random random;
-	
-	/**
-	 * The random.
-	 * @return the random.
-	 */
-	protected Random random() {
-		return random == null ? (random = new Random()) : random;
-	}
 	/**
 	 * XML unmarshall method. Generates new {@link JAXBContext} for current class,
 	 * instances new {@link Unmarshaller} object and unmarshalls the {@link InputStream} argument.

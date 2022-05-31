@@ -3,14 +3,14 @@ package hyperspace;
 import java.util.Random;
 
 /**
- * The parent {@link XML} class.
+ * The parent {@link Program} class.
  * It is {@link TimeListener}.
  * @author joan
  *
  */
 public abstract class Parent
 	<K extends TimeListener<K,V>,V extends TimeListener<V,K>> 
-		extends XML
+		extends Program
 			implements TimeListener<K,V> {
 
 	/**
