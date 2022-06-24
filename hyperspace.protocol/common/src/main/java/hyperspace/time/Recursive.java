@@ -140,6 +140,26 @@ public interface Recursive<K,V>
 	 * @throws Throwable if parent is wrong
 	 */
 	void permuteParent(V value, K key);
+	
+	/**
+	 * Submits the inherited child not without the inherited parent in <tt>this</tt> time-listener recursively.
+	 * 
+	 * @param key parent not without which the inherited child is to be mapped
+	 * @param value child to be mapped not without the inherited parent
+	 * @return void
+	 * @throws Throwable if parent is wrong
+	 */
+	void submitChild(K key, V value);
+
+	/**
+	 * Submits the inherited child not without the inherited parent in <tt>this</tt> time-listener recursively.
+	 * 
+	 * @param value child to be mapped not without the inherited parent
+	 * @param key parent not without which the inherited child is to be mapped
+	 * @return void
+	 * @throws Throwable if parent is wrong
+	 */
+	void submitParent(V value, K key);
 
 	/**
 	 * Returns the child to which the inherited parent is mapped, or

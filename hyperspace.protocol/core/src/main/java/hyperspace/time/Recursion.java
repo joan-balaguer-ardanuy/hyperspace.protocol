@@ -92,97 +92,6 @@ public abstract class Recursion
 		super(root, gen, child);
 	}
 
-	@Override
-	public void recurChild(K key, V value) {
-		key.setParent(getParent());
-		value.setParent(getChild().getParent());
-		value.setChild(getParent().getChild().getChild());
-		getParent().getChild().setChild(key);
-		setParent(key);
-		getChild().setParent(value);
-	}
-	@Override
-	public void recurParent(V value, K key) {
-		getChild().recurChild(value, key);
-	}
-	@Override
-	public void concurChild(K key, V value) {
-		call().setParent(key);
-		get().setParent(value);
-		value.setChild(call());
-		key.setParent(getParent().call());
-		value.setParent(getChild());
-		put(key);
-	}
-	@Override
-	public void concurParent(V value, K key) {
-		getChild().concurChild(value, key);
-	}
-	@Override
-	public void permuteChild(K key, V value) {
-		if(key == getParent()) {
-			K current = value.setChild(getChild().getChild());
-			call().setParent(key);
-			get().setParent(value);
-			setParent(key.getParent());
-			getChild().setParent(value.getParent());
-			getParent().put(current);
-			put(key);
-			key.setParent(current);
-			value.setParent(getChild());
-		}
-		else if(key == getChild().getChild()) {
-			K current = key.setParent(getParent());
-			value.setParent(getChild().getParent());
-			getParent().put(key);
-			put(value.getChild());
-			call().setParent(current);
-			get().setParent(getChild());
-			value.setChild(current);
-			setParent(key);
-			getChild().setParent(value);
-		}
-		else {
-			K oldParent = key.setParent(getParent());
-			V oldParentChild = value.setParent(getChild().getParent());
-			K oldChild = value.setChild(call());
-			oldParentChild.setChild(getParent().call());
-			getParent().put(key);
-			setParent(oldParent);
-			getChild().setParent(oldParentChild);
-			call().setParent(key);
-			get().setParent(value);
-			put(oldChild);
-			call().setParent(getParent().call());
-			get().setParent(getChild());
-		}
-	}
-	@Override
-	public void permuteParent(V value, K key) {
-		getChild().permuteChild(value, key);
-	}
-	@Override
-	public void submitChild(K key, V value) {
-		if(random().nextBoolean()) {
-			concurChild(key, value);
-		} else {
-			recurChild(key, value);
-		}
-	}
-	@Override
-	public void submitParent(V value, K key) {
-		getChild().submitChild(value, key);
-	}
-	@Override
-	public void spin() {
-		if(random().nextBoolean()) {
-			// rotate
-			permuteChild(getParent(), getChild().getParent());
-		} else {
-			// revolve  
-			permuteChild(call(), get());
-		}
-	}
 	
 	public abstract class Reproducer extends Matrix {
 		
@@ -195,7 +104,11 @@ public abstract class Recursion
 		
 		@Override
 		public void addParent(K key) {
-			super.addParent(key);
+			if(this.source == null) {
+				this.source = key;
+				return;
+			}
+			this.source.submitChild(key, key.getChild());
 			key.setRoot(this.source);
 			key.setStem(this.source.getStem());
 			key.addEventListener(this.source);
@@ -203,7 +116,11 @@ public abstract class Recursion
 		}
 		@Override
 		public void addChild(V value) {
-			super.addChild(value);
+			if(this.source == null) {
+				this.source = value.getChild();
+				return;
+			}
+			this.source.submitChild(value.getChild(), value);
 			value.setStem(this.source);
 			value.setRoot(this.source.getStem());
 			value.addEventListener(this.source.getStem());

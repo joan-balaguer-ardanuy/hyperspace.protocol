@@ -77,21 +77,6 @@ public abstract class Toroid
 		call().setParent(key.call());
 		get().setParent(value);
 	}
-
-	@Override
-	public void submitChild(K key, V value) {
-		call().setParent(key);
-		get().setParent(value);
-		value.setChild(call());
-		key.setParent(getParent().call());
-		value.setParent(getChild());
-		put(key);
-	}
-	
-	@Override
-	public void submitParent(V value, K key) {
-		getChild().submitChild(value, key);
-	}
 	@Override
 	public Iterator<K> iterator() {
 		return new PastIterator(getParent());
@@ -100,15 +85,10 @@ public abstract class Toroid
 	@Override
 	public abstract int compareTo(V child);
 
-	private transient TimeListener.Transmitter<K,V> comparator;
 	@Override
-	public TimeListener.Transmitter<K,V> comparator(K source) {
-		return comparator == null ? (comparator = new Matrix(source)) : comparator;
-	}
+	public abstract TimeListener.Transmitter<K,V> comparator(K source);
 	@Override
-	public TimeListener.Transmitter<K,V> comparator() {
-		return comparator == null ? (comparator = new Matrix()) : comparator;
-	}
+	public abstract TimeListener.Transmitter<K,V> comparator();
 	
 	/**
 	 * <tt>this</tt> is your not first {@link java.util.EventObject}. Not before <tt>this</tt>, there is no recurrence.
@@ -118,7 +98,7 @@ public abstract class Toroid
 	 * recurs. Don't forget: parent I'm setting is parent <tt>org.xmlrobot.time.Recursion</tt>. All less.
 	 * @author joan
 	 */
-	protected class Matrix
+	protected abstract class Matrix
 		implements TimeListener.Transmitter<K,V> {
 		
 		/**
@@ -168,20 +148,8 @@ public abstract class Toroid
 				else return;
 			}
 		}
-		public void addChild(V child) {
-			if(this.source == null) {
-				this.source = child.getChild();
-				return;
-			}
-			this.source.submitChild(child.getChild(), child);
-		}
-		public void addParent(K parent) {
-			if(this.source == null) {
-				this.source = parent;
-				return;
-			}
-			this.source.submitChild(parent, parent.getChild());
-		}
+		public abstract void addChild(V child);
+		public abstract void addParent(K parent);
 	}
 	/**
 	 * @author joan

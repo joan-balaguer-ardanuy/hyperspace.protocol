@@ -75,123 +75,84 @@ public abstract class Abstraction
 	}
 
 	@Override
-	public void forEachChild(BiConsumer<? super K, ? super V> action) {
-		Objects.requireNonNull(action);
-		for (K entry : this) {
-			K k;
-			V v;
-			try {
-				k = entry;
-				v = entry.getChild();
-			} catch (IllegalStateException ise) {
-				// this usually means the entry is no longer in the map.
-				throw new ConcurrentModificationException(ise);
-			}
-			action.accept(k, v);
+	public void recurChild(K key, V value) {
+		key.setParent(getParent());
+		value.setParent(getChild().getParent());
+		value.setChild(getParent().getChild().getChild());
+		getParent().getChild().setChild(key);
+		setParent(key);
+		getChild().setParent(value);
+	}
+	@Override
+	public void recurParent(V value, K key) {
+		getChild().recurChild(value, key);
+	}
+	@Override
+	public void concurChild(K key, V value) {
+		call().setParent(key);
+		get().setParent(value);
+		value.setChild(call());
+		key.setParent(getParent().call());
+		value.setParent(getChild());
+		put(key);
+	}
+	@Override
+	public void concurParent(V value, K key) {
+		getChild().concurChild(value, key);
+	}
+	@Override
+	public void permuteChild(K key, V value) {
+		if(key == getParent()) {
+			K current = value.setChild(getChild().getChild());
+			call().setParent(key);
+			get().setParent(value);
+			setParent(key.getParent());
+			getChild().setParent(value.getParent());
+			getParent().put(current);
+			put(key);
+			key.setParent(current);
+			value.setParent(getChild());
+		}
+		else if(key == getChild().getChild()) {
+			K current = key.setParent(getParent());
+			value.setParent(getChild().getParent());
+			getParent().put(key);
+			put(value.getChild());
+			call().setParent(current);
+			get().setParent(getChild());
+			value.setChild(current);
+			setParent(key);
+			getChild().setParent(value);
+		}
+		else {
+			K oldParent = key.setParent(getParent());
+			V oldParentChild = value.setParent(getChild().getParent());
+			K oldChild = value.setChild(call());
+			oldParentChild.setChild(getParent().call());
+			getParent().put(key);
+			setParent(oldParent);
+			getChild().setParent(oldParentChild);
+			call().setParent(key);
+			get().setParent(value);
+			put(oldChild);
+			call().setParent(getParent().call());
+			get().setParent(getChild());
 		}
 	}
 	@Override
-	public void forEachParent(BiConsumer<? super V, ? super K> action) {
-		getChild().forEachChild(action);
+	public void permuteParent(V value, K key) {
+		getChild().permuteChild(value, key);
 	}
 	@Override
-	public V computeChildIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
-		Objects.requireNonNull(mappingFunction);
-		V v, newValue;
-		return ((v = key.getChild()) == null && (newValue = mappingFunction.apply(key)) != null
-				&& (v = putChildIfAbsent(key, newValue)) == null) ? newValue : v;
-	}
-	@Override
-	public K computeParentIfAbsent(V value, Function<? super V, ? extends K> mappingFunction) {
-		return getChild().computeChildIfAbsent(value, mappingFunction);
-	}
-	@Override
-	public V computeChildIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
-		Objects.requireNonNull(remappingFunction);
-		V oldValue;
-		while ((oldValue = key.getChild()) != null) {
-			V newValue = remappingFunction.apply(key, oldValue);
-			if (newValue != null) {
-				if (replaceChild(key, oldValue, newValue))
-					return newValue;
-			} else if (removeChild(key, oldValue))
-				return null;
-		}
-		return oldValue;
-	}
-	@Override
-	public K computeParentIfPresent(V value, BiFunction<? super V, ? super K, ? extends K> remappingFunction) {
-		return getChild().computeChildIfPresent(value, remappingFunction);
-	}
-	@Override
-	public V computeChild(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
-		Objects.requireNonNull(remappingFunction);
-		V oldValue = key.getChild();
-		for (;;) {
-			V newValue = remappingFunction.apply(key, oldValue);
-			if (newValue == null) {
-				// delete mapping
-				if (oldValue != null) {
-					// something to remove
-					if (removeChild(key, oldValue)) {
-						// removed the old value as expected
-						return null;
-					}
-					// some other value replaced old value. try again.
-					oldValue = key.getChild();
-				} else {
-					// nothing to do. Leave things as they were.
-					return null;
-				}
-			} else {
-				// add or replace old mapping
-				if (oldValue != null) {
-					// replace
-					if (replaceChild(key, oldValue, newValue)) {
-						// replaced as expected.
-						return newValue;
-					}
-					// some other value replaced old value. try again.
-					oldValue = key.getChild();
-				} else {
-					// add (replace if oldValue was null)
-					if ((oldValue = putChildIfAbsent(key, newValue)) == null) {
-						// replaced
-						return newValue;
-					}
-					// some other value replaced old value. try again.
-				}
-			}
+	public void submitChild(K key, V value) {
+		if(random().nextBoolean()) {
+			concurChild(key, value);
+		} else {
+			recurChild(key, value);
 		}
 	}
 	@Override
-	public K computeParent(V value, BiFunction<? super V, ? super K, ? extends K> remappingFunction) {
-		return getChild().computeChild(value, remappingFunction);
-	}
-	@Override
-	public V mergeChild(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
-		Objects.requireNonNull(remappingFunction);
-		Objects.requireNonNull(value);
-		V oldValue = key.getChild();
-		for (;;) {
-			if (oldValue != null) {
-				V newValue = remappingFunction.apply(oldValue, value);
-				if (newValue != null) {
-					if (replaceChild(key, oldValue, newValue))
-						return newValue;
-				} else if (removeChild(key, oldValue)) {
-					return null;
-				}
-				oldValue = key.getChild();
-			} else {
-				if ((oldValue = putChildIfAbsent(key, value)) == null) {
-					return value;
-				}
-			}
-		}
-	}
-	@Override
-	public K mergeParent(V value, K key, BiFunction<? super K, ? super K, ? extends K> remappingFunction) {
-		return getChild().mergeChild(value, key, remappingFunction);
+	public void submitParent(V value, K key) {
+		getChild().submitChild(value, key);
 	}
 }

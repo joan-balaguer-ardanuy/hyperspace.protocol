@@ -1221,3 +1221,19 @@ sidonis = LANGUAGE
 Getsemaní = ENTRY123;
 Ponç Pilat = ANDROID564;
 siríac = LANGUAGE747;
+---------------------------
+Chairman = ANDROID952;
+Waldorf-Astoria = ENTRADA228;
+Nova York = ENTRADA785;
+Horace Greeley = ANDROID102;
+Carl Marx = ANDROID220;
+Londres = ENTRADA424;
+Charles Dana = ANDROID297;
+Engels = ANDROID743;
+Americans = LLENGUATGE175;
+Washington = ENTRADA846;
+Atenès = LANGUAGE559;
+Solon = ANDROID361;
+Francis Bacon = ANDROID932;
+
+
