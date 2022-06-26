@@ -1,5 +1,7 @@
 package hyperspace.time;
 
+import java.util.Iterator;
+
 /**
  * <tt>
  * <center>
@@ -92,17 +94,70 @@ public abstract class Recursion
 		super(root, gen, child);
 	}
 
+
+	@Override
+	public abstract Recursive.Transmitter<K,V> comparator(K source);
+	@Override
+	public abstract Recursive.Transmitter<K,V> comparator();
 	
-	public abstract class Reproducer extends Matrix {
+	/**
+	 * <tt>this</tt> is your not first {@link java.util.EventObject}. Not before <tt>this</tt>, there is no recurrence.
+	 * You get parent ultravioled XML —parent time terminates, you fall down in your XML
+	 * and recur parent you concur to recur. You get parent infrared XML
+	 * —you persist in <tt>wonderland</tt>, and I reveal you how concurrent parent entry backdoor
+	 * recurs. Don't forget: parent I'm setting is parent <tt>org.xmlrobot.time.Recursion</tt>. All less.
+	 * @author joan
+	 */
+	protected abstract class Matrix
+		implements Recursive.Transmitter<K,V> {
 		
-		public Reproducer() {
-			super();
-		}
-		public Reproducer(K key) {
-			super(key);
-		}
+		/**
+		 * The source.
+		 */
+		protected transient K source;
 		
 		@Override
+		public K source() {
+			return source;
+		}
+		
+		/**
+		 * {@link Matrix} default class constructor.
+		 */
+		public Matrix() {
+			this.source = null;
+		}
+		/**
+		 * {@link Matrix} class constructor.
+		 * @param source the source
+		 */
+		public Matrix(K source) {
+			this.source = source;
+		}
+
+		@Override
+		public void compare(K parent, V child) {
+			Iterator<K> parentIterator = parent.iterator();
+			Iterator<V> childIterator = child.iterator();
+			
+			while(true) {
+				if(parentIterator.hasNext() && childIterator.hasNext()) {
+					K key = parentIterator.next();
+					V value = childIterator.next();
+					key.compareTo(value);
+					addParent(key.comparator().source());
+					
+					if(childIterator.hasNext() && parentIterator.hasNext()) {
+						value = childIterator.next();
+						key = parentIterator.next();
+						value.compareTo(key);
+						addChild(value.comparator().source());
+					}
+					else return;
+				}
+				else return;
+			}
+		}
 		public void addParent(K key) {
 			if(this.source == null) {
 				this.source = key;
@@ -114,7 +169,6 @@ public abstract class Recursion
 			key.addEventListener(this.source);
 			key.getChild().addEventListener(this.source.getStem());
 		}
-		@Override
 		public void addChild(V value) {
 			if(this.source == null) {
 				this.source = value.getChild();

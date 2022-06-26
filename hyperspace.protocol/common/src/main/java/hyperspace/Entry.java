@@ -139,7 +139,7 @@ public interface Entry<K,V>
     Entry.Comparator<K,V> comparator(K key, V value);
     
     interface Comparator<K,V> 
-    	extends TimeListener.Transmitter<Entry<K,V>,Entry<V,K>> {
+    	extends Recursive.Transmitter<Entry<K,V>,Entry<V,K>> {
     	
     	void put(K key, V value);
     }

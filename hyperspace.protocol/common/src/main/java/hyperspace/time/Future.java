@@ -3,9 +3,7 @@ package hyperspace.time;
 import hyperspace.Listener;
 
 public interface Future<V>
-	extends Comparable<V>,
-		java.util.concurrent.Future<V>,
-			Listener {
+	extends Comparable<V>, Listener {
     
 	// properties
 	/**
@@ -24,9 +22,6 @@ public interface Future<V>
 	 * @throws Throwable if something is wrong
 	 */
 	void setAntitype(Class<? extends V> antitype);
-	
-	V get();
-	V set(V value);
 	
 	V getChild();
 	V setChild(V value);

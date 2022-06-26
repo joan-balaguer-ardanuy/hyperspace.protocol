@@ -1,5 +1,7 @@
 package hyperspace;
 
+import java.util.EventListener;
+
 /**
  * <center>
  * <tt>
@@ -23,11 +25,7 @@ package hyperspace;
  *
  */
 public interface Listener
-	extends Message,
-		Runnable,
-			java.util.EventListener,
-				java.util.concurrent.Executor,
-					java.util.concurrent.ThreadFactory {
+	extends Message, EventListener {
 
 	/**
 	 * Returns the command.

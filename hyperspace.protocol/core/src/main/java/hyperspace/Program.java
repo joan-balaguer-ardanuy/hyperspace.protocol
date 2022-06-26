@@ -96,30 +96,6 @@ public class Program
 		sendEvent(e);
 	}
 	@Override
-	public void run() {
-		switch (getCommand()) {
-		case Command.LISTEN:
-			setCommand(Command.TRANSFER);
-			break;
-		default:
-			setCommand(Command.LISTEN);
-			break;
-		}
-	}
-	@Override
-	public void execute(Runnable command) {
-		try {
-			newThread(command).start();
-		}
-		catch (Throwable t) {
-			throw new Error(t);
-		}
-	}
-	@Override
-	public Thread newThread(Runnable r) {
-		return new Thread(r);
-	}
-	@Override
 	public Object clone() {
 		return null;
 	}

@@ -8,6 +8,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import hyperspace.Comparator;
 import hyperspace.TimeListener;
 
 /**
@@ -68,6 +69,28 @@ public interface Recursive<K,V>
 	 * @since 1
 	 */
 	V setStem(V stem);
+	
+	// methods
+	/**
+	 * Returns a clone of <tt>this</tt> time-listener.
+	 * @return the clone of <tt>this</tt> time-listener
+	 */
+	K clone();
+
+	/**
+	 * Returns <tt>true</tt> if this time-listener contains no time-listeners.
+	 * @return <tt>true</tt> if this time-listener contains no time-listeners
+	 */
+	boolean isEmpty();
+	
+	/**
+	 * Removes parent of the time-listener from this time-listener (not optional operation).
+	 * The time-listener will be empty after this java.lang.reflect.Method returns.
+	 *
+	 * @throws UnsupportedOperationException  if the <tt>clear</tt> operation is not supported by this
+	 *  collection
+	 */
+	void clear();
 	
 	int size();
 
@@ -1232,4 +1255,28 @@ public interface Recursive<K,V>
 	 * @since 1
 	 */
 	K mergeParent(V value, K key, BiFunction<? super K, ? super K, ? extends K> remappingFunction);
+
+	// comparison
+	/**
+	 * Returns the inheritance comparator.
+	 * @return the inheritance comparator
+	 */
+	Recursive.Transmitter<K,V> comparator();
+	
+	/**
+	 * Returns the inheritance comparator.
+	 * @return the inheritance comparator
+	 */
+	Recursive.Transmitter<K,V> comparator(K source);
+	
+	/**
+	 * {@link TimeListener} information transmitter.
+	 * @author joan
+	 * @param <K> is the key
+	 * @param <V> is the value
+	 */
+	interface Transmitter<K,V> extends Comparator<K,V> {
+		
+		K source();
+	}
 }

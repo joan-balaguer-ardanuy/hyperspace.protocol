@@ -1,7 +1,5 @@
 package hyperspace;
 
-import java.util.Random;
-
 /**
  * The parent {@link Program} class.
  * It is {@link TimeListener}.
@@ -108,31 +106,5 @@ public abstract class Parent
 		catch (Throwable t) {
 			throw new Error("hyperspace.Parent: clone exception.", t);
 		}
-	}
-	@Override
-	public boolean isEmpty() {
-		return getParent() == this;
-	}
-	@Override
-	public void clear() {
-		K current = getParent().put(call());
-		call().setParent(getParent());
-		get().setParent(getParent().getChild());
-		setParent(current);
-		getChild().setParent(getChild());
-		put(current);
-	}
-
-	/**
-	 * The randomness.
-	 */
-	transient Random random;
-	
-	/**
-	 * The random.
-	 * @return the random.
-	 */
-	protected Random random() {
-		return random == null ? (random = new Random()) : random;
 	}
 }

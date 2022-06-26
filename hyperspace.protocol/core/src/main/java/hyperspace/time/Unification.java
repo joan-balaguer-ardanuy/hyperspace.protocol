@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Random;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -91,7 +92,7 @@ import hyperspace.Toroid;
  * @param <K> is the key
  * @param <V> is the value
  */
-public abstract class Order
+public abstract class Unification
 	<K extends Recursive<K,V>,V extends Recursive<V,K>>
 		extends Toroid<K,V>
 			implements Recursive<K,V> {
@@ -126,26 +127,26 @@ public abstract class Order
 	}
 	
 	/**
-	 * {@link Order} default class constructor.
+	 * {@link Unification} default class constructor.
 	 */
-	public Order() {
+	public Unification() {
 		super();
 	}
 	/**
-	 * {@link Order} class constructor.
+	 * {@link Unification} class constructor.
 	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 */
-	public Order(Class<? extends K> type, String name) {
+	public Unification(Class<? extends K> type, String name) {
 		super(type, name);
 	}
 	/**
-	 * {@link Order} class constructor.
+	 * {@link Unification} class constructor.
 	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 * @param child the child
 	 */
-	public Order(Class<? extends K> type, String name, V child) {
+	public Unification(Class<? extends K> type, String name, V child) {
 		super(type, name, child);
 		// set root
 		setRoot(getParent());
@@ -153,10 +154,10 @@ public abstract class Order
 		setStem(child);
 	}
 	/**
-	 * {@link Order} class constructor.
+	 * {@link Unification} class constructor.
 	 * @param parent the parent
 	 */
-	public Order(K parent) {
+	public Unification(K parent) {
 		super(parent);
 		// set root
 		setRoot(parent.getRoot());
@@ -164,11 +165,11 @@ public abstract class Order
 		addEventListener(getRoot());
 	}
 	/**
-	 * {@link Order} class constructor.
+	 * {@link Unification} class constructor.
 	 * @param parent the parent
 	 * @param child the child
 	 */
-	public Order(K parent, V child) {
+	public Unification(K parent, V child) {
 		super(parent, child);
 		// set root
 		setRoot(parent.getRoot());
@@ -176,11 +177,11 @@ public abstract class Order
 		addEventListener(getRoot());
 	}
 	/**
-	 * {@link Order} class constructor.
+	 * {@link Unification} class constructor.
 	 * @param root the root
 	 * @param {@link String} the name
 	 */
-	public Order(K root, String name) {
+	public Unification(K root, String name) {
 		super(root.getType(), name);
 		// set root
 		setRoot(root);
@@ -188,12 +189,12 @@ public abstract class Order
 		addEventListener(root);
 	}
 	/**
-	 * {@link Order} class constructor.
+	 * {@link Unification} class constructor.
 	 * @param root the root
 	 * @param name {@link String} the name
 	 * @param child the child
 	 */
-	public Order(K root, String name, V child) {
+	public Unification(K root, String name, V child) {
 		super(root.getType(), name, child);
 		// set root
 		setRoot(root);
@@ -208,6 +209,20 @@ public abstract class Order
 		k.setStem(getStem());
 		return k;
 	}
+	@Override
+	public boolean isEmpty() {
+		return getParent() == this;
+	}
+	@Override
+	public void clear() {
+		K current = getParent().getChild().setChild(getChild().getChild());
+		getChild().getChild().setParent(getParent());
+		getChild().getChild().getChild().setParent(getParent().getChild());
+		setParent(current);
+		getChild().setParent(getChild());
+		getChild().setChild(current);
+	}
+
 	@Override
 	public void spin() {
 		if(random().nextBoolean()) {
@@ -378,5 +393,17 @@ public abstract class Order
 			throw new OutOfMemoryError("Required array size too large");
 		return (minCapacity > MAX_ARRAY_SIZE) ? 
 				Integer.MAX_VALUE : MAX_ARRAY_SIZE;
+	}
+	/**
+	 * The randomness.
+	 */
+	transient Random random;
+	
+	/**
+	 * The random.
+	 * @return the random.
+	 */
+	protected Random random() {
+		return random == null ? (random = new Random()) : random;
 	}
 }

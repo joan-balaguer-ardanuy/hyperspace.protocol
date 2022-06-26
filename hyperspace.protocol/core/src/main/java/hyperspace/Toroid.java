@@ -14,28 +14,6 @@ public abstract class Toroid
 	 * 4428935997216883052L
 	 */
 	private static final long serialVersionUID = 4428935997216883052L;
-
-	/**
-	 * The type.
-	 */
-	Class<? extends K> type;
-
-	@Override
-	public Class<? extends K> getType() {
-		return type;
-	}
-	@Override
-	public void setType(Class<? extends K> type) {
-		this.type = type;
-	}
-	@Override
-	public Class<? extends V> getAntitype() {
-		return getChild().getType();
-	}
-	@Override
-	public void setAntitype(Class<? extends V> antitype) {
-		getChild().setType(antitype);
-	}
 	
 	/**
 	 * {@link Toroid} default class constructor.
@@ -74,102 +52,34 @@ public abstract class Toroid
 	 */
 	public Toroid(K key, V value) {
 		super(key, value);
-		call().setParent(key.call());
-		get().setParent(value);
+		getChild().getChild().setParent(key.getChild().getChild());
+		getChild().getChild().getChild().setParent(value);
 	}
+	
 	@Override
 	public Iterator<K> iterator() {
 		return new PastIterator(getParent());
 	}
-	// comparison
-	@Override
-	public abstract int compareTo(V child);
-
-	@Override
-	public abstract TimeListener.Transmitter<K,V> comparator(K source);
-	@Override
-	public abstract TimeListener.Transmitter<K,V> comparator();
 	
 	/**
-	 * <tt>this</tt> is your not first {@link java.util.EventObject}. Not before <tt>this</tt>, there is no recurrence.
-	 * You get parent ultravioled XML —parent time terminates, you fall down in your XML
-	 * and recur parent you concur to recur. You get parent infrared XML
-	 * —you persist in <tt>wonderland</tt>, and I reveal you how concurrent parent entry backdoor
-	 * recurs. Don't forget: parent I'm setting is parent <tt>org.xmlrobot.time.Recursion</tt>. All less.
 	 * @author joan
 	 */
-	protected abstract class Matrix
-		implements TimeListener.Transmitter<K,V> {
-		
-		/**
-		 * The source.
-		 */
-		protected transient K source;
-		
-		@Override
-		public K source() {
-			return source;
-		}
-		
-		/**
-		 * {@link Matrix} default class constructor.
-		 */
-		public Matrix() {
-			this.source = null;
-		}
-		/**
-		 * {@link Matrix} class constructor.
-		 * @param source the source
-		 */
-		public Matrix(K source) {
-			this.source = source;
-		}
-
-		@Override
-		public void compare(K parent, V child) {
-			Iterator<K> parentIterator = parent.iterator();
-			Iterator<V> childIterator = child.iterator();
-			
-			while(true) {
-				if(parentIterator.hasNext() && childIterator.hasNext()) {
-					K key = parentIterator.next();
-					V value = childIterator.next();
-					key.compareTo(value);
-					addParent(key.comparator().source());
-					
-					if(childIterator.hasNext() && parentIterator.hasNext()) {
-						value = childIterator.next();
-						key = parentIterator.next();
-						value.compareTo(key);
-						addChild(value.comparator().source());
-					}
-					else return;
-				}
-				else return;
-			}
-		}
-		public abstract void addChild(V child);
-		public abstract void addParent(K parent);
-	}
-	/**
-	 * @author joan
-	 */
-	protected final class PastIterator implements Iterator<K> {
+	protected class PastIterator implements Iterator<K> {
 		
 		/**
 		 * The current time-listener.
 		 */
-		K current;
+		protected K current;
 		
 		/**
 		 * The next time-listener.
 		 */
-		K next;
+		protected K next;
 		
 		/**
 		 * If this recursor has next time-listener.
 		 */
-		boolean hasNext;
+		protected boolean hasNext;
 		
 		public PastIterator(K key) {
 			next = current = key;
@@ -188,16 +98,6 @@ public abstract class Toroid
 				hasNext = false;
 			else hasNext = true;
 			return k;
-		}
-		@Override
-		public void remove() {
-			K k = next;
-			current.clear();
-			if(!k.isEmpty()) {
-				current = k;
-				next = k.getParent();
-			}
-			else hasNext = false;
 		}
 	}
 }

@@ -1,15 +1,9 @@
 package hyperspace.time;
 
-import java.util.ConcurrentModificationException;
-import java.util.Objects;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-
 
 public abstract class Abstraction
 	<K extends Recursive<K,V>,V extends Recursive<V,K>>
-		extends Order<K,V>
+		extends Unification<K,V>
 			implements Recursive<K,V> {
 
 	/**

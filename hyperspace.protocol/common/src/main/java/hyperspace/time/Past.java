@@ -3,9 +3,7 @@ package hyperspace.time;
 import hyperspace.Listener;
 
 public interface Past<K> 
-	extends Iterable<K>,
-		java.util.concurrent.Callable<K>,
-			Listener {
+	extends Iterable<K>, Listener {
 
 	// properties
 	/**
@@ -27,8 +25,4 @@ public interface Past<K>
 	
 	K getParent();
 	K setParent(K key);
-	
-	@Override
-	K call();
-	K put(K key);
 }

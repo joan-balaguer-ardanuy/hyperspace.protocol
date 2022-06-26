@@ -1,5 +1,11 @@
 package hyperspace.time;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import hyperspace.Command;
+
 /**
  * 
  * <tt>
@@ -330,6 +336,23 @@ public abstract class Concurrence
 	 * -8918966892741751641L
 	 */
 	private static final long serialVersionUID = -8918966892741751641L;
+
+	@Override
+	public K call() {
+		return getChild().getChild();
+	}
+	@Override
+	public K put(K key) {
+		return getChild().setChild(key);
+	}
+	@Override
+	public V get() {
+		return getChild().call();
+	}
+	@Override
+	public V set(V value) {
+		return getChild().put(value);
+	}
 	
 	/**
 	 * {@link Concurrence} default class constructor.
@@ -386,7 +409,57 @@ public abstract class Concurrence
 	public Concurrence(K root, String gen, V child) {
 		super(root, gen, child);
 	}
+	
+	@Override
+	public boolean cancel(boolean mayInterruptIfRunning) {
+		try {
+			if(mayInterruptIfRunning && Thread.currentThread().isAlive())
+				setCommand(Command.TRANSFER);
+			return true;
+		}
+		catch(Throwable t) {
+			return false;
+		}
+	}
+	@Override
+	public boolean isCancelled() {
+		return getCommand() == Command.TRANSFER;
+	}
+	@Override
+	public boolean isDone() {
+		return getCommand() == Command.TRANSFER;
+	}
+	@Override
+	public V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+		return getChild();
+	}
 
+	@Override
+	public void run() {
+		switch (getCommand()) {
+		case Command.LISTEN:
+			setCommand(Command.TRANSFER);
+			break;
+		default:
+			setCommand(Command.LISTEN);
+			break;
+		}
+		// execute the future
+		execute(getChild());
+	}
+	@Override
+	public void execute(Runnable command) {
+		try {
+			newThread(command).start();
+		}
+		catch (Throwable t) {
+			throw new Error(t);
+		}
+	}
+	@Override
+	public Thread newThread(Runnable r) {
+		return new Thread(r);
+	}
 	@Override
 	public V getChild(int N) {
 		return getChild().getParent(N);

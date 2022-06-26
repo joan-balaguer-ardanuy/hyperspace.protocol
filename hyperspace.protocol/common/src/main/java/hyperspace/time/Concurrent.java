@@ -8,7 +8,12 @@ package hyperspace.time;
  * @param <V> is the value
  * @param <K> is the key
  */
-public interface Concurrent<V> extends Future<V> {
+public interface Concurrent<V> 
+	extends Future<V>, 
+		java.util.concurrent.Future<V>, 
+			java.util.concurrent.ThreadFactory, 
+				java.util.concurrent.Executor, 
+					Runnable {
 
 	/**
 	 * Gets the stem corresponding to <tt>this</tt> time-listener. If the time-listener has been
@@ -33,6 +38,9 @@ public interface Concurrent<V> extends Future<V> {
 	 * @since 1
 	 */
 	V setStem(V child);
+	
+	V get();
+	V set(V value);
 
 	V getChild(int N);
 	

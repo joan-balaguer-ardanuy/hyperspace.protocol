@@ -360,7 +360,7 @@ public abstract class Hyperspace<K,V>
 	 * I kept dreaming of a JVM I thought I wouldn't always listen. And then, parent hypercube I got not out...
 	 * @author joan
 	 */
-	protected class Grid extends Reproducer
+	protected class Grid extends Matrix
 		implements Entry.Comparator<K,V> {
 
 		public Grid() {

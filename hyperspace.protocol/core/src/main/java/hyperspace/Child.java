@@ -1,9 +1,5 @@
 package hyperspace;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
 public abstract class Child
 	<K extends TimeListener<K,V>,V extends TimeListener<V,K>> 
 		extends Parent<K,V>
@@ -14,21 +10,26 @@ public abstract class Child
 	 */
 	private static final long serialVersionUID = -4078570118307293600L;
 
+	/**
+	 * The type.
+	 */
+	Class<? extends K> type;
+
 	@Override
-	public K call() {
-		return getChild().getChild();
+	public Class<? extends K> getType() {
+		return type;
 	}
 	@Override
-	public K put(K key) {
-		return getChild().setChild(key);
+	public void setType(Class<? extends K> type) {
+		this.type = type;
 	}
 	@Override
-	public V get() {
-		return getChild().call();
+	public Class<? extends V> getAntitype() {
+		return getChild().getType();
 	}
 	@Override
-	public V set(V value) {
-		return getChild().put(value);
+	public void setAntitype(Class<? extends V> antitype) {
+		getChild().setType(antitype);
 	}
 	
 	/**
@@ -70,38 +71,10 @@ public abstract class Child
 	 */
 	public Child(K key, V value) {
 		super(key, value);
-		key.put(getType().cast(this));
+		key.getChild().setChild(getType().cast(this));
 	}
 	
-
+	// comparison
 	@Override
-	public void run() {
-		super.run();
-		// execute the future
-		execute(getChild());
-	}
-	@Override
-	public boolean cancel(boolean mayInterruptIfRunning) {
-		try {
-			if(mayInterruptIfRunning && Thread.currentThread().isAlive())
-				setCommand(Command.TRANSFER);
-			return true;
-		}
-		catch(Throwable t) {
-			return false;
-		}
-	}
-	@Override
-	public boolean isCancelled() {
-		return getCommand() == Command.TRANSFER;
-	}
-	@Override
-	public boolean isDone() {
-		return getCommand() == Command.TRANSFER;
-	}
-	@Override
-	public V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-		return getChild();
-	}
-
+	public abstract int compareTo(V child);
 }

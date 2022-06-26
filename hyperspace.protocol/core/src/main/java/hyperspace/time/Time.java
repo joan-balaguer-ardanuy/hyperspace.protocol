@@ -74,7 +74,7 @@ public abstract class Time
 	}
 	@Override
 	public Iterator<K> iterator() {
-		return new PastIterator(getRoot());
+		return new ParentIterator(getRoot());
 	}
 	@Override
 	public V putChild(K key, V value) {
@@ -113,5 +113,22 @@ public abstract class Time
 	@Override
 	public void putAllParents(TimeListener<? extends V, ? extends K> m) {
 		getChild().putAllChildren(m);
+	}
+	
+	protected final class ParentIterator extends PastIterator {
+		
+		public ParentIterator(K key) {
+			super(key);
+		}
+		@Override
+		public void remove() {
+			K k = next;
+			current.clear();
+			if(!k.isEmpty()) {
+				current = k;
+				next = k.getParent();
+			}
+			else hasNext = false;
+		}
 	}
 }
