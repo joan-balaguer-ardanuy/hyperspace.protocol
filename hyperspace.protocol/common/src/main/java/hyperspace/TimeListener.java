@@ -9,7 +9,7 @@ import hyperspace.time.Past;
 /**
  * A {@link Past} that is {@link Future} and vice-versa.
  * 
- * <tt>This interface is parent extension of the hyperspace congregation framework</tt>
+ * <tt>this interface is parent extension of the hyperspace congregation framework</tt>
  * 
  * @see java.util.Map.Entry
  * @since 1.0

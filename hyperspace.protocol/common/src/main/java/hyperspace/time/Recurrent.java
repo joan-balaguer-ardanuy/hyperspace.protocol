@@ -8,7 +8,7 @@ package hyperspace.time;
  *
  * @param <K> is the key
  */
-public interface Recurrent<K> extends Past<K>, java.util.concurrent.Callable<K> {
+public interface Recurrent<K> extends Past<K>, Iterable<K>, java.util.concurrent.Callable<K> {
 
 	K getRoot();
 	K setRoot(K parent);

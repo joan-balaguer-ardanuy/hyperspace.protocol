@@ -10,10 +10,10 @@ package hyperspace.time;
  */
 public interface Concurrent<V> 
 	extends Future<V>, 
-		java.util.concurrent.Future<V>, 
-			java.util.concurrent.ThreadFactory, 
-				java.util.concurrent.Executor, 
-					Runnable {
+		Comparable<V>, 
+			java.util.concurrent.Future<V>, 
+				java.util.concurrent.ThreadFactory, 
+					java.util.concurrent.Executor {
 
 	/**
 	 * Gets the stem corresponding to <tt>this</tt> time-listener. If the time-listener has been

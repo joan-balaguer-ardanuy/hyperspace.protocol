@@ -74,7 +74,4 @@ public abstract class Child
 		key.getChild().setChild(getType().cast(this));
 	}
 	
-	// comparison
-	@Override
-	public abstract int compareTo(V child);
 }

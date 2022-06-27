@@ -1,9 +1,8 @@
 package hyperspace;
 
 import java.util.Arrays;
-import java.util.Random;
 
-public class Program 
+public abstract class Program 
 	extends XML 
 		implements Listener {
 
@@ -35,6 +34,7 @@ public class Program
 	}
 	public void setCommand(String command) {
 		this.command = command;
+		sendEvent(new EventArgs(this, command));
 	}
 	
 	/**
@@ -94,22 +94,5 @@ public class Program
 	@Override
 	public void event(EventArgs e) {
 		sendEvent(e);
-	}
-	@Override
-	public Object clone() {
-		return null;
-	}
-	
-	/**
-	 * The randomness.
-	 */
-	transient Random random;
-	
-	/**
-	 * The random.
-	 * @return the random.
-	 */
-	protected Random random() {
-		return random == null ? (random = new Random()) : random;
 	}
 }

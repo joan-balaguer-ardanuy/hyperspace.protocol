@@ -3,7 +3,7 @@ package hyperspace.time;
 import hyperspace.Listener;
 
 public interface Past<K> 
-	extends Iterable<K>, Listener {
+	extends Listener {
 
 	// properties
 	/**

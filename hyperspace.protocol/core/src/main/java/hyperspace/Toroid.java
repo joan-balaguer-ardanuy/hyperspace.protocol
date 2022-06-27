@@ -3,8 +3,6 @@
  */
 package hyperspace;
 
-import java.util.Iterator;
-
 public abstract class Toroid
 	<K extends TimeListener<K,V>,V extends TimeListener<V,K>> 
 		extends Child<K,V>
@@ -54,50 +52,5 @@ public abstract class Toroid
 		super(key, value);
 		getChild().getChild().setParent(key.getChild().getChild());
 		getChild().getChild().getChild().setParent(value);
-	}
-	
-	@Override
-	public Iterator<K> iterator() {
-		return new PastIterator(getParent());
-	}
-	
-	/**
-	 * @author joan
-	 */
-	protected class PastIterator implements Iterator<K> {
-		
-		/**
-		 * The current time-listener.
-		 */
-		protected K current;
-		
-		/**
-		 * The next time-listener.
-		 */
-		protected K next;
-		
-		/**
-		 * If this recursor has next time-listener.
-		 */
-		protected boolean hasNext;
-		
-		public PastIterator(K key) {
-			next = current = key;
-			hasNext = true;
-		}
-		@Override
-		public boolean hasNext() {
-			return hasNext;
-		}
-		@Override
-		public K next() {
-			K k = next;
-			current = k;
-			next = k.getParent();
-			if(k == Toroid.this)
-				hasNext = false;
-			else hasNext = true;
-			return k;
-		}
 	}
 }

@@ -2,8 +2,6 @@ package hyperspace.time;
 
 import java.util.Iterator;
 
-import hyperspace.TimeListener;
-
 public abstract class Time
 	<K extends Recursive<K,V>,V extends Recursive<V,K>>
 		extends Inheritance<K,V>
@@ -105,20 +103,50 @@ public abstract class Time
 	public K putParentIfAbsent(V value, K key) {
 		return getChild().putChildIfAbsent(value, key);
 	}
-	public void putAllChildren(TimeListener<? extends K,? extends V> m) {
-		for(TimeListener<K,V> l : m) {
+	public void putAllChildren(Recursive<? extends K,? extends V> m) {
+		for(Recursive<K,V> l : m) {
 			putChild(getType().cast(l), l.getChild());
 		}
 	}
 	@Override
-	public void putAllParents(TimeListener<? extends V, ? extends K> m) {
+	public void putAllParents(Recursive<? extends V, ? extends K> m) {
 		getChild().putAllChildren(m);
 	}
 	
-	protected final class ParentIterator extends PastIterator {
+	protected final class ParentIterator implements Iterator<K> {
+		
+		/**
+		 * The current time-listener.
+		 */
+		protected K current;
+		
+		/**
+		 * The next time-listener.
+		 */
+		protected K next;
+		
+		/**
+		 * If this recursor has next time-listener.
+		 */
+		protected boolean hasNext;
 		
 		public ParentIterator(K key) {
-			super(key);
+			next = current = key;
+			hasNext = true;
+		}
+		@Override
+		public boolean hasNext() {
+			return hasNext;
+		}
+		@Override
+		public K next() {
+			K k = next;
+			current = k;
+			next = k.getParent();
+			if(k == Time.this)
+				hasNext = false;
+			else hasNext = true;
+			return k;
 		}
 		@Override
 		public void remove() {

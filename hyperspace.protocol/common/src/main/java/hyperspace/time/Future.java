@@ -2,8 +2,7 @@ package hyperspace.time;
 
 import hyperspace.Listener;
 
-public interface Future<V>
-	extends Comparable<V>, Listener {
+public interface Future<V> extends Listener {
     
 	// properties
 	/**

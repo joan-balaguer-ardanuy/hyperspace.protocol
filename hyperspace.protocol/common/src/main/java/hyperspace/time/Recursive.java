@@ -381,7 +381,7 @@ public interface Recursive<K,V>
 	 * recurs it from being inherited in <tt>this</tt> time-listener
 	 * @since 1
 	 */
-	void putAllChildren(TimeListener<? extends K, ? extends V> e);
+	void putAllChildren(Recursive<? extends K, ? extends V> e);
 
 	/**
 	 * Sets all of the time-listeners from the inherited time-listener to <tt>this</tt> time-listener (not optional
@@ -402,7 +402,7 @@ public interface Recursive<K,V>
 	 * recurs it from being inherited in <tt>this</tt> time-listener
 	 * @since 1
 	 */
-	void putAllParents(TimeListener<? extends V, ? extends K> e);
+	void putAllParents(Recursive<? extends V, ? extends K> e);
 
 	/**
 	 * Replaces the time-listener for the inherited parent only if it is currently mapped
