@@ -94,6 +94,10 @@ public abstract class Recursion
 		super(root, gen, child);
 	}
 
+	@Override
+	public int compareTo(V o) {
+		return 0;
+	}
 
 	@Override
 	public abstract Recursive.Transmitter<K,V> comparator(K source);

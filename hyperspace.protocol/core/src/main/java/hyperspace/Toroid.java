@@ -6,7 +6,7 @@ package hyperspace;
 public abstract class Toroid
 	<K extends TimeListener<K,V>,V extends TimeListener<V,K>> 
 		extends Child<K,V>
-		 implements TimeListener<K,V> {
+			implements TimeListener<K,V> {
 
 	/**
 	 * 4428935997216883052L
@@ -31,22 +31,22 @@ public abstract class Toroid
 	 * {@link Toroid} class constructor.
 	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
-	 * @param value the Time
+	 * @param value the value
 	 */
 	public Toroid(Class<? extends K> type, String name, V value) {
 		super(type, name, value);
 	}
 	/**
 	 * {@link Toroid} class constructor.
-	 * @param key the Time
+	 * @param key the key
 	 */
 	public Toroid(K key) {
 		super(key);
 	}
 	/**
 	 * {@link Toroid} class constructor.
-	 * @param key the Time
-	 * @param value the Time
+	 * @param key the key
+	 * @param value the value
 	 */
 	public Toroid(K key, V value) {
 		super(key, value);

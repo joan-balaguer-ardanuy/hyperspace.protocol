@@ -1232,8 +1232,20 @@ Charles Dana = ANDROID297;
 Engels = ANDROID743;
 Americans = LLENGUATGE175;
 Washington = ENTRADA846;
-Atenès = LANGUAGE559;
+Atenès = LLENGUATGE559;
 Solon = ANDROID361;
 Francis Bacon = ANDROID932;
+francesos = LLENGUATGE548;
+alemanys = LLENGUATGE977;
+britànics = LLENGUATGE275;
+belgues = LLENGUATGE625;
+Sedan = ENTRADA880;
+Meuse = ENTRADA685;
+Amiens = ENTRADA336;
+Bèlgica = ENTRADA694;
+França = ENTRADA690;
+Regne Unit = ENTRADA772;
+Alemanya = ENTRADA341;
+Dunkirk = ENTRADA697;
 
 

@@ -110,7 +110,6 @@ public abstract class Hypercube<K,V>
 			put(e.getKey(), e.getValue());
 		}
     }
-	
 	@Override
 	public V remove(Object key) {
 		Iterator<hyperspace.Entry<K,V>> i = iterator();

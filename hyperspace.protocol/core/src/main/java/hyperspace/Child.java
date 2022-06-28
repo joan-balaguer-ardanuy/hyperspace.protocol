@@ -50,7 +50,7 @@ public abstract class Child
 	 * {@link Child} class constructor.
 	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
-	 * @param value the child
+	 * @param value the value
 	 */
 	public Child(Class<? extends K> type, String name, V value) {
 		super(type, name, value);
@@ -59,19 +59,18 @@ public abstract class Child
 	}
 	/**
 	 * {@link Child} class constructor.
-	 * @param key the parent
+	 * @param key the key
 	 */
 	public Child(K key) {
 		super(key);
 	}
 	/**
 	 * {@link Child} class constructor.
-	 * @param key the parent
-	 * @param value the child
+	 * @param key the key
+	 * @param value the value
 	 */
 	public Child(K key, V value) {
 		super(key, value);
 		key.getChild().setChild(getType().cast(this));
 	}
-	
 }

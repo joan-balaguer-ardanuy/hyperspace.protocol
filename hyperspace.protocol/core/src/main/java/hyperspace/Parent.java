@@ -64,7 +64,7 @@ public abstract class Parent
 	 * {@link Parent} class constructor.
 	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
-	 * @param value the child
+	 * @param value the value
 	 */
 	public Parent(Class<? extends K> type, String name, V value) {
 		this(type, name);
@@ -73,7 +73,7 @@ public abstract class Parent
 	}
 	/**
 	 * {@link Parent} class constructor.
-	 * @param key the parent
+	 * @param key the key
 	 */
 	public Parent(K key) {
 		this(key.getType(), key.getName());
@@ -82,8 +82,8 @@ public abstract class Parent
 	}
 	/**
 	 * {@link Parent} class constructor.
-	 * @param key the parent
-	 * @param value the child
+	 * @param key the key
+	 * @param value the value
 	 */
 	public Parent(K key, V value) {
 		this(key.getType(), key.getName());
@@ -102,8 +102,7 @@ public abstract class Parent
 			k.setChild(v);
 			v.setChild(k);
 			return k;
-		}
-		catch (Throwable t) {
+		} catch (Throwable t) {
 			throw new Error("hyperspace.Parent: clone exception.", t);
 		}
 	}
