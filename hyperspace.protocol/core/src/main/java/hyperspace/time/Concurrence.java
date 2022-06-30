@@ -431,7 +431,7 @@ public abstract class Concurrence
 	}
 	@Override
 	public V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-		return getChild();
+		return get();
 	}
 
 	@Override
@@ -459,44 +459,5 @@ public abstract class Concurrence
 	@Override
 	public Thread newThread(Runnable r) {
 		return new Thread(r);
-	}
-	@Override
-	public V getChild(int N) {
-		return getChild().getParent(N);
-	}
-	/* (non-Javadoc)
-	 * @see org.xmlrobot.time.Concurrent#containsValue(java.lang.Object)
-	 */
-	@Override
-	public boolean containsChild(V value) {
-		return getChild().containsParent(value);
-	}
-	/* (non-Javadoc)
-	 * @see org.xmlrobot.time.Concurrent#indexOfValue(java.lang.Object)
-	 */
-	@Override
-	public int indexOfChild(V value) {
-		return getChild().indexOfParent(value);
-	}
-	/* (non-Javadoc)
-	 * @see org.xmlrobot.time.Concurrent#lastIndexOfValue(java.lang.Object)
-	 */
-	@Override
-	public int lastIndexOfFuture(V value) {
-		return getChild().lastIndexOfParent(value);
-	}
-	/* (non-Javadoc)
-	 * @see org.xmlrobot.time.Concurrent#removeValue(java.lang.Object)
-	 */
-	@Override
-	public boolean removeChild(V value) {
-		return getChild().removeParent(value);
-	}
-	/* (non-Javadoc)
-	 * @see org.xmlrobot.time.Concurrent#removeValue(int)
-	 */
-	@Override
-	public void removeChild(int N) {
-		getChild().removeParent(N);
 	}
 }

@@ -33,8 +33,8 @@ public abstract class Hyperchain<K,V>
 	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 */
-	public Hyperchain(Class<? extends Hyperchain<K,V>> type, String name) {
-		super(type, name);
+	public Hyperchain(Class<? extends Hyperchain<K,V>> type, String name, K key) {
+		super(type, name, key);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
@@ -42,8 +42,8 @@ public abstract class Hyperchain<K,V>
 	 * @param antitype {@link Class} the antitype
 	 * @param name {@link String} the name
 	 */
-	public Hyperchain(Class<? extends Hyperchain<K,V>> type, Class<? extends Hypercube<V,K>> antitype, String name) {
-		super(type, antitype, name);
+	public Hyperchain(Class<? extends Hyperchain<K,V>> type, Class<? extends Hypercube<V,K>> antitype, String name, K key, V value) {
+		super(type, antitype, name, key, value);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.

@@ -52,5 +52,5 @@ public interface Concurrent<V>
 	
 	int indexOfChild(V child);
 	
-	int lastIndexOfFuture(V child);
+	int lastIndexOfChild(V child);
 }

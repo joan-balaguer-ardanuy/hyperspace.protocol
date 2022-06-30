@@ -53,11 +53,13 @@ public abstract class Hyperspace<K,V>
 	public Hyperspace() {
 		super();
 	}
-	public Hyperspace(Class<? extends Entry<K,V>> type, String name) {
+	public Hyperspace(Class<? extends Entry<K,V>> type, String name, K key) {
 		super(type, name);
+		setKey(key);
 	}
-	public Hyperspace(Class<? extends Entry<K,V>> type, Class<? extends Entry<V,K>> antitype, String name) {
-		super(type, name, instance(antitype, name));
+	public Hyperspace(Class<? extends Entry<K,V>> type, Class<? extends Entry<V,K>> antitype, String name, K key, V value) {
+		super(type, name, instance(antitype, name, value));
+		setKey(key);
 	}
 	public Hyperspace(Entry<K,V> parent, K key) {
 		super(parent);
@@ -82,7 +84,7 @@ public abstract class Hyperspace<K,V>
 			Iterator<Entry<K,V>> it;
 			for(it = iterator();it.hasNext();it.next())  {
 				i++;
-			}	
+			}
 		}
 		catch(NoSuchElementException e) {
 			return Integer.MAX_VALUE;
@@ -159,13 +161,11 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public V putValue(K key, V value) {
-		getRoot().setKey(key);
-		getStem().setKey(value);
-		for (Entry<K, V> entry : this) {
-			if (key == entry.getKey()) {
-				return entry.setValue(value);
-			}
-		}
+//		for (Entry<K, V> entry : this) {
+//			if (key == entry.getKey()) {
+//				return entry.setValue(value);
+//			}
+//		}
 		instance(getType(), getParent(), key, value);
 		return null;
 	}

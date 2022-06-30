@@ -70,47 +70,10 @@ public abstract class Time
 	public Time(K root, String name, V child) {
 		super(root, name, child);
 	}
+
 	@Override
 	public Iterator<K> iterator() {
-		return new ParentIterator(getRoot());
-	}
-	@Override
-	public V putChild(K key, V value) {
-		for(K listener : this){
-			if(listener == key) {
-				value.setParent(key.getParent().getChild());
-				key.getChild().getChild().getChild().setParent(value);
-				value.setChild(key.getChild().getChild());
-				return key.setChild(value);
-			}
-		}
-		submitChild(key, value);
-		return null;
-	}
-	@Override
-	public K putParent(V value, K key) {
-		return getChild().putChild(value, key);
-	}
-	@Override
-	public V putChildIfAbsent(K key, V value) {
-		V v = key.getChild();
-        if (v == null) {
-            v = putChild(key, value);
-        }
-        return v;
-	}
-	@Override
-	public K putParentIfAbsent(V value, K key) {
-		return getChild().putChildIfAbsent(value, key);
-	}
-	public void putAllChildren(Recursive<? extends K,? extends V> m) {
-		for(Recursive<K,V> l : m) {
-			putChild(getType().cast(l), l.getChild());
-		}
-	}
-	@Override
-	public void putAllParents(Recursive<? extends V, ? extends K> m) {
-		getChild().putAllChildren(m);
+		return new ParentIterator(getParent());
 	}
 	
 	protected final class ParentIterator implements Iterator<K> {

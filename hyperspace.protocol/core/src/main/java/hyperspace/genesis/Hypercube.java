@@ -38,8 +38,8 @@ public abstract class Hypercube<K,V>
 	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 */
-	public Hypercube(Class<? extends Hypercube<K,V>> type, String name) {
-		super(type, name);
+	public Hypercube(Class<? extends Hypercube<K,V>> type, String name, K key) {
+		super(type, name, key);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
@@ -47,8 +47,8 @@ public abstract class Hypercube<K,V>
 	 * @param antitype {@link Class} the antitype
 	 * @param name {@link String} the name
 	 */
-	public Hypercube(Class<? extends Hypercube<K,V>> type, Class<? extends Hyperchain<V,K>> antitype, String name) {
-		super(type, antitype, name);
+	public Hypercube(Class<? extends Hypercube<K,V>> type, Class<? extends Hyperchain<V,K>> antitype, String name, K key, V value) {
+		super(type, antitype, name, key, value);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
@@ -94,8 +94,6 @@ public abstract class Hypercube<K,V>
     	return getValue((K) key);
     }
     public V put(K key, V value) {
-		getRoot().setKey(key);
-		getRoot().setValue(value);
     	for (Entry<K,V> entry : this) {
 			if (key == entry.getKey()) {
 				return entry.setValue(value);

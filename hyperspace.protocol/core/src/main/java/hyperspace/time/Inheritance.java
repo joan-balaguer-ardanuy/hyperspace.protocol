@@ -1,8 +1,5 @@
 package hyperspace.time;
 
-import java.util.Objects;
-import java.util.function.BiFunction;
-
 /**
  * <tt>
  * <center>
@@ -107,69 +104,26 @@ public abstract class Inheritance
 	}
 
 	@Override
-	public V getChildOrDefault(K parent, V defaultChild) {
-		V v;
-		return (v = parent.getChild()) != null ? v : defaultChild;
+	public boolean isEmpty() {
+		return getParent() == this;
 	}
 	@Override
-	public K getParentOrDefault(V value, K defaultKey) {
-		return getChild().getChildOrDefault(value, defaultKey);
-	}
-
-	@Override
-	public V replaceChild(K key, V value) {
-		V curValue;
-        if ((curValue = key.getChild()) != null) {
-            curValue = putChild(key, value);
-        }
-        return curValue;
+	public void clear() {
+		K current = getParent().getChild().setChild(getChild().getChild());
+		getChild().getChild().setParent(getParent());
+		getChild().getChild().getChild().setParent(getParent().getChild());
+		setParent(current);
+		getChild().setParent(getChild());
+		getChild().setChild(current);
 	}
 	@Override
-	public K replaceParent(V value, K key) {
-		return getChild().replaceChild(value, key);
-	}
-	@Override
-	public boolean replaceChild(K key, V oldValue, V newValue) {
-		Object curValue = key.getChild();
-        if (!Objects.equals(curValue, oldValue) ||
-            (curValue == null && !containsParent(key))) {
-            return false;
-        }
-        putChild(key, newValue);
-        return true;
-	}
-	@Override
-	public boolean replaceParent(V value, K oldKey, K newKey) {
-		return getChild().replaceChild(value, oldKey, newKey);
-	}
-	@Override
-	public void replaceAllChildren(BiFunction<? super K, ? super V, ? extends V> function) {
-		Objects.requireNonNull(function);
-        forEachChild((k,v) -> {
-            while(!replaceChild(k, v, function.apply(k, v))) {
-                // v changed or k is gone
-                if ( (v = k.getChild()) == null) {
-                    // k is no longer in the map.
-                    break;
-                }
-            }
-        });
-	}
-	@Override
-	public void replaceAllParents(BiFunction<? super V, ? super K, ? extends K> function) {
-		getChild().replaceAllChildren(function);
-	}
-	@Override
-	public boolean removeChild(K key, V value) {
-		Object curValue = key.getChild();
-		if (!Objects.equals(curValue, value) || (curValue == null && !containsParent(key))) {
-			return false;
+	public void spin() {
+		if(random().nextBoolean()) {
+			// rotate
+			permuteChild(getParent(), getChild().getParent());
+		} else {
+			// revolve  
+			permuteChild(call(), get());
 		}
-		key.clear();
-		return true;
-	}
-	@Override
-	public boolean removeParent(V value, K key) {
-		return getChild().removeChild(value, key);
 	}
 }

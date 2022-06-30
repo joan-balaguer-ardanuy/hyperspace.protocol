@@ -1,5 +1,11 @@
 package hyperspace.time;
 
+import java.util.ConcurrentModificationException;
+import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 /**
  * <tt>
  * <center>
@@ -214,6 +220,29 @@ public abstract class Recurrence
 	}
 
 	@Override
+	public K getParent(int N) {
+		for(K entry : this) {
+			if(N < 1) {
+				return entry;
+			}
+			N--;
+		}
+		return null;
+	}
+	@Override
+	public V getChild(int N) {
+		return getChild().getParent(N);
+	}
+	@Override
+	public V getChildOrDefault(K parent, V defaultChild) {
+		V v;
+		return (v = parent.getChild()) != null ? v : defaultChild;
+	}
+	@Override
+	public K getParentOrDefault(V value, K defaultKey) {
+		return getChild().getChildOrDefault(value, defaultKey);
+	}
+	@Override
 	public boolean containsParent(K key) {
 		for(K parent : this) {
 			if(parent == key) {
@@ -221,6 +250,10 @@ public abstract class Recurrence
 			}
 		}
 		return false;
+	}
+	@Override
+	public boolean containsChild(V value) {
+		return getChild().containsParent(value);
 	}
 	@Override
 	public boolean removeParent(K key) {
@@ -233,14 +266,8 @@ public abstract class Recurrence
 		return false;
 	}
 	@Override
-	public K getParent(int N) {
-		for(K entry : this) {
-			if(N < 1) {
-				return entry;
-			}
-			N--;
-		}
-		return null;
+	public boolean removeChild(V value) {
+		return getChild().removeParent(value);
 	}
 	@Override
 	public int indexOfParent(K key) {
@@ -254,8 +281,54 @@ public abstract class Recurrence
 		return -1;
 	}
 	@Override
+	public int indexOfChild(V value) {
+		return getChild().indexOfParent(value);
+	}
+	@Override
 	public int lastIndexOfParent(K past) {
 		return 0;
+	}
+	@Override
+	public int lastIndexOfChild(V value) {
+		return getChild().lastIndexOfParent(value);
+	}
+	@Override
+	public V putChild(K key, V value) {
+		for(K listener : this){
+			if(listener == key) {
+				value.setParent(key.getParent().getChild());
+				key.getChild().getChild().getChild().setParent(value);
+				value.setChild(key.getChild().getChild());
+				return key.setChild(value);
+			}
+		}
+		submitChild(key, value);
+		return null;
+	}
+	@Override
+	public K putParent(V value, K key) {
+		return getChild().putChild(value, key);
+	}
+	@Override
+	public V putChildIfAbsent(K key, V value) {
+		V v = key.getChild();
+        if (v == null) {
+            v = putChild(key, value);
+        }
+        return v;
+	}
+	@Override
+	public K putParentIfAbsent(V value, K key) {
+		return getChild().putChildIfAbsent(value, key);
+	}
+	public void putAllChildren(Recursive<? extends K,? extends V> m) {
+		for(Recursive<K,V> l : m) {
+			putChild(getType().cast(l), l.getChild());
+		}
+	}
+	@Override
+	public void putAllParents(Recursive<? extends V, ? extends K> m) {
+		getChild().putAllChildren(m);
 	}
 	@Override
 	public void removeParent(int N) {
@@ -266,5 +339,185 @@ public abstract class Recurrence
 			}
 			N--;
 		}
+	}
+	@Override
+	public void removeChild(int N) {
+		getChild().removeParent(N);
+	}
+	@Override
+	public boolean removeChild(K key, V value) {
+		Object curValue = key.getChild();
+		if (!Objects.equals(curValue, value) || (curValue == null && !containsParent(key))) {
+			return false;
+		}
+		key.clear();
+		return true;
+	}
+	@Override
+	public boolean removeParent(V value, K key) {
+		return getChild().removeChild(value, key);
+	}
+	@Override
+	public V replaceChild(K key, V value) {
+		V curValue;
+        if ((curValue = key.getChild()) != null) {
+            curValue = putChild(key, value);
+        }
+        return curValue;
+	}
+	@Override
+	public K replaceParent(V value, K key) {
+		return getChild().replaceChild(value, key);
+	}
+	@Override
+	public boolean replaceChild(K key, V oldValue, V newValue) {
+		Object curValue = key.getChild();
+        if (!Objects.equals(curValue, oldValue) ||
+            (curValue == null && !containsParent(key))) {
+            return false;
+        }
+        putChild(key, newValue);
+        return true;
+	}
+	@Override
+	public boolean replaceParent(V value, K oldKey, K newKey) {
+		return getChild().replaceChild(value, oldKey, newKey);
+	}
+	@Override
+	public void replaceAllChildren(BiFunction<? super K, ? super V, ? extends V> function) {
+		Objects.requireNonNull(function);
+        forEachChild((k,v) -> {
+            while(!replaceChild(k, v, function.apply(k, v))) {
+                // v changed or k is gone
+                if ( (v = k.getChild()) == null) {
+                    // k is no longer in the map.
+                    break;
+                }
+            }
+        });
+	}
+	@Override
+	public void replaceAllParents(BiFunction<? super V, ? super K, ? extends K> function) {
+		getChild().replaceAllChildren(function);
+	}
+	@Override
+	public void forEachChild(BiConsumer<? super K, ? super V> action) {
+		Objects.requireNonNull(action);
+		for (K entry : this) {
+			K k;
+			V v;
+			try {
+				k = entry;
+				v = entry.getChild();
+			} catch (IllegalStateException ise) {
+				// this usually means the entry is no longer in the map.
+				throw new ConcurrentModificationException(ise);
+			}
+			action.accept(k, v);
+		}
+	}
+	@Override
+	public void forEachParent(BiConsumer<? super V, ? super K> action) {
+		getChild().forEachChild(action);
+	}
+	@Override
+	public V computeChildIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
+		Objects.requireNonNull(mappingFunction);
+		V v, newValue;
+		return ((v = key.getChild()) == null && (newValue = mappingFunction.apply(key)) != null
+				&& (v = putChildIfAbsent(key, newValue)) == null) ? newValue : v;
+	}
+	@Override
+	public K computeParentIfAbsent(V value, Function<? super V, ? extends K> mappingFunction) {
+		return getChild().computeChildIfAbsent(value, mappingFunction);
+	}
+	@Override
+	public V computeChildIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+		Objects.requireNonNull(remappingFunction);
+		V oldValue;
+		while ((oldValue = key.getChild()) != null) {
+			V newValue = remappingFunction.apply(key, oldValue);
+			if (newValue != null) {
+				if (replaceChild(key, oldValue, newValue))
+					return newValue;
+			} else if (removeChild(key, oldValue))
+				return null;
+		}
+		return oldValue;
+	}
+	@Override
+	public K computeParentIfPresent(V value, BiFunction<? super V, ? super K, ? extends K> remappingFunction) {
+		return getChild().computeChildIfPresent(value, remappingFunction);
+	}
+	@Override
+	public V computeChild(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+		Objects.requireNonNull(remappingFunction);
+		V oldValue = key.getChild();
+		for (;;) {
+			V newValue = remappingFunction.apply(key, oldValue);
+			if (newValue == null) {
+				// delete mapping
+				if (oldValue != null) {
+					// something to remove
+					if (removeChild(key, oldValue)) {
+						// removed the old value as expected
+						return null;
+					}
+					// some other value replaced old value. try again.
+					oldValue = key.getChild();
+				} else {
+					// nothing to do. Leave things as they were.
+					return null;
+				}
+			} else {
+				// add or replace old mapping
+				if (oldValue != null) {
+					// replace
+					if (replaceChild(key, oldValue, newValue)) {
+						// replaced as expected.
+						return newValue;
+					}
+					// some other value replaced old value. try again.
+					oldValue = key.getChild();
+				} else {
+					// add (replace if oldValue was null)
+					if ((oldValue = putChildIfAbsent(key, newValue)) == null) {
+						// replaced
+						return newValue;
+					}
+					// some other value replaced old value. try again.
+				}
+			}
+		}
+	}
+	@Override
+	public K computeParent(V value, BiFunction<? super V, ? super K, ? extends K> remappingFunction) {
+		return getChild().computeChild(value, remappingFunction);
+	}
+	@Override
+	public V mergeChild(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
+		Objects.requireNonNull(remappingFunction);
+		Objects.requireNonNull(value);
+		V oldValue = key.getChild();
+		for (;;) {
+			if (oldValue != null) {
+				V newValue = remappingFunction.apply(oldValue, value);
+				if (newValue != null) {
+					if (replaceChild(key, oldValue, newValue))
+						return newValue;
+				} else if (removeChild(key, oldValue)) {
+					return null;
+				}
+				oldValue = key.getChild();
+			} else {
+				if ((oldValue = putChildIfAbsent(key, value)) == null) {
+					return value;
+				}
+			}
+		}
+	}
+	@Override
+	public K mergeParent(V value, K key, BiFunction<? super K, ? super K, ? extends K> remappingFunction) {
+		return getChild().mergeChild(value, key, remappingFunction);
 	}
 }
