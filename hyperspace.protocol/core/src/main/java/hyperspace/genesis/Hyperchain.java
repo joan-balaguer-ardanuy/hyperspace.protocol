@@ -32,15 +32,19 @@ public abstract class Hyperchain<K,V>
 	 * {@link Hyperchain} class constructor.
 	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
+	 * @param key the key
+	 * @param value the value
 	 */
-	public Hyperchain(Class<? extends Hyperchain<K,V>> type, String name, K key) {
-		super(type, name, key);
+	public Hyperchain(Class<? extends Hyperchain<K,V>> type, String name, K key, V value) {
+		super(type, name, key, value);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
 	 * @param type {@link Class} the type
 	 * @param antitype {@link Class} the antitype
 	 * @param name {@link String} the name
+	 * @param key the key
+	 * @param value the value
 	 */
 	public Hyperchain(Class<? extends Hyperchain<K,V>> type, Class<? extends Hypercube<V,K>> antitype, String name, K key, V value) {
 		super(type, antitype, name, key, value);
@@ -49,9 +53,10 @@ public abstract class Hyperchain<K,V>
 	 * {@link Hyperchain} class constructor.
 	 * @param parent the parent
 	 * @param key the key
+	 * @param value the value
 	 */
-	public Hyperchain(Hyperchain<K,V> parent, K key) {
-		super(parent, key);
+	public Hyperchain(Hyperchain<K,V> parent, K key, V value) {
+		super(parent, key, value);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
@@ -68,9 +73,10 @@ public abstract class Hyperchain<K,V>
 	 * @param root the root
 	 * @param name {@link String} the name
 	 * @param key the key
+	 * @param value the value
 	 */
-	public Hyperchain(Hyperchain<K,V> root, String name, K key) {
-		super(root, name, key);
+	public Hyperchain(Hyperchain<K,V> root, String name, K key, V value) {
+		super(root, name, key, value);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.

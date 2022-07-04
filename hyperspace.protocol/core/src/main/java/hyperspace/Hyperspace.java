@@ -28,6 +28,7 @@ public abstract class Hyperspace<K,V>
 	 * The key.
 	 */
 	K key;
+	V value;
 	
 	@Override
 	public K getKey() {
@@ -40,11 +41,13 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public V getValue() {
-		return getChild().getKey();
+		return value;
 	}
 	@Override
 	public V setValue(V value) {
-		return getChild().setKey(value);
+		V old = this.value;
+		this.value = value;
+		return old;
 	}
 	
 	/**
@@ -53,30 +56,37 @@ public abstract class Hyperspace<K,V>
 	public Hyperspace() {
 		super();
 	}
-	public Hyperspace(Class<? extends Entry<K,V>> type, String name, K key) {
+	public Hyperspace(Class<? extends Entry<K,V>> type, String name, K key, V value) {
 		super(type, name);
 		setKey(key);
+		setValue(value);
 	}
 	public Hyperspace(Class<? extends Entry<K,V>> type, Class<? extends Entry<V,K>> antitype, String name, K key, V value) {
-		super(type, name, instance(antitype, name, value));
+		super(type, name, instance(antitype, name, value, key));
 		setKey(key);
+		setValue(value);
 	}
-	public Hyperspace(Entry<K,V> parent, K key) {
+	public Hyperspace(Entry<K,V> parent, K key, V value) {
 		super(parent);
 		setKey(key);
+		setValue(value);
 	}
 	public Hyperspace(Class<? extends Entry<V,K>> antitype, Entry<K,V> parent, K key, V value) {
-		super(parent, instance(antitype, parent.getChild(), value));
+		super(parent, instance(antitype, parent.getChild(), value, key));
 		setKey(key);
+		setValue(value);
 	}
-	public Hyperspace(Entry<K,V> root, String name, K key) {
+	public Hyperspace(Entry<K,V> root, String name, K key, V value) {
 		super(root, name);
 		setKey(key);
+		setValue(value);
 	}
 	public Hyperspace(Class<? extends Entry<V,K>> antitype, Entry<K,V> root, String name, K key, V value) {
-		super(root, name, instance(antitype, root.getStem(), name, value));
+		super(root, name, instance(antitype, root.getStem(), name, value, key));
 		setKey(key);
+		setValue(value);
 	}
+	
 	@Override
 	public int size() {
 		int i = 0;
@@ -166,7 +176,7 @@ public abstract class Hyperspace<K,V>
 //				return entry.setValue(value);
 //			}
 //		}
-		instance(getType(), getParent(), key, value);
+		instance(getType(), getAntitype(), getParent(), key, value);
 		return null;
 	}
 	@Override
@@ -201,10 +211,10 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public boolean removeValue(K key, V value) {
-		for(Entry<K,V> mass : this) {
-			if(key == mass.getKey()) {
-				if(value == mass.getValue()) {
-					mass.clear();
+		for(Entry<K,V> entry : this) {
+			if(key == entry.getKey()) {
+				if(value == entry.getValue()) {
+					entry.clear();
 					return true;	
 				}
 				return false;
@@ -248,8 +258,8 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public void replaceAllValues(BiFunction<? super K, ? super V, ? extends V> function) {
-		for(Entry<K,V> mass : this) {
-			mass.setValue(function.apply(mass.getKey(), mass.getValue()));
+		for(Entry<K,V> entry : this) {
+			entry.setValue(function.apply(entry.getKey(), entry.getValue()));
 		}
 	}
 	@Override
@@ -311,14 +321,14 @@ public abstract class Hyperspace<K,V>
 		return getChild().computeValueIfPresent(value, remappingFunction);
 	}
 	@Override
-	public void forEachKey(BiConsumer<? super K, ? super V> action) {
+	public void forEachValue(BiConsumer<? super K, ? super V> action) {
 		for(Entry<K,V> mass : this) {
 			action.accept(mass.getKey(), mass.getValue());	
 		}
 	}
 	@Override
-	public void forEachValue(BiConsumer<? super V, ? super K> action) {
-		getChild().forEachKey(action);
+	public void forEachKey(BiConsumer<? super V, ? super K> action) {
+		getChild().forEachValue(action);
 	}
 	@Override
 	public V mergeValue(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {

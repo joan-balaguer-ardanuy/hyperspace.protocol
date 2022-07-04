@@ -220,7 +220,7 @@ public abstract class Unification
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	protected static <T> T[] orderToArray(T[] r, Iterator<?> it) {
+	public static <T> T[] orderToArray(T[] r, Iterator<?> it) {
 		int i = r.length;
 		while (it.hasNext()) {
 			int cap = r.length;

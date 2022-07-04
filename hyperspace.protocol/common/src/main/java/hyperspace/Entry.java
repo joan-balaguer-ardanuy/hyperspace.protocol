@@ -12,7 +12,7 @@ import hyperspace.time.Recursive;
 /**
  * Recursive entry.
  * 
- * An entry that maps keys to values. An entry cannot contain duplicate keys;
+ * An entry that maps keys to values and values to keys. An entry cannot contain duplicate keys;
  * each key can map to at most one value.
  *
  * <p>This interface takes the place of the <tt>java.util.Map</tt> class, which
@@ -43,7 +43,7 @@ import hyperspace.time.Recursive;
  * all of the general-purpose entry implementations in the JDK comply.
  *
  * <p>The "destructive" methods contained in this interface, that is, the
- * methods that modify the entry on which they operate, are inherited to throw
+ * methods that modify the entry on which they operate,              are inherited to throw
  * <tt>UnsupportedOperationException</tt> if this entry does not support the
  * operation.  If this is the case, these methods may, but are not required
  * to, throw an <tt>UnsupportedOperationException</tt> if the invocation would
@@ -70,13 +70,13 @@ import hyperspace.time.Recursive;
  *
  * @param <K> the type of positives maintained by this mass
  * @param <V> the type of mapped negatives
-
  * @author joan
  *
  */
-public interface Entry<K,V> 
-	extends Recursive<Entry<K,V>,Entry<V,K>>, java.util.Map.Entry<K,V> {
-	
+public interface Entry<K,V>
+	extends Recursive<Entry<K,V>,Entry<V,K>>, 
+		java.util.Map.Entry<K,V> {
+
 	K getKey();
     K setKey(K key);
 
@@ -119,8 +119,8 @@ public interface Entry<K,V>
     boolean removeValue(K key, V value);
     boolean removeKey(V value, K key);
     
-    void forEachKey(BiConsumer<? super K, ? super V> action);
-    void forEachValue(BiConsumer<? super V, ? super K> action);
+    void forEachValue(BiConsumer<? super K, ? super V> action);
+    void forEachKey(BiConsumer<? super V, ? super K> action);
     
     V computeValueIfAbsent(K key, Function<? super K, ? extends V> mappingFunction);
     K computeKeyIfAbsent(V value, Function<? super V, ? extends K> mappingFunction);
