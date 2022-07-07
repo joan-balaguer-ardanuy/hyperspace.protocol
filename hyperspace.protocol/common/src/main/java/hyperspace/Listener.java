@@ -25,7 +25,7 @@ import java.util.EventListener;
  *
  */
 public interface Listener
-	extends Message, Runnable, Cloneable, EventListener {
+	extends Message, Runnable, EventListener {
 
 	/**
 	 * Returns the command.

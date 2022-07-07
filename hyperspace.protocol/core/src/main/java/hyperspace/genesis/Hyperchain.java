@@ -4,7 +4,9 @@
 package hyperspace.genesis;
 
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import hyperspace.Entry;
 import hyperspace.Hyperspace;
@@ -33,10 +35,9 @@ public abstract class Hyperchain<K,V>
 	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 * @param key the key
-	 * @param value the value
 	 */
-	public Hyperchain(Class<? extends Hyperchain<K,V>> type, String name, K key, V value) {
-		super(type, name, key, value);
+	public Hyperchain(Class<? extends Hyperchain<K,V>> type, String name, K key) {
+		super(type, name, key);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
@@ -53,10 +54,9 @@ public abstract class Hyperchain<K,V>
 	 * {@link Hyperchain} class constructor.
 	 * @param parent the parent
 	 * @param key the key
-	 * @param value the value
 	 */
-	public Hyperchain(Hyperchain<K,V> parent, K key, V value) {
-		super(parent, key, value);
+	public Hyperchain(Hyperchain<K,V> parent, K key) {
+		super(parent, key);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
@@ -73,10 +73,9 @@ public abstract class Hyperchain<K,V>
 	 * @param root the root
 	 * @param name {@link String} the name
 	 * @param key the key
-	 * @param value the value
 	 */
-	public Hyperchain(Hyperchain<K,V> root, String name, K key, V value) {
-		super(root, name, key, value);
+	public Hyperchain(Hyperchain<K,V> root, String name, K key) {
+		super(root, name, key);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
@@ -90,18 +89,24 @@ public abstract class Hyperchain<K,V>
 		super(antitype, root, name, key, value);
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.xmlrobot.genesis.Chain#dna()
-	 */
 	@Override
 	public DNA<V,K> entryDNA() {
 		return (DNA<V,K>) getChild();
 	}
-	
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		int i = 0;
+		try {
+			Enumeration<Entry<K,V>> en;
+			for(en = enumerator();en.hasMoreElements();en.nextElement())  {
+				i++;
+			}
+		}
+		catch(NoSuchElementException e) {
+			return Integer.MAX_VALUE;
+		}
+		
+		return i;
 	}
 	@Override
 	public boolean isEmpty() {
@@ -114,7 +119,7 @@ public abstract class Hyperchain<K,V>
 	}
 	@Override
 	public Iterator<Entry<K,V>> iterator() {
-		return super.iterator();
+		return super.enumerator().asIterator();
 	}
 	@Override
 	public Object[] toArray() {

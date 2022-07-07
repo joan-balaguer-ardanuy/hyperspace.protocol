@@ -71,11 +71,11 @@ public interface Recursive<K,V>
 	V setStem(V stem);
 	
 	// methods
-	/**
-	 * Returns a clone of <tt>this</tt> time-listener.
-	 * @return the clone of <tt>this</tt> time-listener
-	 */
-	K clone();
+//	/**
+//	 * Returns a clone of <tt>this</tt> time-listener.
+//	 * @return the clone of <tt>this</tt> time-listener
+//	 */
+//	K clone();
 
 	/**
 	 * Returns <tt>true</tt> if this time-listener contains no time-listeners.
@@ -91,8 +91,6 @@ public interface Recursive<K,V>
 	 *  collection
 	 */
 	void clear();
-	
-	int size();
 
 	
 	/**

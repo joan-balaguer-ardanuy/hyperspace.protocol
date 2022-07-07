@@ -3,8 +3,7 @@
  */
 package hyperspace;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.Enumeration;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -28,7 +27,6 @@ public abstract class Hyperspace<K,V>
 	 * The key.
 	 */
 	K key;
-	V value;
 	
 	@Override
 	public K getKey() {
@@ -41,13 +39,11 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public V getValue() {
-		return value;
+		return getChild().getKey();
 	}
 	@Override
 	public V setValue(V value) {
-		V old = this.value;
-		this.value = value;
-		return old;
+		return getChild().setKey(value);
 	}
 	
 	/**
@@ -56,55 +52,40 @@ public abstract class Hyperspace<K,V>
 	public Hyperspace() {
 		super();
 	}
-	public Hyperspace(Class<? extends Entry<K,V>> type, String name, K key, V value) {
+	public Hyperspace(Class<? extends Entry<K,V>> type, String name, K key) {
 		super(type, name);
 		setKey(key);
-		setValue(value);
 	}
 	public Hyperspace(Class<? extends Entry<K,V>> type, Class<? extends Entry<V,K>> antitype, String name, K key, V value) {
-		super(type, name, instance(antitype, name, value, key));
+		super(type, name, instance(antitype, name, value));
 		setKey(key);
-		setValue(value);
 	}
-	public Hyperspace(Entry<K,V> parent, K key, V value) {
+	public Hyperspace(Entry<K,V> parent, K key) {
 		super(parent);
 		setKey(key);
-		setValue(value);
 	}
 	public Hyperspace(Class<? extends Entry<V,K>> antitype, Entry<K,V> parent, K key, V value) {
-		super(parent, instance(antitype, parent.getChild(), value, key));
+		super(parent, instance(antitype, parent.getChild(), value));
 		setKey(key);
-		setValue(value);
 	}
-	public Hyperspace(Entry<K,V> root, String name, K key, V value) {
+	public Hyperspace(Entry<K,V> root, String name, K key) {
 		super(root, name);
 		setKey(key);
-		setValue(value);
 	}
 	public Hyperspace(Class<? extends Entry<V,K>> antitype, Entry<K,V> root, String name, K key, V value) {
-		super(root, name, instance(antitype, root.getStem(), name, value, key));
+		super(root, name, instance(antitype, root.getStem(), name, value));
 		setKey(key);
-		setValue(value);
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public Entry<K,V> clone() {
+		return (Entry<K,V>) super.clone();
 	}
 	
 	@Override
-	public int size() {
-		int i = 0;
-		try {
-			Iterator<Entry<K,V>> it;
-			for(it = iterator();it.hasNext();it.next())  {
-				i++;
-			}
-		}
-		catch(NoSuchElementException e) {
-			return Integer.MAX_VALUE;
-		}
-		
-		return i;
-	}
-	@Override
 	public V getValue(K key) {
-		for(Entry<K,V> entry : this) {
+		Entry<K,V> entry = getParent();
+		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			if(key == entry.getKey()) {
 				return entry.getValue();
 			}
@@ -117,7 +98,8 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public Entry<K,V> getParentByKey(K key) {
-		for(Entry<K,V> entry : this) {
+		Entry<K,V> entry = getParent();
+		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			if(key == entry.getKey()) {
 				return entry;
 			}
@@ -130,7 +112,8 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public V getValueOrDefault(K key, V defaultValue) {
-		for(Entry<K,V> entry : this) {
+		Entry<K,V> entry = getParent();
+		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			if(key == entry.getKey()) {
 				return entry.getValue();
 			}
@@ -143,7 +126,8 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public boolean containsKey(Object key) {
-		for(Entry<K,V> entry : this) {
+		Entry<K,V> entry = getParent();
+		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			if(key == entry.getKey()) {
 				return true;
 			}
@@ -157,7 +141,8 @@ public abstract class Hyperspace<K,V>
 	@Override
 	public int indexOfKey(K key) {
 		int i = -1;
-		for(Entry<K,V> entry : this) {
+		Entry<K,V> entry = getParent();
+		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			i++;
 			if(key == entry.getKey()) {
 				return i;
@@ -171,11 +156,6 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public V putValue(K key, V value) {
-//		for (Entry<K, V> entry : this) {
-//			if (key == entry.getKey()) {
-//				return entry.setValue(value);
-//			}
-//		}
 		instance(getType(), getAntitype(), getParent(), key, value);
 		return null;
 	}
@@ -185,7 +165,8 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public V putValueIfAbsent(K key, V value) {
-		for(Entry<K,V> entry : this) {
+		Entry<K,V> entry = getParent();
+		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			if(key == entry.getKey()) {
 				return null;
 			}
@@ -198,7 +179,8 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public void removeValue(V value) {
-		for(Entry<K,V> entry : this) {
+		Entry<K,V> entry = getParent();
+		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			if(value == entry.getValue()) {
 				entry.clear();
 				return;
@@ -211,7 +193,8 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public boolean removeValue(K key, V value) {
-		for(Entry<K,V> entry : this) {
+		Entry<K,V> entry = getParent();
+		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			if(key == entry.getKey()) {
 				if(value == entry.getValue()) {
 					entry.clear();
@@ -228,7 +211,8 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public V replaceValue(K key, V value) {
-		for(Entry<K,V> entry : this) {
+		Entry<K,V> entry = getParent();
+		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			if(key == entry.getKey()) {
 				return entry.setValue(value);
 			}
@@ -241,7 +225,8 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public boolean replaceValue(K key, V oldValue, V newValue) {
-		for(Entry<K,V> entry : this) {
+		Entry<K,V> entry = getParent();
+		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			if(key == entry.getKey()) {
 				if(oldValue == entry.getValue()) {
 					entry.setValue(newValue);
@@ -258,7 +243,8 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public void replaceAllValues(BiFunction<? super K, ? super V, ? extends V> function) {
-		for(Entry<K,V> entry : this) {
+		Entry<K,V> entry = getParent();
+		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			entry.setValue(function.apply(entry.getKey(), entry.getValue()));
 		}
 	}
@@ -268,7 +254,8 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public V computeValue(K key, BiFunction<? super K,? super V,? extends V> remappingFunction) {
-		for(Entry<K,V> entry : this) {
+		Entry<K,V> entry = getParent();
+		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			if(key == entry.getKey()) {
 				V newValue;
 				if((newValue = remappingFunction.apply(key, entry.getValue())) == null) {
@@ -286,7 +273,8 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public V computeValueIfAbsent(K key, Function<? super K,? extends V> mappingFunction) {
-		for(Entry<K,V> entry : this) {
+		Entry<K,V> entry = getParent();
+		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			if(key == entry.getKey()) {
 				return null;
 			}
@@ -304,7 +292,8 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public V computeValueIfPresent(K key, BiFunction<? super K,? super V,? extends V> remappingFunction) {
-		for(Entry<K,V> entry : this) {
+		Entry<K,V> entry = getParent();
+		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			if(key == entry.getKey()) {
 				V newValue;
 				V oldValue = null;
@@ -322,8 +311,9 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public void forEachValue(BiConsumer<? super K, ? super V> action) {
-		for(Entry<K,V> mass : this) {
-			action.accept(mass.getKey(), mass.getValue());	
+		Entry<K,V> entry = getParent();
+		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
+			action.accept(entry.getKey(), entry.getValue());	
 		}
 	}
 	@Override
@@ -332,7 +322,8 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public V mergeValue(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
-		for(Entry<K,V> entry : this) {
+		Entry<K,V> entry = getParent();
+		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			if(key == entry.getKey()) {
 				return entry.setValue(remappingFunction.apply(entry.getValue(), value));
 			}

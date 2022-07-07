@@ -1,7 +1,9 @@
 package hyperspace.recurrent;
 
-import java.util.Iterator;
-
-public interface List<E> extends Mapping<E, java.util.List<E>>, Iterator<E> {
-
+public interface List<E> extends Collection<E,List<E>>, java.util.List<E> {
+	
+	E getElement();
+	E setElement(E element);
+	
+	int dimension(List<E> source);
 }

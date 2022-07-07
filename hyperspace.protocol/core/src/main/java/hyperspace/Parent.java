@@ -92,7 +92,7 @@ public abstract class Parent
 	}
 
 	@Override
-	public K clone() {
+	public TimeListener<K,V> clone() {
 		try {
 			K k = getType().getConstructor().newInstance();
 			V v = getAntitype().getConstructor().newInstance();

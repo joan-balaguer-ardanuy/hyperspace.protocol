@@ -1,7 +1,7 @@
 package hyperspace.time;
 
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.Enumeration;
 import java.util.Random;
 import hyperspace.Toroid;
 
@@ -195,24 +195,32 @@ public abstract class Unification
 		// send events to root
 		addEventListener(root);
 	}
-
 	@Override
-	public K clone() {
-		K k = super.clone();
-		k.setRoot(getRoot());
-		k.setStem(getStem());
-		return k;
+	public Recursive<K,V> clone() {
+		return (Recursive<K,V>) super.clone();
 	}
+//	@Override
+//	public K clone() {
+//		K k = super.clone();
+//		k.setRoot(getRoot());
+//		k.setStem(getStem());
+//		return k;
+//	}
 	public Object[] toArray() {
+		int quantity = 0;
+		Enumeration<K> en;
+		for(en = enumerator();en.hasMoreElements();en.nextElement())  {
+			quantity++;
+		}
         // Estimate size of array; be prepared to see more or fewer elements
-        Object[] r = new Object[size()];
-        Iterator<K> it = iterator();
+        Object[] r = new Object[quantity];
+        Enumeration<K> it = enumerator();
         for (int i = 0; i < r.length; i++) {
-            if (! it.hasNext()) // fewer elements than expected
+            if (! it.hasMoreElements()) // fewer elements than expected
                 return Arrays.copyOf(r, i);
-            r[i] = it.next();
+            r[i] = it.nextElement();
         }
-        return it.hasNext() ? orderToArray(r, it) : r;
+        return it.hasMoreElements() ? orderToArray(r, it) : r;
     }
 	/**
 	 * @param r
@@ -220,9 +228,9 @@ public abstract class Unification
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T[] orderToArray(T[] r, Iterator<?> it) {
+	public static <T> T[] orderToArray(T[] r, Enumeration<?> it) {
 		int i = r.length;
-		while (it.hasNext()) {
+		while (it.hasMoreElements()) {
 			int cap = r.length;
 			if (i == cap) {
 				int newCap = cap + (cap >> 1) + 1;
@@ -230,7 +238,7 @@ public abstract class Unification
 					newCap = hugeCapacity(cap + 1);
 				r = Arrays.copyOf(r, newCap);
 			}
-			r[i++] = (T) it.next();
+			r[i++] = (T) it.nextElement();
 		}
 		return (i == r.length) ? r : Arrays.copyOf(r, i);
 	}

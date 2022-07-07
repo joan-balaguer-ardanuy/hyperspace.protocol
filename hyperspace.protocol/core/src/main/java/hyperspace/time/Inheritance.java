@@ -109,12 +109,19 @@ public abstract class Inheritance
 	}
 	@Override
 	public void clear() {
-		K current = getParent().getChild().setChild(getChild().getChild());
+//		K current = getParent().getChild().setChild(getChild().getChild());
+//		getChild().getChild().setParent(getParent());
+//		getChild().getChild().getChild().setParent(getParent().getChild());
+//		setParent(current);
+//		getChild().setParent(getChild());
+//		getChild().setChild(current);
+
 		getChild().getChild().setParent(getParent());
 		getChild().getChild().getChild().setParent(getParent().getChild());
-		setParent(current);
+		getParent().getChild().setChild(getChild().getChild());
+		getChild().setChild(getParent().getChild().getChild());
+		setParent(getChild().getChild());
 		getChild().setParent(getChild());
-		getChild().setChild(current);
 	}
 	@Override
 	public void spin() {

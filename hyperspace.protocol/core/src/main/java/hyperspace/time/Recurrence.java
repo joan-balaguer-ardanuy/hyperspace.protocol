@@ -1,6 +1,7 @@
 package hyperspace.time;
 
 import java.util.ConcurrentModificationException;
+import java.util.Enumeration;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -221,9 +222,10 @@ public abstract class Recurrence
 
 	@Override
 	public K getParent(int N) {
-		for(K entry : this) {
+		K parent = getParent();
+		for(Enumeration<K> en = enumerator();en.hasMoreElements();parent = en.nextElement())  {
 			if(N < 1) {
-				return entry;
+				return parent;
 			}
 			N--;
 		}
@@ -244,7 +246,8 @@ public abstract class Recurrence
 	}
 	@Override
 	public boolean containsParent(K key) {
-		for(K parent : this) {
+		K parent = getParent();
+		for(Enumeration<K> en = enumerator();en.hasMoreElements();parent = en.nextElement())  {
 			if(parent == key) {
 				return true;
 			}
@@ -257,7 +260,8 @@ public abstract class Recurrence
 	}
 	@Override
 	public boolean removeParent(K key) {
-		for(K parent : this) {
+		K parent = getParent();
+		for(Enumeration<K> en = enumerator();en.hasMoreElements();parent = en.nextElement())  {
 			if(parent == key) {
 				parent.clear();
 				return true;
@@ -272,7 +276,8 @@ public abstract class Recurrence
 	@Override
 	public int indexOfParent(K key) {
 		int i = 0;
-		for(K parent : this) {
+		K parent = getParent();
+		for(Enumeration<K> en = enumerator();en.hasMoreElements();parent = en.nextElement())  {
 			if(parent == key) {
 				return i;
 			}
@@ -294,8 +299,9 @@ public abstract class Recurrence
 	}
 	@Override
 	public V putChild(K key, V value) {
-		for(K listener : this){
-			if(listener == key) {
+		K parent = getParent();
+		for(Enumeration<K> en = enumerator();en.hasMoreElements();parent = en.nextElement())  {
+			if(parent == key) {
 				value.setParent(key.getParent().getChild());
 				key.getChild().getChild().getChild().setParent(value);
 				value.setChild(key.getChild().getChild());
@@ -322,9 +328,11 @@ public abstract class Recurrence
 		return getChild().putChildIfAbsent(value, key);
 	}
 	public void putAllChildren(Recursive<? extends K,? extends V> m) {
-		for(Recursive<K,V> l : m) {
-			putChild(getType().cast(l), l.getChild());
-		}
+		K l = m.getParent();
+		do {
+			putChild(l, l.getChild());
+			l = m.getParent();
+		} while(l != m);
 	}
 	@Override
 	public void putAllParents(Recursive<? extends V, ? extends K> m) {
@@ -332,9 +340,10 @@ public abstract class Recurrence
 	}
 	@Override
 	public void removeParent(int N) {
-		for(K entry : this) {
+		K parent = getParent();
+		for(Enumeration<K> en = enumerator();en.hasMoreElements();parent = en.nextElement())  {
 			if(N < 1) {
-				entry.clear();
+				parent.clear();
 				return;
 			}
 			N--;
@@ -403,12 +412,13 @@ public abstract class Recurrence
 	@Override
 	public void forEachChild(BiConsumer<? super K, ? super V> action) {
 		Objects.requireNonNull(action);
-		for (K entry : this) {
+		K parent = getParent();
+		for(Enumeration<K> en = enumerator();en.hasMoreElements();parent = en.nextElement())  {
 			K k;
 			V v;
 			try {
-				k = entry;
-				v = entry.getChild();
+				k = parent;
+				v = parent.getChild();
 			} catch (IllegalStateException ise) {
 				// this usually means the entry is no longer in the map.
 				throw new ConcurrentModificationException(ise);

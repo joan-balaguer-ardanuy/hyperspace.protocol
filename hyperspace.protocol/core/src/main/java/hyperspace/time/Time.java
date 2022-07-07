@@ -1,6 +1,6 @@
 package hyperspace.time;
 
-import java.util.Iterator;
+import java.util.Enumeration;
 
 public abstract class Time
 	<K extends Recursive<K,V>,V extends Recursive<V,K>>
@@ -72,11 +72,11 @@ public abstract class Time
 	}
 
 	@Override
-	public Iterator<K> iterator() {
-		return new ParentIterator(getParent());
+	public Enumeration<K> enumerator() {
+		return new ParentEnumerator(getParent());
 	}
 	
-	protected final class ParentIterator implements Iterator<K> {
+	protected final class ParentEnumerator implements Enumeration<K> {
 		
 		/**
 		 * The current time-listener.
@@ -93,16 +93,16 @@ public abstract class Time
 		 */
 		protected boolean hasNext;
 		
-		public ParentIterator(K key) {
+		public ParentEnumerator(K key) {
 			next = current = key;
 			hasNext = true;
 		}
 		@Override
-		public boolean hasNext() {
+		public boolean hasMoreElements() {
 			return hasNext;
 		}
 		@Override
-		public K next() {
+		public K nextElement() {
 			K k = next;
 			current = k;
 			next = k.getParent();
@@ -111,15 +111,15 @@ public abstract class Time
 			else hasNext = true;
 			return k;
 		}
-		@Override
-		public void remove() {
-			K k = next;
-			current.clear();
-			if(!k.isEmpty()) {
-				current = k;
-				next = k.getParent();
-			}
-			else hasNext = false;
-		}
+//		@Override
+//		public void remove() {
+//			K k = next;
+//			current.clear();
+//			if(!k.isEmpty()) {
+//				current = k;
+//				next = k.getParent();
+//			}
+//			else hasNext = false;
+//		}
 	}
 }

@@ -45,7 +45,6 @@ public abstract class XML implements Message {
 	public XML() {
 		super();
 	}
-
 	/**
 	 * {@link XML} class constructor.
 	 * @param name {@link String} the name
@@ -56,8 +55,13 @@ public abstract class XML implements Message {
 	}
 
 	@Override
-	public abstract Object clone();
-	
+	public Message clone() {
+		try {
+			return (Message) super.clone();
+		} catch (CloneNotSupportedException e) {
+			return null;
+		}
+	}
 	
 	/**
 	 * XML unmarshall method. Generates new {@link JAXBContext} for current class,

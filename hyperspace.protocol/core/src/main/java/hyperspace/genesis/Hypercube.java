@@ -7,8 +7,10 @@ import java.util.AbstractCollection;
 import java.util.AbstractSet;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
 
@@ -38,10 +40,9 @@ public abstract class Hypercube<K,V>
 	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 * @param key the key
-	 * @param value the value
 	 */
-	public Hypercube(Class<? extends Hypercube<K,V>> type, String name, K key, V value) {
-		super(type, name, key, value);
+	public Hypercube(Class<? extends Hypercube<K,V>> type, String name, K key) {
+		super(type, name, key);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
@@ -58,10 +59,9 @@ public abstract class Hypercube<K,V>
 	 * {@link Hypercube} class constructor.
 	 * @param parent the parent
 	 * @param key the key
-	 * @param value the value
 	 */
-	public Hypercube(Hypercube<K,V> parent, K key, V value) {
-		super(parent, key, value);
+	public Hypercube(Hypercube<K,V> parent, K key) {
+		super(parent, key);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
@@ -78,10 +78,9 @@ public abstract class Hypercube<K,V>
 	 * @param root the root
 	 * @param name {@link String} the name
 	 * @param key the key
-	 * @param value the value
 	 */
-	public Hypercube(Hypercube<K,V> root, String name, K key, V value) {
-		super(root, name, key, value);
+	public Hypercube(Hypercube<K,V> root, String name, K key) {
+		super(root, name, key);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
@@ -95,38 +94,59 @@ public abstract class Hypercube<K,V>
 		super(antitype, root, name, key, value);
 	}
 	
+	@Override
+	public Iterator<K> iterator() {
+		return keySet().iterator();
+	}
+	@Override
+	public int size() {
+		int i = 0;
+		try {
+			Enumeration<hyperspace.Entry<K,V>> en;
+			for(en = enumerator();en.hasMoreElements();en.nextElement())  {
+				i++;
+			}
+		}
+		catch(NoSuchElementException e) {
+			return Integer.MAX_VALUE;
+		}
+		
+		return i;
+	}
 	@SuppressWarnings("unchecked")
 	public V get(Object key) {
     	return getValue((K) key);
     }
     public V put(K key, V value) {
-    	for (Entry<K,V> entry : this) {
+    	hyperspace.Entry<K,V> entry = getParent();
+		for(Enumeration<hyperspace.Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			if (key == entry.getKey()) {
 				return entry.setValue(value);
 			}
 		}
-    	hyperspace.Entry<K,V> entry = instance(getType(), getRoot(), getName(), key, value);
+    	entry = instance(getType(), getRoot(), getName(), key, value);
     	recurChild(entry, entry.getChild());
     	return null;
     }
     public void putAll(hyperspace.Entry<K,V> m) {
-    	for(Entry<K,V> e : m) {
-			put(e.getKey(), e.getValue());
+    	hyperspace.Entry<K,V> entry = getParent();
+		for(Enumeration<hyperspace.Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
+			put(entry.getKey(), entry.getValue());
 		}
     }
 	@Override
 	public V remove(Object key) {
-		Iterator<hyperspace.Entry<K,V>> i = iterator();
-        Entry<K,V> correctEntry = null;
+		Enumeration<hyperspace.Entry<K,V>> i = enumerator();
+		hyperspace.Entry<K,V> correctEntry = null;
         if (key==null) {
-            while (correctEntry==null && i.hasNext()) {
-                Entry<K,V> e = i.next();
+            while (correctEntry==null && i.hasMoreElements()) {
+            	hyperspace.Entry<K,V> e = i.nextElement();
                 if (e.getKey()==null)
                     correctEntry = e;
             }
         } else {
-            while (correctEntry==null && i.hasNext()) {
-                Entry<K,V> e = i.next();
+            while (correctEntry==null && i.hasMoreElements()) {
+            	hyperspace.Entry<K,V> e = i.nextElement();
                 if (key.equals(e.getKey()))
                     correctEntry = e;
             }
@@ -135,7 +155,7 @@ public abstract class Hypercube<K,V>
         V oldValue = null;
         if (correctEntry !=null) {
             oldValue = correctEntry.getValue();
-            i.remove();
+            correctEntry.clear();
         }
         return oldValue;
 	}
@@ -247,12 +267,10 @@ public abstract class Hypercube<K,V>
 			public int size() {
 				return Hypercube.this.size();
 			}
-
 			@Override
 			public boolean isEmpty() {
 				return Hypercube.this.isEmpty();
 			}
-
 			@Override
 			public boolean contains(Object o) {
 				if(Hypercube.this.getKey().getClass().isInstance(o)) {
@@ -271,22 +289,21 @@ public abstract class Hypercube<K,V>
 			
 			@Override
 			public Iterator<Entry<K,V>> iterator() {
-				Iterator<hyperspace.Entry<K,V>> it = Hypercube.this.iterator();
+				Enumeration<hyperspace.Entry<K,V>> en = Hypercube.this.enumerator();
 				return iterator == null ? iterator = new Iterator<Entry<K,V>>() {
 
 					@Override
 					public boolean hasNext() {
-						return it.hasNext();
+						return en.hasMoreElements();
 					}
 
 					@Override
 					public Entry<K, V> next() {
-						return it.next();
+						return en.nextElement();
 					}
 					
 				}: iterator;
 			}
-
 			@Override
 			public Object[] toArray() {
 				// Estimate size of array; be prepared to see more or fewer elements
@@ -299,7 +316,6 @@ public abstract class Hypercube<K,V>
 		        }
 		        return it.hasNext() ? finishToArray(r, it) : r;
 			}
-
 			@Override
 			@SuppressWarnings("unchecked")
 		    public <T> T[] toArray(T[] a) {
@@ -329,12 +345,10 @@ public abstract class Hypercube<K,V>
 		        // more elements than expected
 		        return it.hasNext() ? finishToArray(r, it) : r;
 		    }
-
 			@Override
 			public boolean add(Entry<K, V> e) {
 				throw new UnsupportedOperationException();
 			}
-
 			@Override
 			public boolean remove(Object o) {
 				Iterator<Entry<K,V>> it = iterator();
@@ -355,7 +369,6 @@ public abstract class Hypercube<K,V>
 		        }
 		        return false;
 			}
-
 			@Override
 			public boolean containsAll(Collection<?> c) {
 				for (Object e : c)
@@ -363,17 +376,14 @@ public abstract class Hypercube<K,V>
 		                return false;
 		        return true;
 			}
-
 			@Override
 			public boolean addAll(Collection<? extends Entry<K, V>> c) {
 				throw new UnsupportedOperationException();
 			}
-
 			@Override
 			public boolean retainAll(Collection<?> c) {
 				throw new UnsupportedOperationException();
 			}
-
 			@Override
 			public boolean removeAll(Collection<?> c) {
 				Objects.requireNonNull(c);
