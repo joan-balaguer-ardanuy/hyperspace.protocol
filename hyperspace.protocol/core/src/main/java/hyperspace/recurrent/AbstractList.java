@@ -47,11 +47,11 @@ public class AbstractList<E> extends AbstractCollection<E,List<E>> implements Li
 
 	@Override
 	public E set(int index, E element) {
-		Iterator<E> it = new RecurrentIterator(getParent());
-		for(; it.hasNext();) {
+		ListIterator<E> it = new ListRecurrentIterator(getParent());
+		for(E current = it.next(); it.hasNext(); current = it.next()) {
 			if(index == 0) {
-				it.remove();
-				return element;
+				it.set(element);
+				return current;
 			}
 			index--;
 		}
@@ -60,7 +60,13 @@ public class AbstractList<E> extends AbstractCollection<E,List<E>> implements Li
 
 	@Override
 	public void add(int index, E element) {
-
+		ListIterator<E> it = new ListRecurrentIterator(getParent());
+		for(; it.hasNext();) {
+			if(index == 0) {
+				it.add(element);
+			}
+			index--;
+		}
 	}
 
 	@Override
@@ -207,7 +213,9 @@ public class AbstractList<E> extends AbstractCollection<E,List<E>> implements Li
 		}
 		@Override
 		public void add(E e) {
-			instance(getType(), getType(), current, e);
+			current = instance(getType(), getType(), current, e);
+			next = current.getParent();
+			previous = current.getChild().getChild();
 		}
 	}
 }

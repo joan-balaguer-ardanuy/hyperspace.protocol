@@ -9,7 +9,7 @@ import hyperspace.time.Time;
 
 public class Hyperlist<E> 
 	extends Time<Mapping<E,java.util.List<E>>,Mapping<E,java.util.List<E>>>
-		implements ListMapping<E> {
+		implements EntryList<E> {
 
 	private static final long serialVersionUID = -391622303135762258L;
 
@@ -56,10 +56,10 @@ public class Hyperlist<E>
 		this.key = key;
 		this.value = new LinkedList<E>();
 	}
-	public Hyperlist(ListMapping<E> root, String name) {
+	public Hyperlist(EntryList<E> root, String name) {
 		super(root, name);
 	}
-	public Hyperlist(ListMapping<E> root, String name, E key) {
+	public Hyperlist(EntryList<E> root, String name, E key) {
 		super(root, name, instance(root.getType(), root.getStem(), name));
 		this.key = key;
 		this.value = new LinkedList<E>();

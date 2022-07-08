@@ -7,9 +7,9 @@ import java.util.Objects;
 import hyperspace.Command;
 import hyperspace.Toroid;
 
-public abstract class AbstractCollection<E, T extends Collection<E,T>> 
-	extends Toroid<T,T>
-		implements Collection<E,T> {
+public abstract class AbstractCollection<E,K extends Collection<E,K>> 
+	extends Toroid<K,K>
+		implements Collection<E,K> {
 
 	private static final long serialVersionUID = 8031826521414991529L;
 
@@ -29,28 +29,28 @@ public abstract class AbstractCollection<E, T extends Collection<E,T>>
 	public AbstractCollection() {
 		super();
 	}
-	public AbstractCollection(Class<? extends T> type, String name) {
+	public AbstractCollection(Class<? extends K> type, String name) {
 		super(type, name);
 	}
-	public AbstractCollection(Class<? extends T> type, String name, E element) {
+	public AbstractCollection(Class<? extends K> type, String name, E element) {
 		super(type, name, instance(type, type, name));
 		this.element = element;
 	}
-	public AbstractCollection(T parent) {
+	public AbstractCollection(K parent) {
 		super(parent);
 	}
-	public AbstractCollection(T parent, E element) {
+	public AbstractCollection(K parent, E element) {
 		super(parent, instance(parent.getType(), parent.getChild()));
 		this.element = element;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public AbstractCollection<E,T> clone() {
-		return (AbstractCollection<E,T>) super.clone();
+	public AbstractCollection<E,K> clone() {
+		return (AbstractCollection<E,K>) super.clone();
 	}
 	@Override
 	public int size() {
-		Collection<E,T> parent = getParent();
+		Collection<E,K> parent = getParent();
 		int size = 0;
 		do {
 			size++;
@@ -160,7 +160,7 @@ public abstract class AbstractCollection<E, T extends Collection<E,T>>
     }
 	@Override
 	public boolean add(E e) {
-		return instance(getType(), getName(), e) != null;
+		return instance(getType(), getParent(), e) != null;
 	}
 	@Override
 	public boolean remove(Object o) {
@@ -252,24 +252,24 @@ public abstract class AbstractCollection<E, T extends Collection<E,T>>
 		setParent(getChild().getChild());
 		getChild().setParent(getChild());
 	}
-	protected final class ParentIterator implements Iterator<T> {
+	protected final class ParentIterator implements Iterator<K> {
 
 		/**
 		 * The current time-listener.
 		 */
-		T current;
+		K current;
 
 		/**
 		 * The next time-listener.
 		 */
-		T next;
+		K next;
 
 		/**
 		 * If this recursor has next time-listener.
 		 */
 		boolean hasNext;
 
-		public ParentIterator(T key) {
+		public ParentIterator(K key) {
 			next = current = key;
 			hasNext = true;
 		}
@@ -279,8 +279,8 @@ public abstract class AbstractCollection<E, T extends Collection<E,T>>
 			return hasNext;
 		}
 		@Override
-		public T next() {
-			T c = next;
+		public K next() {
+			K c = next;
 			current = c;
 			next = c.getParent();
 			if (c == AbstractCollection.this)
@@ -291,7 +291,7 @@ public abstract class AbstractCollection<E, T extends Collection<E,T>>
 		}
 		@Override
 		public void remove() {
-			T k = next;
+			K k = next;
 			current.clear();
 			if (!k.isEmpty()) {
 				current = k;
@@ -305,19 +305,19 @@ public abstract class AbstractCollection<E, T extends Collection<E,T>>
 		/**
 		 * The current time-listener.
 		 */
-		T current;
+		K current;
 
 		/**
 		 * The next time-listener.
 		 */
-		T next;
+		K next;
 
 		/**
 		 * If this recursor has next time-listener.
 		 */
 		boolean hasNext;
 
-		public RecurrentIterator(T key) {
+		public RecurrentIterator(K key) {
 			next = current = key;
 			hasNext = true;
 		}
@@ -328,7 +328,7 @@ public abstract class AbstractCollection<E, T extends Collection<E,T>>
 		}
 		@Override
 		public E next() {
-			T c = next;
+			K c = next;
 			current = c;
 			next = c.getParent();
 			if (c == AbstractCollection.this)
@@ -339,7 +339,7 @@ public abstract class AbstractCollection<E, T extends Collection<E,T>>
 		}
 		@Override
 		public void remove() {
-			T k = next;
+			K k = next;
 			current.clear();
 			if (!k.isEmpty()) {
 				current = k;
@@ -353,19 +353,19 @@ public abstract class AbstractCollection<E, T extends Collection<E,T>>
 		/**
 		 * The current time-listener.
 		 */
-		Collection<E,T> current;
+		Collection<E,K> current;
 
 		/**
 		 * The next time-listener.
 		 */
-		Collection<E,T> next;
+		Collection<E,K> next;
 
 		/**
 		 * If this recursor has next time-listener.
 		 */
 		boolean hasNext;
 
-		public ConcurrentIterator(Collection<E,T> key) {
+		public ConcurrentIterator(Collection<E,K> key) {
 			next = current = key;
 			hasNext = true;
 		}
@@ -376,7 +376,7 @@ public abstract class AbstractCollection<E, T extends Collection<E,T>>
 		}
 		@Override
 		public E next() {
-			Collection<E,T> c = next;
+			Collection<E,K> c = next;
 			current = c;
 			next = c.getChild().getChild();
 			if (c == AbstractCollection.this)
@@ -387,7 +387,7 @@ public abstract class AbstractCollection<E, T extends Collection<E,T>>
 		}
 		@Override
 		public void remove() {
-			Collection<E,T> k = next;
+			Collection<E,K> k = next;
 			current.clear();
 			if (!k.isEmpty()) {
 				current = k;

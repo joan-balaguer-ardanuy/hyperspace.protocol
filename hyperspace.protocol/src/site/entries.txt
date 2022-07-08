@@ -1247,5 +1247,17 @@ França = ENTRADA690;
 Regne Unit = ENTRADA772;
 Alemanya = ENTRADA341;
 Dunkirk = ENTRADA697;
-
-
+Weygand = ANDROID819;
+Somme = ENTRADA972;
+Gamelin = ANDROID687;
+Nazi = ENTRADA666; 
+Abbeville = ENTRADA436;
+Boulogne = ENTRADA951;
+Calais = ENTRADA349;
+Victòria = ROBOT831;
+Leopold = ANDROID269;
+Anglaterra = ENTRADA437;
+Polònia = ENTRADA264;
+Andrew Duncan = ANDROID381;
+Gort = ANDROID908;
+Europa

@@ -5,7 +5,7 @@ import hyperspace.time.Time;
 
 public class Hypercollection<E> 
 	extends Time<Mapping<E,java.util.Collection<E>>,Mapping<E,java.util.Collection<E>>>
-		implements CollectionMapping<E> {
+		implements EntryCollection<E> {
 
 	private static final long serialVersionUID = 8031826521414991529L;
 
@@ -36,26 +36,26 @@ public class Hypercollection<E>
 	public Hypercollection() {
 		super();
 	}
-	public Hypercollection(Class<? extends CollectionMapping<E>> type, String name) {
+	public Hypercollection(Class<? extends EntryCollection<E>> type, String name) {
 		super(type, name);
 	}
-	public Hypercollection(Class<? extends CollectionMapping<E>> type, String name, E key, java.util.Collection<E> value) {
+	public Hypercollection(Class<? extends EntryCollection<E>> type, String name, E key, java.util.Collection<E> value) {
 		super(type, name, instance(type, type, name));
 		this.key = key;
 		this.value = value;
 	}
-	public Hypercollection(CollectionMapping<E> parent) {
+	public Hypercollection(EntryCollection<E> parent) {
 		super(parent);
 	}
-	public Hypercollection(CollectionMapping<E> parent, E key, java.util.Collection<E> value) {
+	public Hypercollection(EntryCollection<E> parent, E key, java.util.Collection<E> value) {
 		super(parent, instance(parent.getType(), parent.getChild()));
 		this.key = key;
 		this.value = value;
 	}
-	public Hypercollection(CollectionMapping<E> root, String name) {
+	public Hypercollection(EntryCollection<E> root, String name) {
 	  	super(root, name);
 	}
-	public Hypercollection(CollectionMapping<E> root, String name, E key, java.util.Collection<E> value) {
+	public Hypercollection(EntryCollection<E> root, String name, E key, java.util.Collection<E> value) {
 		super(root, instance(root.getType(), root.getStem(), name));
 		this.key = key;
 		this.value = value;
