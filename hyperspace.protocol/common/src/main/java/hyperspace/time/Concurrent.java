@@ -15,6 +15,25 @@ public interface Concurrent<V>
 				java.util.concurrent.ThreadFactory, 
 					java.util.concurrent.Executor {
 
+    
+	// properties
+	/**
+     * Gets the antitype corresponding to this future.
+     *
+     * @return the antitype corresponding to this future
+     * @throws Throwable if something is wrong.
+     */
+	Class<? extends V> getChildClass();
+	
+	/**
+	 * Sets the antitype corresponding to this future with the inherited antitype
+	 * (not optional operation).
+	 * 
+	 * @param antitype new antitype to be stored in this future
+	 * @throws Throwable if something is wrong
+	 */
+	void setChildClass(Class<? extends V> antitype);
+	
 	/**
 	 * Gets the stem corresponding to <tt>this</tt> time-listener. If the time-listener has been
 	 * removed from the backing time-listener (by the enumerator's <tt>remove</tt>

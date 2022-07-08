@@ -5,52 +5,44 @@ import java.util.Iterator;
 import java.util.Objects;
 
 import hyperspace.Command;
+import hyperspace.Entry;
+import hyperspace.Hyperspace;
 import hyperspace.Toroid;
 
-public abstract class AbstractCollection<E,K extends Collection<E,K>> 
-	extends Toroid<K,K>
-		implements Collection<E,K> {
+public abstract class AbstractCollection<E> 
+	extends Hyperspace<E,E>
+		implements Collection<E> {
 
 	private static final long serialVersionUID = 8031826521414991529L;
 
-	E element;
-	
-	@Override
-	public E getElement() {
-		return element;
-	}
-	@Override
-	public E setElement(E key) {
-		E old = this.element;
-		this.element = key;
-		return old;
-	}
-	
 	public AbstractCollection() {
 		super();
 	}
-	public AbstractCollection(Class<? extends K> type, String name) {
-		super(type, name);
+	public AbstractCollection(String name) {
+		super(name);
 	}
-	public AbstractCollection(Class<? extends K> type, String name, E element) {
-		super(type, name, instance(type, type, name));
-		this.element = element;
+	public AbstractCollection(Class<? extends Collection<E>> type, Class<? extends Collection<E>> antitype, String name, E element) {
+		super(type, antitype, name, element, element);
 	}
-	public AbstractCollection(K parent) {
+	public AbstractCollection(Collection<E> parent) {
 		super(parent);
 	}
-	public AbstractCollection(K parent, E element) {
-		super(parent, instance(parent.getType(), parent.getChild()));
-		this.element = element;
+	public AbstractCollection(Class<? extends Entry<E, E>> antitype, Entry<E, E> parent, E element) {
+		super(antitype, parent, element, element);
 	}
-	
-	@SuppressWarnings("unchecked")
-	public AbstractCollection<E,K> clone() {
-		return (AbstractCollection<E,K>) super.clone();
+	public AbstractCollection(Collection<E> root, String name) {
+		super(root, name);
+	}
+	public AbstractCollection(Class<? extends Collection<E>> antitype, Collection<E> root, String name, E element) {
+		super(antitype, root, name, element, element);
+	}
+	@Override
+	public Collection<E> clone() {
+		return (Collection<E>) super.clone();
 	}
 	@Override
 	public int size() {
-		Collection<E,K> parent = getParent();
+		Entry<E,E> parent = getParent();
 		int size = 0;
 		do {
 			size++;
@@ -160,7 +152,7 @@ public abstract class AbstractCollection<E,K extends Collection<E,K>>
     }
 	@Override
 	public boolean add(E e) {
-		return instance(getType(), getParent(), e) != null;
+		return instance(getParentClass(), getChildClass(), getParent(), e, e) != null;
 	}
 	@Override
 	public boolean remove(Object o) {
@@ -252,24 +244,24 @@ public abstract class AbstractCollection<E,K extends Collection<E,K>>
 		setParent(getChild().getChild());
 		getChild().setParent(getChild());
 	}
-	protected final class ParentIterator implements Iterator<K> {
+	protected final class ParentIterator implements Iterator<E> {
 
 		/**
 		 * The current time-listener.
 		 */
-		K current;
+		Entry<E,E> current;
 
 		/**
 		 * The next time-listener.
 		 */
-		K next;
+		Entry<E,E> next;
 
 		/**
 		 * If this recursor has next time-listener.
 		 */
 		boolean hasNext;
 
-		public ParentIterator(K key) {
+		public ParentIterator(Entry<E,E> key) {
 			next = current = key;
 			hasNext = true;
 		}
@@ -279,19 +271,19 @@ public abstract class AbstractCollection<E,K extends Collection<E,K>>
 			return hasNext;
 		}
 		@Override
-		public K next() {
-			K c = next;
+		public E next() {
+			Entry<E,E> c = next;
 			current = c;
 			next = c.getParent();
 			if (c == AbstractCollection.this)
 				hasNext = false;
 			else
 				hasNext = true;
-			return c;
+			return c.getKey();
 		}
 		@Override
 		public void remove() {
-			K k = next;
+			Entry<E,E> k = next;
 			current.clear();
 			if (!k.isEmpty()) {
 				current = k;
@@ -305,19 +297,19 @@ public abstract class AbstractCollection<E,K extends Collection<E,K>>
 		/**
 		 * The current time-listener.
 		 */
-		K current;
+		Entry<E,E> current;
 
 		/**
 		 * The next time-listener.
 		 */
-		K next;
+		Entry<E,E> next;
 
 		/**
 		 * If this recursor has next time-listener.
 		 */
 		boolean hasNext;
 
-		public RecurrentIterator(K key) {
+		public RecurrentIterator(Entry<E,E> key) {
 			next = current = key;
 			hasNext = true;
 		}
@@ -328,18 +320,18 @@ public abstract class AbstractCollection<E,K extends Collection<E,K>>
 		}
 		@Override
 		public E next() {
-			K c = next;
+			Entry<E,E> c = next;
 			current = c;
 			next = c.getParent();
 			if (c == AbstractCollection.this)
 				hasNext = false;
 			else
 				hasNext = true;
-			return c.getElement();
+			return c.getKey();
 		}
 		@Override
 		public void remove() {
-			K k = next;
+			Entry<E,E> k = next;
 			current.clear();
 			if (!k.isEmpty()) {
 				current = k;
@@ -353,19 +345,19 @@ public abstract class AbstractCollection<E,K extends Collection<E,K>>
 		/**
 		 * The current time-listener.
 		 */
-		Collection<E,K> current;
+		Entry<E,E> current;
 
 		/**
 		 * The next time-listener.
 		 */
-		Collection<E,K> next;
+		Entry<E,E> next;
 
 		/**
 		 * If this recursor has next time-listener.
 		 */
 		boolean hasNext;
 
-		public ConcurrentIterator(Collection<E,K> key) {
+		public ConcurrentIterator(Entry<E,E> key) {
 			next = current = key;
 			hasNext = true;
 		}
@@ -376,18 +368,18 @@ public abstract class AbstractCollection<E,K extends Collection<E,K>>
 		}
 		@Override
 		public E next() {
-			Collection<E,K> c = next;
+			Entry<E,E> c = next;
 			current = c;
 			next = c.getChild().getChild();
 			if (c == AbstractCollection.this)
 				hasNext = false;
 			else
 				hasNext = true;
-			return c.getElement();
+			return c.getKey();
 		}
 		@Override
 		public void remove() {
-			Collection<E,K> k = next;
+			Entry<E,E> k = next;
 			current.clear();
 			if (!k.isEmpty()) {
 				current = k;

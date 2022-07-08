@@ -40,10 +40,10 @@ public class Hyperlist<E>
 		super();
 	}
 	public Hyperlist(Class<? extends Hyperlist<E>> type, String name) {
-		super(type, name);
+		super(name);
 	}
 	public Hyperlist(Class<? extends Hyperlist<E>> type, String name, E key, java.util.List<E> value) {
-		super(type, name, instance(type, type, name));
+		super(type, type, name);
 		this.key = key;
 		this.value = value;
 	}
@@ -51,7 +51,7 @@ public class Hyperlist<E>
 		super(parent);
 	}
 	public Hyperlist(Hyperlist<E> parent, E key, java.util.List<E> value) {
-		super(parent, instance(parent.getType(), parent.getChild()));
+		super(parent.getParentClass(), parent);
 		this.key = key;
 		this.value = value;
 	}
@@ -59,7 +59,7 @@ public class Hyperlist<E>
 		super(root, name);
 	}
 	public Hyperlist(Hyperlist<E> root, String name, E key, java.util.List<E> value) {
-		super(root, name, instance(root.getType(), root.getStem(), name));
+		super(root.getParentClass(), root, name);
 		this.key = key;
 		this.value = value;
 	}

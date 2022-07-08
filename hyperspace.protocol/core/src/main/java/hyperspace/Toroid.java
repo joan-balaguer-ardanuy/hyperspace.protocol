@@ -21,11 +21,10 @@ public abstract class Toroid
 	}
 	/**
 	 * {@link Toroid} class constructor.
-	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 */
-	public Toroid(Class<? extends K> type, String name) {
-		super(type, name);
+	public Toroid(String name) {
+		super(name);
 	}
 	/**
 	 * {@link Toroid} class constructor.
@@ -33,8 +32,8 @@ public abstract class Toroid
 	 * @param name {@link String} the name
 	 * @param value the value
 	 */
-	public Toroid(Class<? extends K> type, String name, V value) {
-		super(type, name, value);
+	public Toroid(String name, V value) {
+		super(name, value);
 	}
 	/**
 	 * {@link Toroid} class constructor.

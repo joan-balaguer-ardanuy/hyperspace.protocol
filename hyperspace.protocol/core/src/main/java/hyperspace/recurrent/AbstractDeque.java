@@ -2,8 +2,10 @@ package hyperspace.recurrent;
 
 import java.util.Iterator;
 
+import hyperspace.Entry;
+
 public abstract class AbstractDeque<E> 
-	extends AbstractQueue<E,Deque<E>> 
+	extends AbstractQueue<E> 
 		implements Deque<E> {
 
 	private static final long serialVersionUID = 5923318731838756664L;
@@ -11,26 +13,32 @@ public abstract class AbstractDeque<E>
 	public AbstractDeque() {
 		super();
 	}
-	public AbstractDeque(Class<? extends Deque<E>> type, String name) {
-		super(type, name);
+	public AbstractDeque(String name) {
+		super(name);
 	}
-	public AbstractDeque(Class<? extends Deque<E>> type, String name, E element) {
-		super(type, name, element);
+	public AbstractDeque(Class<? extends Deque<E>> type, Class<? extends Deque<E>> antitype, String name,
+			E element) {
+		super(type, antitype, name, element);
+	}
+	public AbstractDeque(Class<? extends Deque<E>> antitype, Deque<E> root, String name, E element) {
+		super(antitype, root, name, element);
+	}
+	public AbstractDeque(Class<? extends Deque<E>> antitype, Deque<E> parent, E element) {
+		super(antitype, parent, element);
+	}
+	public AbstractDeque(Deque<E> root, String name) {
+		super(root, name);
 	}
 	public AbstractDeque(Deque<E> parent) {
 		super(parent);
 	}
-	public AbstractDeque(Deque<E> parent, E element) {
-		super(parent, element);
-	}
-
 	@Override
 	public void addFirst(E e) {
 		super.offer(e);
 	}
 	@Override
 	public void addLast(E e) {
-		instance(getType(), this, e);	
+		instance(getParentClass(), this, e);	
 	}
 	@Override
 	public boolean offerFirst(E e) {
@@ -46,7 +54,7 @@ public abstract class AbstractDeque<E>
 	public E removeFirst() {
 		E element = pollFirst();
 		if(getParent() == this) {
-			if(getElement() == null) {
+			if(getKey() == null) {
 				throw new Error("deque is empty");
 			}
 		}
@@ -56,7 +64,7 @@ public abstract class AbstractDeque<E>
 	public E removeLast() {
 		E element = pollLast();
 		if(getParent() == this) {
-			if(getElement() == null) {
+			if(getKey() == null) {
 				throw new Error("deque is empty");
 			}
 		}
@@ -64,31 +72,31 @@ public abstract class AbstractDeque<E>
 	}
 	@Override
 	public E pollFirst() {
-		Deque<E> parent = getParent();
+		Entry<E,E> parent = getParent();
 		parent.clear();
-		return parent.getElement();
+		return parent.getKey();
 	}
 	@Override
 	public E pollLast() {
-		Deque<E> child = getChild().getChild();
+		Entry<E,E> child = getChild().getChild();
 		child.clear();
-		return child.getElement();
+		return child.getKey();
 	}
 	@Override
 	public E getFirst() {
-		return getParent().getElement();
+		return getParent().getKey();
 	}
 	@Override
 	public E getLast() {
-		return getElement();
+		return getKey();
 	}
 	@Override
 	public E peekFirst() {
-		return getParent().getElement();
+		return getParent().getKey();
 	}
 	@Override
 	public E peekLast() {
-		return getChild().getChild().getElement();
+		return getChild().getChild().getKey();
 	}
 	@Override
 	public boolean removeFirstOccurrence(Object o) {

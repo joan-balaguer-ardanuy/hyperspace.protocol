@@ -1,5 +1,5 @@
 package hyperspace.recurrent;
 
-public interface Queue<E,T> extends Collection<E,T>, java.util.Queue<E> {
+public interface Queue<E> extends Collection<E>, java.util.Queue<E> {
 
 }

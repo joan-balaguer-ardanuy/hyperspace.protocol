@@ -11,6 +11,24 @@ import hyperspace.recurrent.Enumerable;
  */
 public interface Recurrent<K> extends Past<K>, Enumerable<K>, java.util.concurrent.Callable<K> {
 
+	// properties
+	/**
+	 * Gets the type corresponding to this past.
+	 *
+	 * @return the type corresponding to this past
+	 * @throws Throwable if something is wrong
+	 */
+	Class<? extends K> getParentClass();
+	
+	/**
+	 * Sets the type corresponding to this past with the specified type
+	 * (not optional operation).
+	 * 
+	 * @param type new type to be stored in this past
+	 * @throws Throwable if something is wrong
+	 */
+	void setParentClass(Class<? extends K> type);
+
 	K getRoot();
 	K setRoot(K parent);
 	

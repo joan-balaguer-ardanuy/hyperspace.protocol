@@ -58,8 +58,8 @@ public abstract class Inheritance
 	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 */
-	public Inheritance(Class<? extends K> type, String name) {
-		super(type, name);
+	public Inheritance(String name) {
+		super(name);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
@@ -67,8 +67,8 @@ public abstract class Inheritance
 	 * @param name {@link String} the name
 	 * @param child the child
 	 */
-	public Inheritance(Class<? extends K> type, String name, V child) {
-		super(type, name, child);
+	public Inheritance(Class<? extends K> type, Class<? extends V> antitype, String name) {
+		super(type, antitype, name);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
@@ -82,8 +82,8 @@ public abstract class Inheritance
 	 * @param parent the parent
 	 * @param child the child
 	 */
-	public Inheritance(K parent, V child) {
-		super(parent, child);
+	public Inheritance(Class<? extends V> antitype, K parent) {
+		super(antitype, parent);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
@@ -99,8 +99,8 @@ public abstract class Inheritance
 	 * @param name {@link String} the name
 	 * @param child the child
 	 */
-	public Inheritance(K root, String name, V child) {
-		super(root, name, child);
+	public Inheritance(Class<? extends V> antitype, K root, String name) {
+		super(antitype, root, name);
 	}
 
 	@Override

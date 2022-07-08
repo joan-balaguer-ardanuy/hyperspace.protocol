@@ -52,29 +52,29 @@ public abstract class Hyperspace<K,V>
 	public Hyperspace() {
 		super();
 	}
-	public Hyperspace(Class<? extends Entry<K,V>> type, String name, K key) {
-		super(type, name);
-		setKey(key);
+	public Hyperspace(String name) {
+		super(name);
 	}
 	public Hyperspace(Class<? extends Entry<K,V>> type, Class<? extends Entry<V,K>> antitype, String name, K key, V value) {
-		super(type, name, instance(antitype, name, value));
+		super(type, antitype, name);
 		setKey(key);
+		setValue(value);
 	}
-	public Hyperspace(Entry<K,V> parent, K key) {
+	public Hyperspace(Entry<K,V> parent) {
 		super(parent);
-		setKey(key);
 	}
 	public Hyperspace(Class<? extends Entry<V,K>> antitype, Entry<K,V> parent, K key, V value) {
-		super(parent, instance(antitype, parent.getChild(), value));
+		super(antitype, parent);
 		setKey(key);
+		setValue(value);
 	}
-	public Hyperspace(Entry<K,V> root, String name, K key) {
+	public Hyperspace(Entry<K,V> root, String name) {
 		super(root, name);
-		setKey(key);
 	}
 	public Hyperspace(Class<? extends Entry<V,K>> antitype, Entry<K,V> root, String name, K key, V value) {
-		super(root, name, instance(antitype, root.getStem(), name, value));
+		super(antitype, root, name);
 		setKey(key);
+		setValue(value);
 	}
 	@Override
 	public Entry<K,V> clone() {
@@ -155,7 +155,7 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public V putValue(K key, V value) {
-		instance(getType(), getAntitype(), getParent(), key, value);
+		instance(getParentClass(), getChildClass(), getParent(), key, value);
 		return null;
 	}
 	@Override
@@ -349,7 +349,7 @@ public abstract class Hyperspace<K,V>
 		return null;
 	}
 	public Entry.Comparator<K,V> comparator(K key, V value) {
-		comparator = new Grid(getType(), key, value);
+		comparator = new Grid(getParentClass(), key, value);
 		return comparator;
 	}
 
@@ -376,10 +376,10 @@ public abstract class Hyperspace<K,V>
 		}
 		public void put(K key, V value) {
 			if(this.source == null) {
-				this.source = instance(Hyperspace.this.getType(), key, value);
+				this.source = instance(Hyperspace.this.getParentClass(), key, value);
 				return;
 			}
-			instance(getType(), this.source, key, value);
+			instance(getParentClass(), this.source, key, value);
 		}
 	}
 }

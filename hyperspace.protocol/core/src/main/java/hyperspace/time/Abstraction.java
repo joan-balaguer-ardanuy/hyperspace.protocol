@@ -11,6 +11,27 @@ public abstract class Abstraction
 	 */
 	private static final long serialVersionUID = 6736845275705891958L;
 
+	/**
+	 * The type.
+	 */
+	Class<? extends K> type;
+
+	@Override
+	public Class<? extends K> getParentClass() {
+		return type;
+	}
+	@Override
+	public void setParentClass(Class<? extends K> type) {
+		this.type = type;
+	}
+	@Override
+	public Class<? extends V> getChildClass() {
+		return getChild().getParentClass();
+	}
+	@Override
+	public void setChildClass(Class<? extends V> antitype) {
+		getChild().setParentClass(antitype);
+	}
 	
 	/**
 	 * {@link Abstraction} default class constructor.
@@ -20,11 +41,10 @@ public abstract class Abstraction
 	}
 	/**
 	 * {@link Abstraction} class constructor.
-	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 */
-	public Abstraction(Class<? extends K> type, String name) {
-		super(type, name);
+	public Abstraction(String name) {
+		super(name);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
@@ -32,8 +52,10 @@ public abstract class Abstraction
 	 * @param name {@link String} the name
 	 * @param child the child
 	 */
-	public Abstraction(Class<? extends K> type, String name, V child) {
-		super(type, name, child);
+	public Abstraction(Class<? extends K> type, Class<? extends V> antitype, String name) {
+		super(antitype, name);
+		setChildClass(antitype);
+		setParentClass(type);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
@@ -47,8 +69,10 @@ public abstract class Abstraction
 	 * @param parent the parent
 	 * @param child the child
 	 */
-	public Abstraction(K parent, V child) {
-		super(parent, child);
+	public Abstraction( Class<? extends V> antitype, K parent) {
+		super(antitype, parent);
+		setChildClass(antitype);
+		setParentClass(parent.getParentClass());
 	}
 	/**
 	 * {@link Abstraction} class constructor.
@@ -56,7 +80,7 @@ public abstract class Abstraction
 	 * @param {@link String} the name
 	 */
 	public Abstraction(K root, String name) {
-		super(root.getType(), name);
+		super(name);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
@@ -64,8 +88,10 @@ public abstract class Abstraction
 	 * @param name {@link String} the name
 	 * @param child the child
 	 */
-	public Abstraction(K root, String name, V child) {
-		super(root, name, child);
+	public Abstraction(Class<? extends V> antitype, K root, String name) {
+		super(antitype, root, name);
+		setChildClass(antitype);
+		setParentClass(root.getParentClass());
 	}
 
 	@Override

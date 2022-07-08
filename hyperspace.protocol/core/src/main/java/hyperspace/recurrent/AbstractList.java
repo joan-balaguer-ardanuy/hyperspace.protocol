@@ -4,25 +4,32 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-public class AbstractList<E> extends AbstractCollection<E,List<E>> implements List<E> {
+import hyperspace.Entry;
+
+public class AbstractList<E> extends AbstractCollection<E> implements List<E> {
 
 	private static final long serialVersionUID = -8462491103350194008L;
 	
 	public AbstractList() {
 	}
-	public AbstractList(Class<? extends List<E>> type, String name) {
-		super(type, name);
+	public AbstractList(String name) {
+		super(name);
 	}
-	public AbstractList(Class<? extends List<E>> type, String name, E element) {
-		super(type, name, element);
+	public AbstractList(Class<? extends List<E>> type, Class<? extends List<E>> antitype, String name, E element) {
+		super(type, antitype, name, element);
+	}
+	public AbstractList(Class<? extends List<E>> antitype, List<E> root, String name, E element) {
+		super(antitype, root, name, element);
+	}
+	public AbstractList(Class<? extends List<E>> antitype, List<E> parent, E element) {
+		super(antitype, parent, element);
+	}
+	public AbstractList(List<E> root, String name) {
+		super(root, name);
 	}
 	public AbstractList(List<E> parent) {
 		super(parent);
 	}
-	public AbstractList(List<E> parent, E element) {
-		super(parent, element);
-	}
-
 	@Override
 	public boolean addAll(int index, Collection<? extends E> c) {
 		boolean modified = false;
@@ -47,7 +54,7 @@ public class AbstractList<E> extends AbstractCollection<E,List<E>> implements Li
 
 	@Override
 	public E set(int index, E element) {
-		ListIterator<E> it = new ListRecurrentIterator(getParent());
+		ListIterator<E> it = new RecursiveListIterator(getParent());
 		for(E current = it.next(); it.hasNext(); current = it.next()) {
 			if(index == 0) {
 				it.set(element);
@@ -60,7 +67,7 @@ public class AbstractList<E> extends AbstractCollection<E,List<E>> implements Li
 
 	@Override
 	public void add(int index, E element) {
-		ListIterator<E> it = new ListRecurrentIterator(getParent());
+		ListIterator<E> it = new RecursiveListIterator(getParent());
 		for(; it.hasNext();) {
 			if(index == 0) {
 				it.add(element);
@@ -100,21 +107,8 @@ public class AbstractList<E> extends AbstractCollection<E,List<E>> implements Li
         return index;
 	}
 	@Override
-	public int dimension(List<E> source) {
-		Iterator<E> it = new RecurrentIterator(getParent());
-		int index = 0;
-		E element = null;
-		for(element = it.next();it.hasNext();it.next()) {
-			if(element == source.getElement()) {
-				return index;
-			}
-			index++;
-		}
-        return index;
-	}
-	@Override
 	public ListIterator<E> listIterator() {
-		return new ListRecurrentIterator(getParent());
+		return new RecursiveListIterator(getParent());
 	}
 	@Override
 	public ListIterator<E> listIterator(int index) {
@@ -125,34 +119,34 @@ public class AbstractList<E> extends AbstractCollection<E,List<E>> implements Li
 		throw new UnsupportedOperationException();
 	}
 	
-	protected final class ListRecurrentIterator implements ListIterator<E> {
+	protected final class RecursiveListIterator implements ListIterator<E> {
 
 		/**
 		 * The current time-listener.
 		 */
-		List<E> init;
+		Entry<E,E> init;
 		
 		/**
 		 * The current time-listener.
 		 */
-		List<E> current;
+		Entry<E,E> current;
 
 		/**
 		 * The next time-listener.
 		 */
-		List<E> next;
+		Entry<E,E> next;
 
 		/**
 		 * The next time-listener.
 		 */
-		List<E> previous;
+		Entry<E,E> previous;
 
 		/**
 		 * If this recursor has next time-listener.
 		 */
 		boolean hasNext;
 		
-		public ListRecurrentIterator(List<E> source) {
+		public RecursiveListIterator(Entry<E,E> source) {
 			init = next = previous = current = source;
 		}
 		
@@ -162,7 +156,7 @@ public class AbstractList<E> extends AbstractCollection<E,List<E>> implements Li
 		}
 		@Override
 		public E next() {
-			List<E> c = next;
+			Entry<E,E> c = next;
 			current = c;
 			next = c.getParent();
 			previous = c.getChild().getChild();
@@ -170,7 +164,7 @@ public class AbstractList<E> extends AbstractCollection<E,List<E>> implements Li
 				hasNext = false;
 			else
 				hasNext = true;
-			return c.getElement();
+			return c.getKey();
 		}
 		@Override
 		public boolean hasPrevious() {
@@ -178,7 +172,7 @@ public class AbstractList<E> extends AbstractCollection<E,List<E>> implements Li
 		}
 		@Override
 		public E previous() {
-			List<E> c = previous;
+			Entry<E,E> c = previous;
 			current = c;
 			next = c.getParent();
 			previous = c.getChild().getChild();
@@ -186,19 +180,19 @@ public class AbstractList<E> extends AbstractCollection<E,List<E>> implements Li
 				hasNext = false;
 			else
 				hasNext = true;
-			return c.getElement();
+			return c.getKey();
 		}
 		@Override
 		public int nextIndex() {
-			return next.dimension(init);
+			return 0;
 		}
 		@Override
 		public int previousIndex() {
-			return previous.dimension(init);
+			return 0;
 		}
 		@Override
 		public void remove() {
-			List<E> k = next;
+			Entry<E,E> k = next;
 			current.clear();
 			if (!k.isEmpty()) {
 				current = k;
@@ -209,11 +203,12 @@ public class AbstractList<E> extends AbstractCollection<E,List<E>> implements Li
 		}
 		@Override
 		public void set(E e) {
-			current.setElement(e);
+			current.setKey(e);
+			current.setValue(e);
 		}
 		@Override
 		public void add(E e) {
-			current = instance(getType(), getType(), current, e);
+			current = instance(getParentClass(), getParentClass(), current, e);
 			next = current.getParent();
 			previous = current.getChild().getChild();
 		}

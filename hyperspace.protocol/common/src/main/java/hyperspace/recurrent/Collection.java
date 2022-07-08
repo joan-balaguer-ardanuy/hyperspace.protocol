@@ -1,9 +1,6 @@
 package hyperspace.recurrent;
 
-import hyperspace.TimeListener;
+import hyperspace.Entry;
 
-public interface Collection<E,K> extends TimeListener<K,K>, java.util.Collection<E> {
-
-	E getElement();
-	E setElement(E element);
+public interface Collection<E> extends Entry<E,E>, java.util.Collection<E> {
 }

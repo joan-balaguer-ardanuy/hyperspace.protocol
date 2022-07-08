@@ -41,8 +41,8 @@ public abstract class Hypercube<K,V>
 	 * @param name {@link String} the name
 	 * @param key the key
 	 */
-	public Hypercube(Class<? extends Hypercube<K,V>> type, String name, K key) {
-		super(type, name, key);
+	public Hypercube(String name) {
+		super(name);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
@@ -60,8 +60,8 @@ public abstract class Hypercube<K,V>
 	 * @param parent the parent
 	 * @param key the key
 	 */
-	public Hypercube(Hypercube<K,V> parent, K key) {
-		super(parent, key);
+	public Hypercube(Hypercube<K,V> parent) {
+		super(parent);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
@@ -79,8 +79,8 @@ public abstract class Hypercube<K,V>
 	 * @param name {@link String} the name
 	 * @param key the key
 	 */
-	public Hypercube(Hypercube<K,V> root, String name, K key) {
-		super(root, name, key);
+	public Hypercube(Hypercube<K,V> root, String name) {
+		super(root, name);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
@@ -124,7 +124,7 @@ public abstract class Hypercube<K,V>
 				return entry.setValue(value);
 			}
 		}
-    	entry = instance(getType(), getRoot(), getName(), key, value);
+    	entry = instance(getParentClass(), getRoot(), getName(), key, value);
     	recurChild(entry, entry.getChild());
     	return null;
     }

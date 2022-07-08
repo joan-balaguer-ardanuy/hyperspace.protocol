@@ -362,11 +362,10 @@ public abstract class Concurrence
 	}
 	/**
 	 * {@link Concurrence} class constructor.
-	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 */
-	public Concurrence(Class<? extends K> type, String name) {
-		super(type, name);
+	public Concurrence(String name) {
+		super(name);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
@@ -374,8 +373,8 @@ public abstract class Concurrence
 	 * @param child the child
 	 * @param name {@link String} the name
 	 */
-	public Concurrence(Class<? extends K> type, String name, V child) {
-		super(type, name, child);
+	public Concurrence(Class<? extends K> type, Class<? extends V> antitype, String name) {
+		super(type, antitype, name);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
@@ -389,8 +388,8 @@ public abstract class Concurrence
 	 * @param parent the parent
 	 * @param child the child
 	 */
-	public Concurrence(K parent, V child) {
-		super(parent, child);
+	public Concurrence(Class<? extends V> antitype, K parent) {
+		super(antitype, parent);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
@@ -406,8 +405,8 @@ public abstract class Concurrence
 	 * @param gen {@link String} the gender
 	 * @param child the child
 	 */
-	public Concurrence(K root, String gen, V child) {
-		super(root, gen, child);
+	public Concurrence(Class<? extends V> antitype, K root, String gen) {
+		super(antitype, root, gen);
 	}
 	
 	@Override

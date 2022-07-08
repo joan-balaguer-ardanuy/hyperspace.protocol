@@ -3,6 +3,7 @@ package hyperspace.time;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Random;
+
 import hyperspace.Toroid;
 
 /**
@@ -128,11 +129,10 @@ public abstract class Unification
 	}
 	/**
 	 * {@link Unification} class constructor.
-	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 */
-	public Unification(Class<? extends K> type, String name) {
-		super(type, name);
+	public Unification(String name) {
+		super(name);
 	}
 	/**
 	 * {@link Unification} class constructor.
@@ -140,12 +140,12 @@ public abstract class Unification
 	 * @param name {@link String} the name
 	 * @param child the child
 	 */
-	public Unification(Class<? extends K> type, String name, V child) {
-		super(type, name, child);
+	public Unification(Class<? extends V> antitype, String name) {
+		super(name, instance(antitype, name));
 		// set root
 		setRoot(getParent());
 		// set stem
-		setStem(child);
+		setStem(getChild());
 	}
 	/**
 	 * {@link Unification} class constructor.
@@ -163,8 +163,8 @@ public abstract class Unification
 	 * @param parent the parent
 	 * @param child the child
 	 */
-	public Unification(K parent, V child) {
-		super(parent, child);
+	public Unification(Class<? extends V> antitype, K parent) {
+		super(parent, instance(antitype, parent.getChild()));
 		// set root
 		setRoot(parent.getRoot());
 		// send events to root
@@ -176,7 +176,7 @@ public abstract class Unification
 	 * @param {@link String} the name
 	 */
 	public Unification(K root, String name) {
-		super(root.getType(), name);
+		super(name);
 		// set root
 		setRoot(root);
 		// send events to root
@@ -188,24 +188,32 @@ public abstract class Unification
 	 * @param name {@link String} the name
 	 * @param child the child
 	 */
-	public Unification(K root, String name, V child) {
-		super(root.getType(), name, child);
+	public Unification(Class<? extends V> antitype, K root, String name) {
+		super(name, instance(antitype, root.getStem(), name));
 		// set root
 		setRoot(root);
 		// send events to root
 		addEventListener(root);
 	}
+
 	@Override
-	public Recursive<K,V> clone() {
-		return (Recursive<K,V>) super.clone();
+	public  Recursive<K,V> clone() {
+		try {
+			K k = getParentClass().getConstructor().newInstance();
+			V v = getChildClass().getConstructor().newInstance();
+			k.setName(getName());
+			k.setParent(k);
+			v.setParent(v);
+			k.setChild(v);
+			v.setChild(k);
+			k.setRoot(getRoot());
+			v.setRoot(getStem());
+			return k;
+		} catch (Throwable t) {
+			throw new Error("hyperspace.Parent: clone exception.", t);
+		}
 	}
-//	@Override
-//	public K clone() {
-//		K k = super.clone();
-//		k.setRoot(getRoot());
-//		k.setStem(getStem());
-//		return k;
-//	}
+	
 	public Object[] toArray() {
 		int quantity = 0;
 		Enumeration<K> en;

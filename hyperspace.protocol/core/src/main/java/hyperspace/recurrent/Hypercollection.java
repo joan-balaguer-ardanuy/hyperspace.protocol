@@ -36,11 +36,11 @@ public class Hypercollection<E>
 	public Hypercollection() {
 		super();
 	}
-	public Hypercollection(Class<? extends CollectionMap<E>> type, String name) {
-		super(type, name);
+	public Hypercollection(String name) {
+		super(name);
 	}
 	public Hypercollection(Class<? extends CollectionMap<E>> type, String name, E key, java.util.Collection<E> value) {
-		super(type, name, instance(type, type, name));
+		super(type, type, name);
 		this.key = key;
 		this.value = value;
 	}
@@ -48,7 +48,7 @@ public class Hypercollection<E>
 		super(parent);
 	}
 	public Hypercollection(CollectionMap<E> parent, E key, java.util.Collection<E> value) {
-		super(parent, instance(parent.getType(), parent.getChild()));
+		super(parent.getParentClass(), parent);
 		this.key = key;
 		this.value = value;
 	}
@@ -56,7 +56,7 @@ public class Hypercollection<E>
 	  	super(root, name);
 	}
 	public Hypercollection(CollectionMap<E> root, String name, E key, java.util.Collection<E> value) {
-		super(root, instance(root.getType(), root.getStem(), name));
+		super(root.getParentClass(), root, name);
 		this.key = key;
 		this.value = value;
 	}

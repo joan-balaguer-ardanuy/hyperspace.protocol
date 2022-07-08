@@ -23,20 +23,18 @@ public abstract class Time
 	}
 	/**
 	 * {@link Time} class constructor.
-	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 */
-	public Time(Class<? extends K> type, String name) {
-		super(type, name);
+	public Time(String name) {
+		super(name);
 	}
 	/**
 	 * {@link Time} class constructor.
 	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
-	 * @param child the child
 	 */
-	public Time(Class<? extends K> type, String name, V child) {
-		super(type, name, child);
+	public Time(Class<? extends K> type, Class<? extends V> antitype,  String name) {
+		super(type, antitype, name);
 	}
 	/**
 	 * {@link Time} class constructor.
@@ -50,8 +48,8 @@ public abstract class Time
 	 * @param parent the key
 	 * @param child the value
 	 */
-	public Time(K parent, V child) {
-		super(parent, child);
+	public Time(Class<? extends V> antitype, K parent) {
+		super(antitype, parent);
 	}
 	/**
 	 * {@link Time} class constructor.
@@ -67,8 +65,8 @@ public abstract class Time
 	 * @param name {@link String} the name
 	 * @param child the value
 	 */
-	public Time(K root, String name, V child) {
-		super(root, name, child);
+	public Time(Class<? extends V> antitype, K root, String name) {
+		super(antitype, root, name);
 	}
 
 	@Override

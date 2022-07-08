@@ -10,27 +10,6 @@ public abstract class Child
 	 */
 	private static final long serialVersionUID = -4078570118307293600L;
 
-	/**
-	 * The type.
-	 */
-	Class<? extends K> type;
-
-	@Override
-	public Class<? extends K> getType() {
-		return type;
-	}
-	@Override
-	public void setType(Class<? extends K> type) {
-		this.type = type;
-	}
-	@Override
-	public Class<? extends V> getAntitype() {
-		return getChild().getType();
-	}
-	@Override
-	public void setAntitype(Class<? extends V> antitype) {
-		getChild().setType(antitype);
-	}
 	
 	/**
 	 * {@link Child} default class constructor.
@@ -40,11 +19,10 @@ public abstract class Child
 	}
 	/**
 	 * {@link Child} class constructor.
-	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 */
-	public Child(Class<? extends K> type, String name) {
-		super(type, name);
+	public Child(String name) {
+		super(name);
 	}
 	/**
 	 * {@link Child} class constructor.
@@ -52,8 +30,8 @@ public abstract class Child
 	 * @param name {@link String} the name
 	 * @param value the value
 	 */
-	public Child(Class<? extends K> type, String name, V value) {
-		super(type, name, value);
+	public Child(String name, V value) {
+		super(name, value);
 		value.setChild(getParent());
 		value.setParent(value);
 	}
@@ -71,6 +49,6 @@ public abstract class Child
 	 */
 	public Child(K key, V value) {
 		super(key, value);
-		key.getChild().setChild(getType().cast(this));
+		key.getChild().setChild((K) this);
 	}
 }

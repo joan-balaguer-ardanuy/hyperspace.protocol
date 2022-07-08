@@ -58,32 +58,26 @@ public class Hypermap<K,V>
 		super();
 	}
 	public Hypermap(Class<? extends Mapping<K,V>> type, String name) {
-		super(type, name);
-		setKey(null);
-		setValue(null);
+		super(name);
 	}
 	public Hypermap(Class<? extends Mapping<K,V>> type, String name, K key, V value) {
-		super(type, name, instance(type, type, name));
+		super(type, type, name);
 		setKey(key);
 		setValue(value);
 	}
 	public Hypermap(Mapping<K,V> parent) {
 		super(parent);
-		setKey(null);
-		setValue(null);
 	}
 	public Hypermap(Mapping<K,V> parent, K key, V value) {
-		super(parent, instance(parent.getType(), parent.getChild()));
+		super(parent.getParentClass(), parent);
 		setKey(key);
 		setValue(value);
 	}
 	public Hypermap(Mapping<K,V> root, String name) {
 		super(root, name);
-		setKey(null);
-		setValue(null);
 	}
 	public Hypermap(Mapping<K,V> root, String name, K key, V value) {
-		super(root, name, instance(root.getType(), root, name));
+		super(root.getParentClass(), root, name);
 		setKey(key);
 		setValue(value);
 	}
@@ -171,7 +165,7 @@ public class Hypermap<K,V>
 	public V put(K key, V value) {
 		getRoot().setKey(key);
 		getRoot().setValue(value);
-		instance(getType(), getParent(), key, value);
+		instance(getParentClass(), getParent(), key, value);
 		return null;
 	}
 	/**

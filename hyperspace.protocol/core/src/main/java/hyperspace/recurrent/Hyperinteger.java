@@ -9,20 +9,20 @@ public class Hyperinteger extends Hyperchain<Character,Integer> {
 	public Hyperinteger() {
 		super();
 	}
-	public Hyperinteger(String name, Character key) {
-		super(Hyperinteger.class, name, key);
+	public Hyperinteger(String name) {
+		super(name);
 	}
 	public Hyperinteger(Class<Hyperstring> antitype, String name, Character key, Integer value) {
 		super(Hyperinteger.class, antitype, name, key, value);
 	}
-	public Hyperinteger(Hyperinteger parent, Character key) {
-		super(parent, key);
+	public Hyperinteger(Hyperinteger parent) {
+		super(parent);
 	}
 	public Hyperinteger(Class<Hyperstring> antitype, Hyperinteger parent, Character key, Integer value) {
 		super(antitype, parent, key, value);
 	}
-	public Hyperinteger(Hyperinteger root, String name, Character key) {
-		super(root, name, key);
+	public Hyperinteger(Hyperinteger root, String name) {
+		super(root, name);
 	}
 	public Hyperinteger(Class<Hyperstring> antitype, Hyperinteger root, String name, Character key, Integer value) {
 		super(antitype, root, name, key, value);

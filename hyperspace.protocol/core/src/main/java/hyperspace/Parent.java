@@ -56,9 +56,8 @@ public abstract class Parent
 	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 */
-	public Parent(Class<? extends K> type, String name) {
+	public Parent(String name) {
 		super(name);
-		setType(type);
 	}
 	/**
 	 * {@link Parent} class constructor.
@@ -66,9 +65,9 @@ public abstract class Parent
 	 * @param name {@link String} the name
 	 * @param value the value
 	 */
-	public Parent(Class<? extends K> type, String name, V value) {
-		this(type, name);
-		setParent(type.cast(this));
+	public Parent(String name, V value) {
+		this(name);
+		setParent((K) this);
 		setChild(value);
 	}
 	/**
@@ -76,7 +75,7 @@ public abstract class Parent
 	 * @param key the key
 	 */
 	public Parent(K key) {
-		this(key.getType(), key.getName());
+		this(key.getName());
 		setParent(key);
 		setChild(key.getChild());
 	}
@@ -86,24 +85,11 @@ public abstract class Parent
 	 * @param value the value
 	 */
 	public Parent(K key, V value) {
-		this(key.getType(), key.getName());
+		this(key.getName());
 		setParent(key);
 		setChild(value);
 	}
 
 	@Override
-	public TimeListener<K,V> clone() {
-		try {
-			K k = getType().getConstructor().newInstance();
-			V v = getAntitype().getConstructor().newInstance();
-			k.setName(getName());
-			k.setParent(k);
-			v.setParent(v);
-			k.setChild(v);
-			v.setChild(k);
-			return k;
-		} catch (Throwable t) {
-			throw new Error("hyperspace.Parent: clone exception.", t);
-		}
-	}
+	public abstract TimeListener<K,V> clone();
 }
