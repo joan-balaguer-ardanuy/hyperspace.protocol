@@ -4,8 +4,8 @@ import java.util.Iterator;
 import hyperspace.time.Time;
 
 public class Hypercollection<E> 
-	extends Time<Mapping<E,java.util.Collection<E>>,Mapping<E,java.util.Collection<E>>>
-		implements EntryCollection<E> {
+	extends Time<Map<E,java.util.Collection<E>>,Map<E,java.util.Collection<E>>>
+		implements CollectionMap<E> {
 
 	private static final long serialVersionUID = 8031826521414991529L;
 
@@ -36,26 +36,26 @@ public class Hypercollection<E>
 	public Hypercollection() {
 		super();
 	}
-	public Hypercollection(Class<? extends EntryCollection<E>> type, String name) {
+	public Hypercollection(Class<? extends CollectionMap<E>> type, String name) {
 		super(type, name);
 	}
-	public Hypercollection(Class<? extends EntryCollection<E>> type, String name, E key, java.util.Collection<E> value) {
+	public Hypercollection(Class<? extends CollectionMap<E>> type, String name, E key, java.util.Collection<E> value) {
 		super(type, name, instance(type, type, name));
 		this.key = key;
 		this.value = value;
 	}
-	public Hypercollection(EntryCollection<E> parent) {
+	public Hypercollection(CollectionMap<E> parent) {
 		super(parent);
 	}
-	public Hypercollection(EntryCollection<E> parent, E key, java.util.Collection<E> value) {
+	public Hypercollection(CollectionMap<E> parent, E key, java.util.Collection<E> value) {
 		super(parent, instance(parent.getType(), parent.getChild()));
 		this.key = key;
 		this.value = value;
 	}
-	public Hypercollection(EntryCollection<E> root, String name) {
+	public Hypercollection(CollectionMap<E> root, String name) {
 	  	super(root, name);
 	}
-	public Hypercollection(EntryCollection<E> root, String name, E key, java.util.Collection<E> value) {
+	public Hypercollection(CollectionMap<E> root, String name, E key, java.util.Collection<E> value) {
 		super(root, instance(root.getType(), root.getStem(), name));
 		this.key = key;
 		this.value = value;
@@ -105,13 +105,13 @@ public class Hypercollection<E>
 	}
 
 	@Override
-	public Transmitter<Mapping<E, java.util.Collection<E>>, Mapping<E, java.util.Collection<E>>> comparator(
-			Mapping<E, java.util.Collection<E>> source) {
+	public Transmitter<Map<E, java.util.Collection<E>>, Map<E, java.util.Collection<E>>> comparator(
+			Map<E, java.util.Collection<E>> source) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
-	public Transmitter<Mapping<E, java.util.Collection<E>>, Mapping<E, java.util.Collection<E>>> comparator() {
+	public Transmitter<Map<E, java.util.Collection<E>>, Map<E, java.util.Collection<E>>> comparator() {
 		// TODO Auto-generated method stub
 		return null;
 	}

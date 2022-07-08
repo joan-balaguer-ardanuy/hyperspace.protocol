@@ -6,7 +6,7 @@ public class TestHypermap {
 	}
 
 	public static void main(String[] args) {
-		Map<Integer, String> map = new Hyperstring2(Hyperstring2.class, "hola món", 0, "0");
+		Mapping<Integer, String> map = new Hyperstring2(Hyperstring2.class, "hola món", 0, "0");
 		
 		for(int i = 1; i < Integer.MAX_VALUE; i++) {
 			String value = Integer.toString(i);

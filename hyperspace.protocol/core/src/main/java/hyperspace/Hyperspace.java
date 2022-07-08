@@ -76,7 +76,6 @@ public abstract class Hyperspace<K,V>
 		super(root, name, instance(antitype, root.getStem(), name, value));
 		setKey(key);
 	}
-	@SuppressWarnings("unchecked")
 	@Override
 	public Entry<K,V> clone() {
 		return (Entry<K,V>) super.clone();

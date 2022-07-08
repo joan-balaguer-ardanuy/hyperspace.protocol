@@ -17,8 +17,8 @@ import hyperspace.time.Time;
  *
  */
 public class Hypermap<K,V> 
-	extends Time<Map<K,V>,Map<K,V>>
-		implements Map<K,V> {
+	extends Time<Mapping<K,V>,Mapping<K,V>>
+		implements Mapping<K,V> {
 
 	/**
 	 * -7683518704143350984L
@@ -57,47 +57,46 @@ public class Hypermap<K,V>
 	public Hypermap() {
 		super();
 	}
-	public Hypermap(Class<? extends Map<K,V>> type, String name) {
+	public Hypermap(Class<? extends Mapping<K,V>> type, String name) {
 		super(type, name);
 		setKey(null);
 		setValue(null);
 	}
-	public Hypermap(Class<? extends Map<K,V>> type, String name, K key, V value) {
+	public Hypermap(Class<? extends Mapping<K,V>> type, String name, K key, V value) {
 		super(type, name, instance(type, type, name));
 		setKey(key);
 		setValue(value);
 	}
-	public Hypermap(Map<K,V> parent) {
+	public Hypermap(Mapping<K,V> parent) {
 		super(parent);
 		setKey(null);
 		setValue(null);
 	}
-	public Hypermap(Map<K,V> parent, K key, V value) {
+	public Hypermap(Mapping<K,V> parent, K key, V value) {
 		super(parent, instance(parent.getType(), parent.getChild()));
 		setKey(key);
 		setValue(value);
 	}
-	public Hypermap(Map<K,V> root, String name) {
+	public Hypermap(Mapping<K,V> root, String name) {
 		super(root, name);
 		setKey(null);
 		setValue(null);
 	}
-	public Hypermap(Map<K,V> root, String name, K key, V value) {
+	public Hypermap(Mapping<K,V> root, String name, K key, V value) {
 		super(root, name, instance(root.getType(), root, name));
 		setKey(key);
 		setValue(value);
 	}
-	@SuppressWarnings("unchecked")
 	@Override
-	public Map<K,V> clone() {
-		return (Map<K,V>) super.clone();
+	public Mapping<K,V> clone() {
+		return (Mapping<K,V>) super.clone();
 	}
 	
 	@Override
 	public int size() {
 		int i = 0;
 		try {
-			Enumeration<Map<K,V>> en;
+			Enumeration<Mapping<K,V>> en;
 			for(en = enumerator();en.hasMoreElements();en.nextElement())  {
 				i++;
 			}
@@ -152,7 +151,7 @@ public class Hypermap<K,V>
 	}
 	@Override
 	public V get(Object key) {
-		Iterator<Map<K,V>> i = new MapIterator(getParent());
+		Iterator<Mapping<K,V>> i = new MapIterator(getParent());
 		if (key == null) {
 			while (i.hasNext()) {
 				java.util.Map.Entry<K, V> e = i.next();
@@ -170,14 +169,8 @@ public class Hypermap<K,V>
 	}
 	@Override
 	public V put(K key, V value) {
-//		Map<K,V> parent = this;
-//		do {
-//			if(getKey() == key) {
-//				setKey(key);
-//				return setValue(value);
-//			}
-//			parent = parent.getParent();
-//		} while(parent != this);
+		getRoot().setKey(key);
+		getRoot().setValue(value);
 		instance(getType(), getParent(), key, value);
 		return null;
 	}
@@ -279,7 +272,7 @@ public class Hypermap<K,V>
             ks = new AbstractSet<K>() {
                 public Iterator<K> iterator() {
                     return new Iterator<K>() {
-                        private Iterator<Map<K,V>> i = new MapIterator(Hypermap.this.getParent());
+                        private Iterator<Mapping<K,V>> i = new MapIterator(Hypermap.this.getParent());
 
                         public boolean hasNext() {
                             return i.hasNext();
@@ -338,7 +331,7 @@ public class Hypermap<K,V>
             vals = new AbstractCollection<V>() {
                 public Iterator<V> iterator() {
                     return new Iterator<V>() {
-                        private Iterator<Map<K,V>> i = new MapIterator(Hypermap.this.getParent());
+                        private Iterator<Mapping<K,V>> i = new MapIterator(Hypermap.this.getParent());
 
                         public boolean hasNext() {
                             return i.hasNext();
@@ -381,7 +374,7 @@ public class Hypermap<K,V>
 			@Override
 			public Iterator<java.util.Map.Entry<K,V>> iterator() {
 				return new Iterator<java.util.Map.Entry<K,V>>() {
-					private Iterator<Map<K,V>> it = new MapIterator(Hypermap.this);
+					private Iterator<Mapping<K,V>> it = new MapIterator(Hypermap.this);
 					@Override
 					public boolean hasNext() {
 						return it.hasNext();
@@ -403,31 +396,31 @@ public class Hypermap<K,V>
 		};
 	}
 	@Override
-	public Transmitter<Map<K, V>, Map<K, V>> comparator(Map<K, V> source) {
+	public Transmitter<Mapping<K, V>, Mapping<K, V>> comparator(Mapping<K, V> source) {
 		return null;
 	}
 	@Override
-	public Transmitter<Map<K, V>, Map<K, V>> comparator() {
+	public Transmitter<Mapping<K, V>, Mapping<K, V>> comparator() {
 		return null;
 	}
-	protected final class MapIterator implements Iterator<Map<K,V>> {
+	protected final class MapIterator implements Iterator<Mapping<K,V>> {
 		
 		/**
 		 * The current time-listener.
 		 */
-		protected Map<K,V> current;
+		protected Mapping<K,V> current;
 		
 		/**
 		 * The next time-listener.
 		 */
-		protected Map<K,V> next;
+		protected Mapping<K,V> next;
 		
 		/**
 		 * If this recursor has next time-listener.
 		 */
 		protected boolean hasNext;
 		
-		public MapIterator(Map<K,V> key) {
+		public MapIterator(Mapping<K,V> key) {
 			next = current = key;
 			hasNext = true;
 		}
@@ -436,8 +429,8 @@ public class Hypermap<K,V>
 			return hasNext;
 		}
 		@Override
-		public Map<K, V> next() {
-			Map<K,V> k = next;
+		public Mapping<K, V> next() {
+			Mapping<K,V> k = next;
 			current = k;
 			next = k.getParent();
 			if(k == Hypermap.this)
@@ -447,7 +440,7 @@ public class Hypermap<K,V>
 		}
 		@Override
 		public void remove() {
-			Map<K,V> k = next;
+			Mapping<K,V> k = next;
 			current.clear();
 			if(!k.isEmpty()) {
 				current = k;
@@ -459,7 +452,7 @@ public class Hypermap<K,V>
 	@Override
 	public Iterator<K> iterator() {
 		return new Iterator<K>() {
-			private Iterator<Map<K,V>> it = new MapIterator(Hypermap.this.getParent());
+			private Iterator<Mapping<K,V>> it = new MapIterator(Hypermap.this.getParent());
 			@Override
 			public boolean hasNext() {
 				return it.hasNext();

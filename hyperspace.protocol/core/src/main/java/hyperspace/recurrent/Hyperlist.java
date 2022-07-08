@@ -2,14 +2,13 @@ package hyperspace.recurrent;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.ListIterator;
 
 import hyperspace.time.Time;
 
 public class Hyperlist<E> 
-	extends Time<Mapping<E,java.util.List<E>>,Mapping<E,java.util.List<E>>>
-		implements EntryList<E> {
+	extends Time<Map<E,java.util.List<E>>,Map<E,java.util.List<E>>>
+		implements ListMap<E> {
 
 	private static final long serialVersionUID = -391622303135762258L;
 
@@ -40,29 +39,29 @@ public class Hyperlist<E>
 	public Hyperlist() {
 		super();
 	}
-	public Hyperlist(Class<? extends Mapping<E, java.util.List<E>>> type, String name) {
+	public Hyperlist(Class<? extends Hyperlist<E>> type, String name) {
 		super(type, name);
 	}
-	public Hyperlist(Class<? extends Mapping<E, java.util.List<E>>> type, String name, E key) {
+	public Hyperlist(Class<? extends Hyperlist<E>> type, String name, E key, java.util.List<E> value) {
 		super(type, name, instance(type, type, name));
 		this.key = key;
-		this.value = new LinkedList<E>();
+		this.value = value;
 	}
-	public Hyperlist(Mapping<E, java.util.List<E>> parent) {
+	public Hyperlist(Hyperlist<E> parent) {
 		super(parent);
 	}
-	public Hyperlist(Mapping<E, java.util.List<E>> parent, E key) {
+	public Hyperlist(Hyperlist<E> parent, E key, java.util.List<E> value) {
 		super(parent, instance(parent.getType(), parent.getChild()));
 		this.key = key;
-		this.value = new LinkedList<E>();
+		this.value = value;
 	}
-	public Hyperlist(EntryList<E> root, String name) {
+	public Hyperlist(Hyperlist<E> root, String name) {
 		super(root, name);
 	}
-	public Hyperlist(EntryList<E> root, String name, E key) {
+	public Hyperlist(Hyperlist<E> root, String name, E key, java.util.List<E> value) {
 		super(root, name, instance(root.getType(), root.getStem(), name));
 		this.key = key;
-		this.value = new LinkedList<E>();
+		this.value = value;
 	}
 	
 	@Override
@@ -146,12 +145,12 @@ public class Hyperlist<E>
 		return getValue().subList(fromIndex, toIndex);
 	}
 	@Override
-	public Transmitter<Mapping<E, java.util.List<E>>, Mapping<E, java.util.List<E>>> comparator(
-			Mapping<E, java.util.List<E>> source) {
+	public Transmitter<Map<E, java.util.List<E>>, Map<E, java.util.List<E>>> comparator(
+			Map<E, java.util.List<E>> source) {
 		return null;
 	}
 	@Override
-	public Transmitter<Mapping<E, java.util.List<E>>, Mapping<E, java.util.List<E>>> comparator() {
+	public Transmitter<Map<E, java.util.List<E>>, Map<E, java.util.List<E>>> comparator() {
 		return null;
 	}
 }

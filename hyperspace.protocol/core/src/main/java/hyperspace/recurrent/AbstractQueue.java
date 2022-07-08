@@ -21,6 +21,7 @@ public abstract class AbstractQueue<E,K extends Queue<E,K>>
 	public AbstractQueue(K parent, E element) {
 		super(parent, element);
 	}
+	
 	@Override
 	public boolean offer(E e) {
 		return super.add(e);
