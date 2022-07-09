@@ -179,27 +179,27 @@ public abstract class Recurrence
 	}
 	/**
 	 * {@link Recurrence} class constructor.
-	 * @param type {@link Class} the type
+	 * @param parentClass {@link Class} the parent class
+	 * @param childClass {@link Class} the child class
 	 * @param name {@link String} the name
-	 * @param child the child
 	 */
-	public Recurrence(Class<? extends K> type, Class<? extends V> antitype, String name) {
-		super(type, antitype, name);
+	public Recurrence(Class<? extends K> parentClass, Class<? extends V> childClass, String name) {
+		super(parentClass, childClass, name);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
-	 * @param input the key
+	 * @param parent the parent
 	 */
 	public Recurrence(K parent) {
 		super(parent);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
-	 * @param parent the key
-	 * @param child the child
+	 * @param childClass {@link Class} the child class
+	 * @param parent the parent
 	 */
-	public Recurrence(Class<? extends V> antitype, K parent) {
-		super(antitype, parent);
+	public Recurrence(Class<? extends V> childClass, K parent) {
+		super(childClass, parent);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
@@ -211,12 +211,12 @@ public abstract class Recurrence
 	}
 	/**
 	 * {@link Recurrence} class constructor.
+	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param name {@link String} the name
-	 * @param child the child
 	 */
-	public Recurrence(Class<? extends V> antitype, K root, String name) {
-		super(antitype, root, name);
+	public Recurrence(Class<? extends V> childClass, K root, String name) {
+		super(childClass, root, name);
 	}
 
 	@Override

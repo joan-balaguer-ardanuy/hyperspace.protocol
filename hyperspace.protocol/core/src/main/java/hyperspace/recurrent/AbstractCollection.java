@@ -1,391 +1,118 @@
 package hyperspace.recurrent;
 
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Objects;
+import hyperspace.time.Time;
 
-import hyperspace.Command;
-import hyperspace.Entry;
-import hyperspace.Hyperspace;
-import hyperspace.Toroid;
-
-public abstract class AbstractCollection<E> 
-	extends Hyperspace<E,E>
-		implements Collection<E> {
+public class AbstractCollection<E> 
+	extends Time<Map<E,java.util.Collection<E>>,Map<E,java.util.Collection<E>>>
+		implements CollectionMap<E> {
 
 	private static final long serialVersionUID = 8031826521414991529L;
 
+	E key;
+	java.util.Collection<E> value;
+	
+	@Override
+	public E getKey() {
+		return key;
+	}
+	@Override
+	public E setKey(E key) {
+		E old = this.key;
+		this.key = key;
+		return old;
+	}
+	@Override
+	public java.util.Collection<E> getValue() {
+		return value;
+	}
+	@Override
+	public java.util.Collection<E> setValue(java.util.Collection<E> value) {
+		java.util.Collection<E> old = this.value;
+		this.value = value;
+		return old;
+	}
+	
 	public AbstractCollection() {
 		super();
 	}
 	public AbstractCollection(String name) {
 		super(name);
 	}
-	public AbstractCollection(Class<? extends Collection<E>> type, Class<? extends Collection<E>> antitype, String name, E element) {
-		super(type, antitype, name, element, element);
+	public AbstractCollection(Class<? extends CollectionMap<E>> type, String name, E key, java.util.Collection<E> value) {
+		super(type, type, name);
+		this.key = key;
+		this.value = value;
 	}
-	public AbstractCollection(Collection<E> parent) {
+	public AbstractCollection(CollectionMap<E> parent) {
 		super(parent);
 	}
-	public AbstractCollection(Class<? extends Entry<E, E>> antitype, Entry<E, E> parent, E element) {
-		super(antitype, parent, element, element);
+	public AbstractCollection(CollectionMap<E> parent, E key, java.util.Collection<E> value) {
+		super(parent.getParentClass(), parent);
+		this.key = key;
+		this.value = value;
 	}
-	public AbstractCollection(Collection<E> root, String name) {
-		super(root, name);
+	public AbstractCollection(CollectionMap<E> root, String name) {
+	  	super(root, name);
 	}
-	public AbstractCollection(Class<? extends Collection<E>> antitype, Collection<E> root, String name, E element) {
-		super(antitype, root, name, element, element);
+	public AbstractCollection(CollectionMap<E> root, String name, E key, java.util.Collection<E> value) {
+		super(root.getParentClass(), root, name);
+		this.key = key;
+		this.value = value;
 	}
-	@Override
-	public Collection<E> clone() {
-		return (Collection<E>) super.clone();
+	
+	public AbstractCollection<E> clone() {
+		return (AbstractCollection<E>) super.clone();
 	}
 	@Override
 	public int size() {
-		Entry<E,E> parent = getParent();
-		int size = 0;
-		do {
-			size++;
-			parent = parent.getParent();
-		} while(parent != this);
-		return size;
+		return getValue().size();
 	}
 	@Override
 	public boolean contains(Object o) {
-		Iterator<E> it = iterator();
-        if (o==null) {
-            while (it.hasNext())
-                if (it.next()==null)
-                    return true;
-        } else {
-            while (it.hasNext())
-                if (o.equals(it.next()))
-                    return true;
-        }
-        return false;
+		return getValue().contains(o);
 	}
 	@Override
 	public Iterator<E> iterator() {
-		return new RecurrentIterator(getParent());
+		return getValue().iterator();
 	}
-	
-	public static final int SOFT_MAX_ARRAY_LENGTH = Integer.MAX_VALUE - 8;
-	
-    @SuppressWarnings({ "unchecked" })
-    public <X> X[] toArray(X[] a) {
-        // Estimate size of array; be prepared to see more or fewer elements
-        int size = size();
-        X[] r = a.length >= size ? a :
-                  (X[])java.lang.reflect.Array
-                  .newInstance(a.getClass().getComponentType(), size);
-        Iterator<E> it = iterator();
-
-        for (int i = 0; i < r.length; i++) {
-            if (! it.hasNext()) { // fewer elements than expected
-                if (a == r) {
-                    r[i] = null; // null-terminate
-                } else if (a.length < i) {
-                    return Arrays.copyOf(r, i);
-                } else {
-                    System.arraycopy(r, 0, a, 0, i);
-                    if (a.length > i) {
-                        a[i] = null;
-                    }
-                }
-                return a;
-            }
-            r[i] = (X)it.next();
-        }
-        // more elements than expected
-        return it.hasNext() ? finishToArray(r, it) : r;
-    }
-
-    /**
-     * Reallocates the array being used within toArray when the iterator
-     * returned more elements than expected, and finishes filling it from
-     * the iterator.
-     *
-     * @param r the array, replete with previously stored elements
-     * @param it the in-progress iterator over this collection
-     * @return array containing the elements in the given array, plus any
-     *         further elements returned by the iterator, trimmed to size
-     */
-    @SuppressWarnings("unchecked")
-    private static <T> T[] finishToArray(T[] r, Iterator<?> it) {
-        int len = r.length;
-        int i = len;
-        while (it.hasNext()) {
-            if (i == len) {
-                len = newLength(len,
-                        1,             /* minimum growth */
-                        (len >> 1) + 1 /* preferred growth */);
-                r = Arrays.copyOf(r, len);
-            }
-            r[i++] = (T)it.next();
-        }
-        // trim if overallocated
-        return (i == len) ? r : Arrays.copyOf(r, i);
-    }
-    public static int newLength(int oldLength, int minGrowth, int prefGrowth) {
-        // preconditions not checked because of inlining
-        // assert oldLength >= 0
-        // assert minGrowth > 0
-
-        int prefLength = oldLength + Math.max(minGrowth, prefGrowth); // might overflow
-        if (0 < prefLength && prefLength <= SOFT_MAX_ARRAY_LENGTH) {
-            return prefLength;
-        } else {
-            // put code cold in a separate method
-            return hugeLength(oldLength, minGrowth);
-        }
-    }
-    private static int hugeLength(int oldLength, int minGrowth) {
-        int minLength = oldLength + minGrowth;
-        if (minLength < 0) { // overflow
-            throw new OutOfMemoryError(
-                "Required array length " + oldLength + " + " + minGrowth + " is too large");
-        } else if (minLength <= SOFT_MAX_ARRAY_LENGTH) {
-            return SOFT_MAX_ARRAY_LENGTH;
-        } else {
-            return minLength;
-        }
-    }
+    public <T> T[] toArray(T[] a) {
+		return getValue().toArray(a);
+	}
 	@Override
 	public boolean add(E e) {
-		return instance(getParentClass(), getChildClass(), getParent(), e, e) != null;
+		return getValue().add(e);
 	}
 	@Override
 	public boolean remove(Object o) {
-		Iterator<E> it = iterator();
-		if (o == null) {
-			while (it.hasNext()) {
-				if (it.next() == null) {
-					it.remove();
-					return true;
-				}
-			}
-		} else {
-			while (it.hasNext()) {
-				if (o.equals(it.next())) {
-					it.remove();
-					return true;
-				}
-			}
-		}
-		return false;
+		return getValue().remove(o);
 	}
 	@Override
 	public boolean containsAll(java.util.Collection<?> c) {
-		for (Object e : c)
-			if (!contains(e))
-				return false;
-		return true;
+		return getValue().containsAll(c);
 	}
 	@Override
 	public boolean addAll(java.util.Collection<? extends E> c) {
-		boolean modified = false;
-		for (E e : c)
-			if (add(e))
-				modified = true;
-		return modified;
+		return getValue().addAll(c);
 	}
 	@Override
 	public boolean removeAll(java.util.Collection<?> c) {
-		Objects.requireNonNull(c);
-		boolean modified = false;
-		Iterator<?> it = iterator();
-		while (it.hasNext()) {
-			if (c.contains(it.next())) {
-				it.remove();
-				modified = true;
-			}
-		}
-		return modified;
+		return getValue().removeAll(c);
 	}
 	@Override
 	public boolean retainAll(java.util.Collection<?> c) {
-		Objects.requireNonNull(c);
-        boolean modified = false;
-        Iterator<E> it = iterator();
-        while (it.hasNext()) {
-            if (!c.contains(it.next())) {
-                it.remove();
-                modified = true;
-            }
-        }
-        return modified;
+        return getValue().retainAll(c);
+	}
+
+	@Override
+	public Transmitter<Map<E, java.util.Collection<E>>, Map<E, java.util.Collection<E>>> comparator(
+			Map<E, java.util.Collection<E>> source) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	@Override
-	public void run() {
-		setCommand(Command.TRANSFER);
-	}
-	@Override
-	public boolean isEmpty() {
-		return getParent() == this;
-	}
-	@Override
-	public Object[] toArray() {
-		 // Estimate size of array; be prepared to see more or fewer elements
-        Object[] r = new Object[size()];
-        Iterator<E> it = iterator();
-        for (int i = 0; i < r.length; i++) {
-            if (! it.hasNext()) // fewer elements than expected
-                return Arrays.copyOf(r, i);
-            r[i] = it.next();
-        }
-        return it.hasNext() ? finishToArray(r, it) : r;
-	}
-	@Override
-	public void clear() {
-		getChild().getChild().setParent(getParent());
-		getChild().getChild().getChild().setParent(getParent().getChild());
-		getParent().getChild().setChild(getChild().getChild());
-		getChild().setChild(getParent().getChild().getChild());
-		setParent(getChild().getChild());
-		getChild().setParent(getChild());
-	}
-	protected final class ParentIterator implements Iterator<E> {
-
-		/**
-		 * The current time-listener.
-		 */
-		Entry<E,E> current;
-
-		/**
-		 * The next time-listener.
-		 */
-		Entry<E,E> next;
-
-		/**
-		 * If this recursor has next time-listener.
-		 */
-		boolean hasNext;
-
-		public ParentIterator(Entry<E,E> key) {
-			next = current = key;
-			hasNext = true;
-		}
-
-		@Override
-		public boolean hasNext() {
-			return hasNext;
-		}
-		@Override
-		public E next() {
-			Entry<E,E> c = next;
-			current = c;
-			next = c.getParent();
-			if (c == AbstractCollection.this)
-				hasNext = false;
-			else
-				hasNext = true;
-			return c.getKey();
-		}
-		@Override
-		public void remove() {
-			Entry<E,E> k = next;
-			current.clear();
-			if (!k.isEmpty()) {
-				current = k;
-				next = k.getParent();
-			} else
-				hasNext = false;
-		 }
-	}
-	protected final class RecurrentIterator implements Iterator<E> {
-
-		/**
-		 * The current time-listener.
-		 */
-		Entry<E,E> current;
-
-		/**
-		 * The next time-listener.
-		 */
-		Entry<E,E> next;
-
-		/**
-		 * If this recursor has next time-listener.
-		 */
-		boolean hasNext;
-
-		public RecurrentIterator(Entry<E,E> key) {
-			next = current = key;
-			hasNext = true;
-		}
-
-		@Override
-		public boolean hasNext() {
-			return hasNext;
-		}
-		@Override
-		public E next() {
-			Entry<E,E> c = next;
-			current = c;
-			next = c.getParent();
-			if (c == AbstractCollection.this)
-				hasNext = false;
-			else
-				hasNext = true;
-			return c.getKey();
-		}
-		@Override
-		public void remove() {
-			Entry<E,E> k = next;
-			current.clear();
-			if (!k.isEmpty()) {
-				current = k;
-				next = k.getParent();
-			} else
-				hasNext = false;
-		 }
-	}
-	protected final class ConcurrentIterator implements Iterator<E> {
-
-		/**
-		 * The current time-listener.
-		 */
-		Entry<E,E> current;
-
-		/**
-		 * The next time-listener.
-		 */
-		Entry<E,E> next;
-
-		/**
-		 * If this recursor has next time-listener.
-		 */
-		boolean hasNext;
-
-		public ConcurrentIterator(Entry<E,E> key) {
-			next = current = key;
-			hasNext = true;
-		}
-
-		@Override
-		public boolean hasNext() {
-			return hasNext;
-		}
-		@Override
-		public E next() {
-			Entry<E,E> c = next;
-			current = c;
-			next = c.getChild().getChild();
-			if (c == AbstractCollection.this)
-				hasNext = false;
-			else
-				hasNext = true;
-			return c.getKey();
-		}
-		@Override
-		public void remove() {
-			Entry<E,E> k = next;
-			current.clear();
-			if (!k.isEmpty()) {
-				current = k;
-				next = k.getChild().getChild();
-			} else
-				hasNext = false;
-		 }
+	public Transmitter<Map<E, java.util.Collection<E>>, Map<E, java.util.Collection<E>>> comparator() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

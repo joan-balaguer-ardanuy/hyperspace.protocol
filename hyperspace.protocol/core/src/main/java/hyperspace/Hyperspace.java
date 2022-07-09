@@ -52,27 +52,63 @@ public abstract class Hyperspace<K,V>
 	public Hyperspace() {
 		super();
 	}
+	/**
+	 * {@link Hyperspace} class constructor.
+	 * @param name
+	 */
 	public Hyperspace(String name) {
 		super(name);
 	}
-	public Hyperspace(Class<? extends Entry<K,V>> type, Class<? extends Entry<V,K>> antitype, String name, K key, V value) {
-		super(type, antitype, name);
+	/**
+	 * {@link Hyperspace} class constructor.
+	 * @param parentClass {@link Class} the parent class
+	 * @param childClass {@link Class} the child class
+	 * @param name {@link String} the name
+	 * @param key the key
+	 * @param value the value
+	 */
+	public Hyperspace(Class<? extends Entry<K,V>> parentClass, Class<? extends Entry<V,K>> childClass, String name, K key, V value) {
+		super(parentClass, childClass, name);
 		setKey(key);
 		setValue(value);
 	}
+	/**
+	 * {@link Hyperspace} class constructor.
+	 * @param parent {@link Entry} the parent
+	 */
 	public Hyperspace(Entry<K,V> parent) {
 		super(parent);
 	}
-	public Hyperspace(Class<? extends Entry<V,K>> antitype, Entry<K,V> parent, K key, V value) {
-		super(antitype, parent);
+	/**
+	 * {@link Hyperspace} class constructor.
+	 * @param childClass {@link Class} the child class
+	 * @param parent {@link Entry} the parent
+	 * @param key the key
+	 * @param value the value
+	 */
+	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> parent, K key, V value) {
+		super(childClass, parent);
 		setKey(key);
 		setValue(value);
 	}
+	/**
+	 * {@link Hyperspace} class constructor.
+	 * @param root {@link Entry} the root
+	 * @param name
+	 */
 	public Hyperspace(Entry<K,V> root, String name) {
 		super(root, name);
 	}
-	public Hyperspace(Class<? extends Entry<V,K>> antitype, Entry<K,V> root, String name, K key, V value) {
-		super(antitype, root, name);
+	/**
+	 * {@link Hyperspace} class constructor.
+	 * @param childClass {@link Class} the child class
+	 * @param root {@link Entry} the root
+	 * @param name {@link String} the name
+	 * @param key the key
+	 * @param value the value
+	 */
+	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, String name, K key, V value) {
+		super(childClass, root, name);
 		setKey(key);
 		setValue(value);
 	}

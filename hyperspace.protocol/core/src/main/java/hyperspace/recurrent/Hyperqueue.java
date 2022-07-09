@@ -2,31 +2,31 @@ package hyperspace.recurrent;
 
 import hyperspace.Entry;
 
-public abstract class AbstractQueue<E>
-	extends AbstractCollection<E> 
+public abstract class Hyperqueue<E>
+	extends Hypercollection<E> 
 		implements Queue<E> {
 
 	private static final long serialVersionUID = 7287603745781871134L;
 
-	public AbstractQueue() {
+	public Hyperqueue() {
 		super();
 	}
-	public AbstractQueue(String name) {
+	public Hyperqueue(String name) {
 		super(name);
 	}
-	public AbstractQueue(Class<? extends Queue<E>> type, Class<? extends Queue<E>> antitype, String name, E element) {
+	public Hyperqueue(Class<? extends Queue<E>> type, Class<? extends Queue<E>> antitype, String name, E element) {
 		super(type, antitype, name, element);
 	}
-	public AbstractQueue(Queue<E> parent) {
+	public Hyperqueue(Queue<E> parent) {
 		super(parent);
 	}
-	public AbstractQueue(Class<? extends Queue<E>> antitype, Queue<E> parent, E element) {
+	public Hyperqueue(Class<? extends Queue<E>> antitype, Queue<E> parent, E element) {
 		super(antitype, parent, element);
 	}
-	public AbstractQueue(Collection<E> root, String name) {
+	public Hyperqueue(Collection<E> root, String name) {
 		super(root, name);
 	}
-	public AbstractQueue(Class<? extends Queue<E>> antitype, Queue<E> root, String name, E element) {
+	public Hyperqueue(Class<? extends Queue<E>> antitype, Queue<E> root, String name, E element) {
 		super(antitype, root, name, element);
 	}
 	@Override

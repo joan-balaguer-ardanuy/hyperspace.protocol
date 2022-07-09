@@ -4,32 +4,32 @@ import java.util.Iterator;
 
 import hyperspace.Entry;
 
-public abstract class AbstractDeque<E> 
-	extends AbstractQueue<E> 
+public abstract class Hyperdeque<E> 
+	extends Hyperqueue<E> 
 		implements Deque<E> {
 
 	private static final long serialVersionUID = 5923318731838756664L;
 
-	public AbstractDeque() {
+	public Hyperdeque() {
 		super();
 	}
-	public AbstractDeque(String name) {
+	public Hyperdeque(String name) {
 		super(name);
 	}
-	public AbstractDeque(Class<? extends Deque<E>> type, Class<? extends Deque<E>> antitype, String name,
+	public Hyperdeque(Class<? extends Deque<E>> type, Class<? extends Deque<E>> antitype, String name,
 			E element) {
 		super(type, antitype, name, element);
 	}
-	public AbstractDeque(Class<? extends Deque<E>> antitype, Deque<E> root, String name, E element) {
+	public Hyperdeque(Class<? extends Deque<E>> antitype, Deque<E> root, String name, E element) {
 		super(antitype, root, name, element);
 	}
-	public AbstractDeque(Class<? extends Deque<E>> antitype, Deque<E> parent, E element) {
+	public Hyperdeque(Class<? extends Deque<E>> antitype, Deque<E> parent, E element) {
 		super(antitype, parent, element);
 	}
-	public AbstractDeque(Deque<E> root, String name) {
+	public Hyperdeque(Deque<E> root, String name) {
 		super(root, name);
 	}
-	public AbstractDeque(Deque<E> parent) {
+	public Hyperdeque(Deque<E> parent) {
 		super(parent);
 	}
 	@Override

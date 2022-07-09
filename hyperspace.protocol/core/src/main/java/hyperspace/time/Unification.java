@@ -136,12 +136,11 @@ public abstract class Unification
 	}
 	/**
 	 * {@link Unification} class constructor.
-	 * @param type {@link Class} the type
+	 * @param childClass {@link Class} the child class
 	 * @param name {@link String} the name
-	 * @param child the child
 	 */
-	public Unification(Class<? extends V> antitype, String name) {
-		super(name, instance(antitype, name));
+	public Unification(Class<? extends V> childClass, String name) {
+		super(name, instance(childClass, name));
 		// set root
 		setRoot(getParent());
 		// set stem
@@ -160,11 +159,11 @@ public abstract class Unification
 	}
 	/**
 	 * {@link Unification} class constructor.
+	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
-	 * @param child the child
 	 */
-	public Unification(Class<? extends V> antitype, K parent) {
-		super(parent, instance(antitype, parent.getChild()));
+	public Unification(Class<? extends V> childClass, K parent) {
+		super(parent, instance(childClass, parent.getChild()));
 		// set root
 		setRoot(parent.getRoot());
 		// send events to root
@@ -184,9 +183,9 @@ public abstract class Unification
 	}
 	/**
 	 * {@link Unification} class constructor.
+	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param name {@link String} the name
-	 * @param child the child
 	 */
 	public Unification(Class<? extends V> antitype, K root, String name) {
 		super(name, instance(antitype, root.getStem(), name));

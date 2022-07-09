@@ -54,12 +54,12 @@ public abstract class Recursion
 	}
 	/**
 	 * {@link Recursion} class constructor.
-	 * @param type {@link Class} the type
+	 * @param parentClass {@link Class} the parent class
+	 * @param childClass {@link Class} the child class
 	 * @param name {@link String} the name
-	 * @param child the child
 	 */
-	public Recursion(Class<? extends K> type, Class<? extends V> antitype, String name) {
-		super(type, antitype, name);
+	public Recursion(Class<? extends K> parentClass, Class<? extends V> childClass, String name) {
+		super(parentClass, childClass, name);
 	}
 	/**
 	 * {@link Recursion} class constructor.
@@ -70,11 +70,11 @@ public abstract class Recursion
 	}
 	/**
 	 * {@link Recursion} class constructor.
+	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
-	 * @param child the child
 	 */
-	public Recursion(Class<? extends V> antitype, K parent) {
-		super(antitype, parent);
+	public Recursion(Class<? extends V> childClass, K parent) {
+		super(childClass, parent);
 	}
 	/**
 	 * {@link Recursion} class constructor.
@@ -86,12 +86,12 @@ public abstract class Recursion
 	}
 	/**
 	 * {@link Recursion} class constructor.
+	 * @param childClass {@link Class} the child class
 	 * @param root the root
-	 * @param child the child
 	 * @param gen {@link String} the name
 	 */
-	public Recursion(Class<? extends V> antitype, K root, String gen) {
-		super(antitype, root, gen);
+	public Recursion(Class<? extends V> childClass, K root, String gen) {
+		super(childClass, root, gen);
 	}
 
 	@Override

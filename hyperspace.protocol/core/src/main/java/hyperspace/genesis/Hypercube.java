@@ -37,45 +37,42 @@ public abstract class Hypercube<K,V>
 	}
 	/**
 	 * {@link Hypercube} class constructor.
-	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
-	 * @param key the key
 	 */
 	public Hypercube(String name) {
 		super(name);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
-	 * @param type {@link Class} the type
-	 * @param antitype {@link Class} the antitype
+	 * @param parentClass {@link Class} the parent class
+	 * @param childClass {@link Class} the child class
 	 * @param name {@link String} the name
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hypercube(Class<? extends Hypercube<K,V>> type, Class<? extends Hyperchain<V,K>> antitype, String name, K key, V value) {
-		super(type, antitype, name, key, value);
+	public Hypercube(Class<? extends Hypercube<K,V>> parentClass, Class<? extends Hyperchain<V,K>> childClass, String name, K key, V value) {
+		super(parentClass, childClass, name, key, value);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
-	 * @param parent the parent
-	 * @param key the key
+	 * @param parent {@link Hypercube} the parent
 	 */
 	public Hypercube(Hypercube<K,V> parent) {
 		super(parent);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
-	 * @param antitype {@link Class} the antitype
-	 * @param parent the parent
+	 * @param childClass {@link Class} the child class
+	 * @param parent {@link Hypercube} the parent
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hypercube(Class<? extends Hyperchain<V,K>> antitype, Hypercube<K,V> parent, K key, V value) {
-		super(antitype, parent, key, value);
+	public Hypercube(Class<? extends Hyperchain<V,K>> childClass, Hypercube<K,V> parent, K key, V value) {
+		super(childClass, parent, key, value);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
-	 * @param root the root
+	 * @param root {@link Hypercube} the root
 	 * @param name {@link String} the name
 	 * @param key the key
 	 */
@@ -84,14 +81,14 @@ public abstract class Hypercube<K,V>
 	}
 	/**
 	 * {@link Hypercube} class constructor.
-	 * @param antitype {@link Class} the antitype
-	 * @param root the root
+	 * @param childClass {@link Class} the child class
+	 * @param root {@link Hypercube} the root
 	 * @param name {@link String} the name
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hypercube(Class<? extends Hyperchain<V,K>> antitype, Hypercube<K,V> root, String name, K key, V value) {
-		super(antitype, root, name, key, value);
+	public Hypercube(Class<? extends Hyperchain<V,K>> childClass, Hypercube<K,V> root, String name, K key, V value) {
+		super(childClass, root, name, key, value);
 	}
 	
 	@Override

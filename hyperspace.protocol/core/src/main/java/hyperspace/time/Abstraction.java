@@ -48,14 +48,14 @@ public abstract class Abstraction
 	}
 	/**
 	 * {@link Abstraction} class constructor.
-	 * @param type {@link Class} the type
+	 * @param parentClass {@link Class} the parent class
+	 * @param childClass {@link Class} the child class
 	 * @param name {@link String} the name
-	 * @param child the child
 	 */
-	public Abstraction(Class<? extends K> type, Class<? extends V> antitype, String name) {
-		super(antitype, name);
-		setChildClass(antitype);
-		setParentClass(type);
+	public Abstraction(Class<? extends K> parentClass, Class<? extends V> childClass, String name) {
+		super(childClass, name);
+		setParentClass(parentClass);
+		setChildClass(childClass);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
@@ -66,13 +66,13 @@ public abstract class Abstraction
 	}
 	/**
 	 * {@link Abstraction} class constructor.
+	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
-	 * @param child the child
 	 */
-	public Abstraction( Class<? extends V> antitype, K parent) {
-		super(antitype, parent);
-		setChildClass(antitype);
+	public Abstraction( Class<? extends V> childClass, K parent) {
+		super(childClass, parent);
 		setParentClass(parent.getParentClass());
+		setChildClass(childClass);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
@@ -84,14 +84,14 @@ public abstract class Abstraction
 	}
 	/**
 	 * {@link Abstraction} class constructor.
+	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param name {@link String} the name
-	 * @param child the child
 	 */
-	public Abstraction(Class<? extends V> antitype, K root, String name) {
-		super(antitype, root, name);
-		setChildClass(antitype);
+	public Abstraction(Class<? extends V> childClass, K root, String name) {
+		super(childClass, root, name);
 		setParentClass(root.getParentClass());
+		setChildClass(childClass);
 	}
 
 	@Override

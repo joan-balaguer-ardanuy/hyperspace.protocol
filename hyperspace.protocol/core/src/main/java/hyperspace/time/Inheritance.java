@@ -46,9 +46,9 @@ public abstract class Inheritance
 	/**
 	 * {@link Inheritance} default class constructor.<br/>
 	 * 1. instance this and value;<br/>
-	 * 2. put(this) and set(value);<br/>
-	 * 3. value.set(this);<br/>
-	 * 4. setParent(this) and setChild(value);<br/> 
+	 * 2. setParent(this) and setChild(value);<br/>
+	 * 3. value.setChild(this);<br/>
+	 * 4. setRoot(this) and setStem(value);<br/> 
 	 */
 	public Inheritance() {
 		super();

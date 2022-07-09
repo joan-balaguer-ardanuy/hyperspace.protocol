@@ -26,7 +26,6 @@ public abstract class Child
 	}
 	/**
 	 * {@link Child} class constructor.
-	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 * @param value the value
 	 */
@@ -47,6 +46,7 @@ public abstract class Child
 	 * @param key the key
 	 * @param value the value
 	 */
+	@SuppressWarnings("unchecked")
 	public Child(K key, V value) {
 		super(key, value);
 		key.getChild().setChild((K) this);

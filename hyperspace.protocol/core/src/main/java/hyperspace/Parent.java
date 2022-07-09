@@ -53,7 +53,6 @@ public abstract class Parent
 	}
 	/**
 	 * {@link Parent} class constructor.
-	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 */
 	public Parent(String name) {
@@ -61,10 +60,10 @@ public abstract class Parent
 	}
 	/**
 	 * {@link Parent} class constructor.
-	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 * @param value the value
 	 */
+	@SuppressWarnings("unchecked")
 	public Parent(String name, V value) {
 		this(name);
 		setParent((K) this);

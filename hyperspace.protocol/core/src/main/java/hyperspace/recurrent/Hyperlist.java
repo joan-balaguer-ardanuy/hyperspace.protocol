@@ -4,153 +4,213 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import hyperspace.time.Time;
+import hyperspace.Entry;
 
-public class Hyperlist<E> 
-	extends Time<Map<E,java.util.List<E>>,Map<E,java.util.List<E>>>
-		implements ListMap<E> {
+public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 
-	private static final long serialVersionUID = -391622303135762258L;
-
-	E key;
-	java.util.List<E> value;
-
-	@Override
-	public E getKey() {
-		return key;
-	}
-	@Override
-	public E setKey(E key) {
-		E old = this.key;
-		this.key = key;
-		return old;
-	}
-	@Override
-	public java.util.List<E> getValue() {
-		return value;
-	}
-	@Override
-	public java.util.List<E> setValue(java.util.List<E> value) {
-		java.util.List<E> old = this.value;
-		this.value = value;
-		return old;
-	}
-
+	private static final long serialVersionUID = -8462491103350194008L;
+	
 	public Hyperlist() {
-		super();
 	}
-	public Hyperlist(Class<? extends Hyperlist<E>> type, String name) {
+	public Hyperlist(String name) {
 		super(name);
 	}
-	public Hyperlist(Class<? extends Hyperlist<E>> type, String name, E key, java.util.List<E> value) {
-		super(type, type, name);
-		this.key = key;
-		this.value = value;
+	public Hyperlist(Class<? extends List<E>> type, Class<? extends List<E>> antitype, String name, E element) {
+		super(type, antitype, name, element);
 	}
-	public Hyperlist(Hyperlist<E> parent) {
-		super(parent);
+	public Hyperlist(Class<? extends List<E>> antitype, List<E> root, String name, E element) {
+		super(antitype, root, name, element);
 	}
-	public Hyperlist(Hyperlist<E> parent, E key, java.util.List<E> value) {
-		super(parent.getParentClass(), parent);
-		this.key = key;
-		this.value = value;
+	public Hyperlist(Class<? extends List<E>> antitype, List<E> parent, E element) {
+		super(antitype, parent, element);
 	}
-	public Hyperlist(Hyperlist<E> root, String name) {
+	public Hyperlist(List<E> root, String name) {
 		super(root, name);
 	}
-	public Hyperlist(Hyperlist<E> root, String name, E key, java.util.List<E> value) {
-		super(root.getParentClass(), root, name);
-		this.key = key;
-		this.value = value;
-	}
-	
-	@Override
-	public int size() {
-		return getValue().size();
-	}
-	@Override
-	public boolean contains(Object o) {
-		return getValue().contains(o);
-	}
-	@Override
-	public Iterator<E> iterator() {
-		return getValue().iterator();
-	}
-	@Override
-	public <T> T[] toArray(T[] a) {
-		return getValue().toArray(a);
-	}
-	@Override
-	public boolean add(E e) {
-		return getValue().add(e);
-	}
-	@Override
-	public boolean remove(Object o) {
-		return getValue().remove(o);
-	}
-	@Override
-	public boolean containsAll(Collection<?> c) {
-		return getValue().containsAll(c);
-	}
-	@Override
-	public boolean addAll(Collection<? extends E> c) {
-		return getValue().addAll(c);
+	public Hyperlist(List<E> parent) {
+		super(parent);
 	}
 	@Override
 	public boolean addAll(int index, Collection<? extends E> c) {
-		return getValue().addAll(index, c);
+		boolean modified = false;
+        for (E e : c) {
+            add(index++, e);
+            modified = true;
+        }
+        return modified;
 	}
-	@Override
-	public boolean removeAll(Collection<?> c) {
-		return getValue().removeAll(c);
-	}
-	@Override
-	public boolean retainAll(Collection<?> c) {
-		return getValue().retainAll(c);
-	}
+
 	@Override
 	public E get(int index) {
-		return getValue().get(index);
+		Iterator<E> it = new RecurrentIterator(getParent());
+		for(E element = it.next(); it.hasNext(); element = it.next()) {
+			if(index == 0) {
+				return element;
+			}
+			index--;
+		}
+		return null;
 	}
+
 	@Override
 	public E set(int index, E element) {
-		return getValue().set(index, element);
+		ListIterator<E> it = new RecursiveListIterator(getParent());
+		for(E current = it.next(); it.hasNext(); current = it.next()) {
+			if(index == 0) {
+				it.set(element);
+				return current;
+			}
+			index--;
+		}
+		return null;
 	}
+
 	@Override
 	public void add(int index, E element) {
-		getValue().add(index, element);
+		ListIterator<E> it = new RecursiveListIterator(getParent());
+		for(; it.hasNext();) {
+			if(index == 0) {
+				it.add(element);
+			}
+			index--;
+		}
 	}
+
 	@Override
 	public E remove(int index) {
-		return getValue().remove(index);
+		Iterator<E> it = new RecurrentIterator(getParent());
+		for(E element = it.next(); it.hasNext(); element = it.next()) {
+			if(index == 0) {
+				it.remove();
+				return element;
+			}
+			index--;
+		}
+		return null;
 	}
 	@Override
 	public int indexOf(Object o) {
-		return getValue().indexOf(o);
+		Iterator<E> it;
+		int index = 0;
+		for(it = new RecurrentIterator(getParent());it.hasNext();it.next()) {
+			index++;
+		}
+        return index;
 	}
 	@Override
 	public int lastIndexOf(Object o) {
-		return getValue().lastIndexOf(o);
+		Iterator<E> it;
+		int index = 0;
+		for(it = new ConcurrentIterator(getChild().getChild());it.hasNext();it.next()) {
+			index++;
+		}
+        return index;
 	}
 	@Override
 	public ListIterator<E> listIterator() {
-		return getValue().listIterator();
+		return new RecursiveListIterator(getParent());
 	}
 	@Override
 	public ListIterator<E> listIterator(int index) {
-		return getValue().listIterator(index);
+		throw new UnsupportedOperationException();
 	}
 	@Override
 	public java.util.List<E> subList(int fromIndex, int toIndex) {
-		return getValue().subList(fromIndex, toIndex);
+		throw new UnsupportedOperationException();
 	}
-	@Override
-	public Transmitter<Map<E, java.util.List<E>>, Map<E, java.util.List<E>>> comparator(
-			Map<E, java.util.List<E>> source) {
-		return null;
-	}
-	@Override
-	public Transmitter<Map<E, java.util.List<E>>, Map<E, java.util.List<E>>> comparator() {
-		return null;
+	
+	protected final class RecursiveListIterator implements ListIterator<E> {
+
+		/**
+		 * The current time-listener.
+		 */
+		Entry<E,E> init;
+		
+		/**
+		 * The current time-listener.
+		 */
+		Entry<E,E> current;
+
+		/**
+		 * The next time-listener.
+		 */
+		Entry<E,E> next;
+
+		/**
+		 * The next time-listener.
+		 */
+		Entry<E,E> previous;
+
+		/**
+		 * If this recursor has next time-listener.
+		 */
+		boolean hasNext;
+		
+		public RecursiveListIterator(Entry<E,E> source) {
+			init = next = previous = current = source;
+		}
+		
+		@Override
+		public boolean hasNext() {
+			return hasNext;
+		}
+		@Override
+		public E next() {
+			Entry<E,E> c = next;
+			current = c;
+			next = c.getParent();
+			previous = c.getChild().getChild();
+			if (c == Hyperlist.this)
+				hasNext = false;
+			else
+				hasNext = true;
+			return c.getKey();
+		}
+		@Override
+		public boolean hasPrevious() {
+			return hasNext;
+		}
+		@Override
+		public E previous() {
+			Entry<E,E> c = previous;
+			current = c;
+			next = c.getParent();
+			previous = c.getChild().getChild();
+			if (c == Hyperlist.this)
+				hasNext = false;
+			else
+				hasNext = true;
+			return c.getKey();
+		}
+		@Override
+		public int nextIndex() {
+			return 0;
+		}
+		@Override
+		public int previousIndex() {
+			return 0;
+		}
+		@Override
+		public void remove() {
+			Entry<E,E> k = next;
+			current.clear();
+			if (!k.isEmpty()) {
+				current = k;
+				next = k.getParent();
+				previous = k.getChild().getChild();
+			} else
+				hasNext = false;
+		}
+		@Override
+		public void set(E e) {
+			current.setKey(e);
+			current.setValue(e);
+		}
+		@Override
+		public void add(E e) {
+			current = instance(getParentClass(), getParentClass(), current, e);
+			next = current.getParent();
+			previous = current.getChild().getChild();
+		}
 	}
 }

@@ -28,7 +28,6 @@ public abstract class Toroid
 	}
 	/**
 	 * {@link Toroid} class constructor.
-	 * @param type {@link Class} the type
 	 * @param name {@link String} the name
 	 * @param value the value
 	 */
