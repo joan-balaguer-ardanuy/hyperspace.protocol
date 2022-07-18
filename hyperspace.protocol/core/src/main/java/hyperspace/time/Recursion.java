@@ -2,6 +2,8 @@ package hyperspace.time;
 
 import java.util.Enumeration;
 
+import hyperspace.XML;
+
 /**
  * <tt>
  * <center>
@@ -47,19 +49,19 @@ public abstract class Recursion
 	/**
 	 * {@link Recursion} class constructor.
 	 * @param type {@link Class} the type
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Recursion(String name) {
-		super(name);
+	public Recursion(XML message) {
+		super(message);
 	}
 	/**
 	 * {@link Recursion} class constructor.
 	 * @param parentClass {@link Class} the parent class
 	 * @param childClass {@link Class} the child class
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Recursion(Class<? extends K> parentClass, Class<? extends V> childClass, String name) {
-		super(parentClass, childClass, name);
+	public Recursion(Class<? extends K> parentClass, Class<? extends V> childClass, XML message) {
+		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Recursion} class constructor.
@@ -79,19 +81,19 @@ public abstract class Recursion
 	/**
 	 * {@link Recursion} class constructor.
 	 * @param root the root
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Recursion(K root, String name) {
-		super(root, name);
+	public Recursion(K root, XML message) {
+		super(root, message);
 	}
 	/**
 	 * {@link Recursion} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
-	 * @param gen {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Recursion(Class<? extends V> childClass, K root, String gen) {
-		super(childClass, root, gen);
+	public Recursion(Class<? extends V> childClass, K root, XML message) {
+		super(childClass, root, message);
 	}
 
 	@Override

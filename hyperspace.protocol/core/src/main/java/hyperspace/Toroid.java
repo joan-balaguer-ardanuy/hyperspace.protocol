@@ -21,18 +21,18 @@ public abstract class Toroid
 	}
 	/**
 	 * {@link Toroid} class constructor.
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Toroid(String name) {
-		super(name);
+	public Toroid(XML message) {
+		super(message);
 	}
 	/**
 	 * {@link Toroid} class constructor.
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 * @param value the value
 	 */
-	public Toroid(String name, V value) {
-		super(name, value);
+	public Toroid(XML message, V value) {
+		super(message, value);
 	}
 	/**
 	 * {@link Toroid} class constructor.

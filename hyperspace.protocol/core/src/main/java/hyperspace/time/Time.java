@@ -2,6 +2,8 @@ package hyperspace.time;
 
 import java.util.Enumeration;
 
+import hyperspace.XML;
+
 public abstract class Time
 	<K extends Recursive<K,V>,V extends Recursive<V,K>>
 		extends Inheritance<K,V>
@@ -23,19 +25,19 @@ public abstract class Time
 	}
 	/**
 	 * {@link Time} class constructor.
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Time(String name) {
-		super(name);
+	public Time(XML message) {
+		super(message);
 	}
 	/**
 	 * {@link Time} class constructor.
 	 * @param parentClass {@link Class} the type
 	 * @param childClass {@link Class} the child class
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Time(Class<? extends K> parentClass, Class<? extends V> childClass,  String name) {
-		super(parentClass, childClass, name);
+	public Time(Class<? extends K> parentClass, Class<? extends V> childClass,  XML message) {
+		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Time} class constructor.
@@ -55,19 +57,19 @@ public abstract class Time
 	/**
 	 * {@link Time} class constructor.
 	 * @param root the root
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Time(K root, String name) {
-		super(root, name);
+	public Time(K root, XML message) {
+		super(root, message);
 	}
 	/**
 	 * {@link Time} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Time(Class<? extends V> childClass, K root, String name) {
-		super(childClass, root, name);
+	public Time(Class<? extends V> childClass, K root, XML message) {
+		super(childClass, root, message);
 	}
 
 	@Override

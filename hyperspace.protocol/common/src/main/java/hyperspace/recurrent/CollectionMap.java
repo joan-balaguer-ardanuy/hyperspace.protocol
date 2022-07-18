@@ -1,5 +1,5 @@
 package hyperspace.recurrent;
 
 public interface CollectionMap<E> 
-	extends Map<E,java.util.Collection<E>>, java.util.Collection<E> {
+	extends Mapping<E,Collection<E>>, java.util.Collection<E> {
 }

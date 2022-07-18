@@ -13,12 +13,13 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
+import jakarta.xml.bind.annotation.XmlElement;
 
 /**
  * @author joan
  *
  */
-public abstract class XML implements Message {
+public class XML {
 
 	/**
 	 * 7585153185633646322L
@@ -30,13 +31,12 @@ public abstract class XML implements Message {
 	 */
 	private String name;
 
-	@Override
+	@XmlElement
 	public String getName() {
 		return name;
 	}
-	@Override
-	public void setName(String name) {
-		this.name  = name;
+	public void setMme(String name) {
+		this.name = name;
 	}
 
 	/**
@@ -142,32 +142,5 @@ public abstract class XML implements Message {
 			// if something is wrong print stack trace
 			e.printStackTrace();
 		}
-	}
-	/**
-	 * Intances new object.
-	 * @param <X> the parameter type of the returned object
-	 * @param type the {@link Class} of the object.
-	 * @param args the arguments of the construction of the object
-	 * @return the new <X> instance
-	 */
-	protected static <X> X instance(Class<X> type, Object... args) {
-		try {
-			return type.getDeclaredConstructor(getClasses(args)).newInstance(args);
-		}
-		catch(Throwable t) {
-			throw new Error(t);
-		}
-	}
-	/**
-	 * Returns an array of the classes of the object array argument.
-	 * @param objects the array of the objects t
-	 * @return
-	 */
-	static Class<?>[] getClasses(Object... objects) {
-		Class<?>[] types = new Class<?>[objects.length];
-		for(int i = 0; i < objects.length; i++) {
-			types[i] = objects[i].getClass();
-		}
-		return types;
 	}
 }

@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Random;
 
+import hyperspace.EventArgs;
 import hyperspace.Toroid;
+import hyperspace.XML;
 
 /**
  * <tt>
@@ -129,18 +131,18 @@ public abstract class Unification
 	}
 	/**
 	 * {@link Unification} class constructor.
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Unification(String name) {
-		super(name);
+	public Unification(XML message) {
+		super(message);
 	}
 	/**
 	 * {@link Unification} class constructor.
 	 * @param childClass {@link Class} the child class
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Unification(Class<? extends V> childClass, String name) {
-		super(name, instance(childClass, name));
+	public Unification(Class<? extends V> childClass, XML message) {
+		super(message, instance(childClass, message));
 		// set root
 		setRoot(getParent());
 		// set stem
@@ -154,8 +156,6 @@ public abstract class Unification
 		super(parent);
 		// set root
 		setRoot(parent.getRoot());
-		// send events to root
-		addEventListener(getRoot());
 	}
 	/**
 	 * {@link Unification} class constructor.
@@ -166,41 +166,43 @@ public abstract class Unification
 		super(parent, instance(childClass, parent.getChild()));
 		// set root
 		setRoot(parent.getRoot());
-		// send events to root
-		addEventListener(getRoot());
 	}
 	/**
 	 * {@link Unification} class constructor.
 	 * @param root the root
 	 * @param {@link String} the name
 	 */
-	public Unification(K root, String name) {
-		super(name);
+	public Unification(K root, XML message) {
+		super(message);
 		// set root
 		setRoot(root);
-		// send events to root
-		addEventListener(root);
 	}
 	/**
 	 * {@link Unification} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Unification(Class<? extends V> antitype, K root, String name) {
-		super(name, instance(antitype, root.getStem(), name));
+	public Unification(Class<? extends V> antitype, K root, XML message) {
+		super(message, instance(antitype, root.getStem(), message));
 		// set root
 		setRoot(root);
-		// send events to root
-		addEventListener(root);
 	}
 
+	@Override
+	protected void sendEvent(EventArgs e) {
+		super.sendEvent(e);
+		if(root != this) {
+			root.event(e);
+		}
+	}
+	
 	@Override
 	public  Recursive<K,V> clone() {
 		try {
 			K k = getParentClass().getConstructor().newInstance();
 			V v = getChildClass().getConstructor().newInstance();
-			k.setName(getName());
+			k.setMessage(getMessage());
 			k.setParent(k);
 			v.setParent(v);
 			k.setChild(v);
@@ -229,6 +231,37 @@ public abstract class Unification
         }
         return it.hasMoreElements() ? orderToArray(r, it) : r;
     }
+	@SuppressWarnings({ "unchecked" })
+	public <X> X[] toArray(X[] a) {
+		// Estimate size of array; be prepared to see more or fewer elements
+		int quantity = 0;
+		Enumeration<K> en;
+		for (en = enumerator(); en.hasMoreElements(); en.nextElement()) {
+			quantity++;
+		}
+		X[] r = a.length >= quantity ? a
+				: (X[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), quantity);
+		Enumeration<K> it = enumerator();
+
+		for (int i = 0; i < r.length; i++) {
+			if (!it.hasMoreElements()) { // fewer elements than expected
+				if (a == r) {
+					r[i] = null; // null-terminate
+				} else if (a.length < i) {
+					return Arrays.copyOf(r, i);
+				} else {
+					System.arraycopy(r, 0, a, 0, i);
+					if (a.length > i) {
+						a[i] = null;
+					}
+				}
+				return a;
+			}
+			r[i] = (X) it.nextElement();
+		}
+		// more elements than expected
+		return it.hasMoreElements() ? orderToArray(r, it) : r;
+	}
 	/**
 	 * @param r
 	 * @param it

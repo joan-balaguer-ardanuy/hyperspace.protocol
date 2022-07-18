@@ -113,8 +113,8 @@ public interface Entry<K,V>
     boolean containsKey(Object key);
     boolean containsValue(Object value);
     
-    void removeKey(K key);
-    void removeValue(V value);
+    boolean removeKey(K key);
+    boolean removeValue(V value);
     
     boolean removeValue(K key, V value);
     boolean removeKey(V value, K key);

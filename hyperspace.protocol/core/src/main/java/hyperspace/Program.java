@@ -3,7 +3,6 @@ package hyperspace;
 import java.util.Arrays;
 
 public abstract class Program 
-	extends XML 
 		implements Listener {
 
 	/**
@@ -24,6 +23,7 @@ public abstract class Program
 	 */
 	private String command;
 	
+	private XML message;
 	/**
 	 * The event listeners array.
 	 */
@@ -36,7 +36,12 @@ public abstract class Program
 		this.command = command;
 		sendEvent(new EventArgs(this, command));
 	}
-	
+	public XML getMessage() {
+		return message;
+	}
+	public void setMessage(XML message) {
+		this.message = message;
+	}
 	/**
 	 * {@link Program} default class constructor.
 	 */
@@ -45,10 +50,11 @@ public abstract class Program
 	}
 	/**
 	 * {@link Program} class constructor.
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Program(String name) {
-		super(name);
+	public Program(XML message) {
+		super();
+		this.message = message;
 	}
 	
 	public final void addEventListener(Listener listener) {
@@ -94,5 +100,32 @@ public abstract class Program
 	@Override
 	public void event(EventArgs e) {
 		sendEvent(e);
+	}
+	/**
+	 * Intances new object.
+	 * @param <X> the parameter type of the returned object
+	 * @param type the {@link Class} of the object.
+	 * @param args the arguments of the construction of the object
+	 * @return the new <X> instance
+	 */
+	protected static <X> X instance(Class<X> type, Object... args) {
+		try {
+			return type.getDeclaredConstructor(getClasses(args)).newInstance(args);
+		}
+		catch(Throwable t) {
+			throw new Error(t);
+		}
+	}
+	/**
+	 * Returns an array of the classes of the object array argument.
+	 * @param objects the array of the objects t
+	 * @return
+	 */
+	static Class<?>[] getClasses(Object... objects) {
+		Class<?>[] types = new Class<?>[objects.length];
+		for(int i = 0; i < objects.length; i++) {
+			types[i] = objects[i].getClass();
+		}
+		return types;
 	}
 }

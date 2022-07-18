@@ -53,19 +53,19 @@ public abstract class Parent
 	}
 	/**
 	 * {@link Parent} class constructor.
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Parent(String name) {
-		super(name);
+	public Parent(XML message) {
+		super(message);
 	}
 	/**
 	 * {@link Parent} class constructor.
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 * @param value the value
 	 */
 	@SuppressWarnings("unchecked")
-	public Parent(String name, V value) {
-		this(name);
+	public Parent(XML message, V value) {
+		this(message);
 		setParent((K) this);
 		setChild(value);
 	}
@@ -74,7 +74,7 @@ public abstract class Parent
 	 * @param key the key
 	 */
 	public Parent(K key) {
-		this(key.getName());
+		this(key.getMessage());
 		setParent(key);
 		setChild(key.getChild());
 	}
@@ -84,7 +84,7 @@ public abstract class Parent
 	 * @param value the value
 	 */
 	public Parent(K key, V value) {
-		this(key.getName());
+		this(key.getMessage());
 		setParent(key);
 		setChild(value);
 	}

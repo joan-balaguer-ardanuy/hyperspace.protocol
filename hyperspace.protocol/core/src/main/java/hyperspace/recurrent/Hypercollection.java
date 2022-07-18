@@ -7,6 +7,7 @@ import java.util.Objects;
 import hyperspace.Command;
 import hyperspace.Entry;
 import hyperspace.Hyperspace;
+import hyperspace.XML;
 
 public abstract class Hypercollection<E> 
 	extends Hyperspace<E,E>
@@ -17,24 +18,25 @@ public abstract class Hypercollection<E>
 	public Hypercollection() {
 		super();
 	}
-	public Hypercollection(String name) {
-		super(name);
+	public Hypercollection(XML message) {
+		super(message);
 	}
-	public Hypercollection(Class<? extends Collection<E>> type, Class<? extends Collection<E>> antitype, String name, E element) {
-		super(type, antitype, name, element, element);
+	public Hypercollection(Class<? extends Collection<E>> type, Class<? extends Collection<E>> antitype, XML message) {
+		super(type, antitype, message);
 	}
 	public Hypercollection(Collection<E> parent) {
 		super(parent);
 	}
-	public Hypercollection(Class<? extends Entry<E, E>> antitype, Entry<E, E> parent, E element) {
-		super(antitype, parent, element, element);
+	public Hypercollection(Class<? extends Collection<E>> antitype, Entry<E, E> parent, E element) {
+		super(antitype, parent, element, null);
 	}
-	public Hypercollection(Collection<E> root, String name) {
-		super(root, name);
+	public Hypercollection(Collection<E> root, XML message) {
+		super(root, message);
 	}
-	public Hypercollection(Class<? extends Collection<E>> antitype, Collection<E> root, String name, E element) {
-		super(antitype, root, name, element, element);
+	public Hypercollection(Class<? extends Collection<E>> antitype, Collection<E> root, XML message, E element) {
+		super(antitype, root, message, element, null);
 	}
+	
 	@Override
 	public Collection<E> clone() {
 		return (Collection<E>) super.clone();
@@ -72,32 +74,30 @@ public abstract class Hypercollection<E>
 	
     @SuppressWarnings({ "unchecked" })
     public <X> X[] toArray(X[] a) {
-        // Estimate size of array; be prepared to see more or fewer elements
-        int size = size();
-        X[] r = a.length >= size ? a :
-                  (X[])java.lang.reflect.Array
-                  .newInstance(a.getClass().getComponentType(), size);
-        Iterator<E> it = iterator();
+		// Estimate size of array; be prepared to see more or fewer elements
+		int size = size();
+		X[] r = a.length >= size ? a : (X[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
+		Iterator<E> it = iterator();
 
-        for (int i = 0; i < r.length; i++) {
-            if (! it.hasNext()) { // fewer elements than expected
-                if (a == r) {
-                    r[i] = null; // null-terminate
-                } else if (a.length < i) {
-                    return Arrays.copyOf(r, i);
-                } else {
-                    System.arraycopy(r, 0, a, 0, i);
-                    if (a.length > i) {
-                        a[i] = null;
-                    }
-                }
-                return a;
-            }
-            r[i] = (X)it.next();
-        }
-        // more elements than expected
-        return it.hasNext() ? finishToArray(r, it) : r;
-    }
+		for (int i = 0; i < r.length; i++) {
+			if (!it.hasNext()) { // fewer elements than expected
+				if (a == r) {
+					r[i] = null; // null-terminate
+				} else if (a.length < i) {
+					return Arrays.copyOf(r, i);
+				} else {
+					System.arraycopy(r, 0, a, 0, i);
+					if (a.length > i) {
+						a[i] = null;
+					}
+				}
+				return a;
+			}
+			r[i] = (X) it.next();
+		}
+		// more elements than expected
+		return it.hasNext() ? finishToArray(r, it) : r;
+	}
 
     /**
      * Reallocates the array being used within toArray when the iterator
@@ -224,15 +224,15 @@ public abstract class Hypercollection<E>
 	}
 	@Override
 	public Object[] toArray() {
-		 // Estimate size of array; be prepared to see more or fewer elements
-        Object[] r = new Object[size()];
-        Iterator<E> it = iterator();
-        for (int i = 0; i < r.length; i++) {
-            if (! it.hasNext()) // fewer elements than expected
-                return Arrays.copyOf(r, i);
-            r[i] = it.next();
-        }
-        return it.hasNext() ? finishToArray(r, it) : r;
+		// Estimate size of array; be prepared to see more or fewer elements
+		Object[] r = new Object[size()];
+		Iterator<E> it = iterator();
+		for (int i = 0; i < r.length; i++) {
+			if (!it.hasNext()) // fewer elements than expected
+				return Arrays.copyOf(r, i);
+			r[i] = it.next();
+		}
+		return it.hasNext() ? finishToArray(r, it) : r;
 	}
 	@Override
 	public void clear() {

@@ -1,5 +1,7 @@
 package hyperspace.time;
 
+import hyperspace.XML;
+
 /**
  * <tt>
  * <center>
@@ -56,19 +58,19 @@ public abstract class Inheritance
 	/**
 	 * {@link Inheritance} class constructor.
 	 * @param type {@link Class} the type
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Inheritance(String name) {
-		super(name);
+	public Inheritance(XML message) {
+		super(message);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
 	 * @param type {@link Class} the type
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 * @param child the child
 	 */
-	public Inheritance(Class<? extends K> type, Class<? extends V> antitype, String name) {
-		super(type, antitype, name);
+	public Inheritance(Class<? extends K> type, Class<? extends V> antitype, XML message) {
+		super(type, antitype, message);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
@@ -88,19 +90,19 @@ public abstract class Inheritance
 	/**
 	 * {@link Inheritance} class constructor.
 	 * @param root the root
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Inheritance(K root, String name) {
-		super(root, name);
+	public Inheritance(K root, XML message) {
+		super(root, message);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
 	 * @param root the root
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 * @param child the child
 	 */
-	public Inheritance(Class<? extends V> antitype, K root, String name) {
-		super(antitype, root, name);
+	public Inheritance(Class<? extends V> antitype, K root, XML message) {
+		super(antitype, root, message);
 	}
 
 	@Override

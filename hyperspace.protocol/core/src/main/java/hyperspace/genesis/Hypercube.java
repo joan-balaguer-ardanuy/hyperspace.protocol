@@ -15,6 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import hyperspace.Hyperspace;
+import hyperspace.XML;
 
 /**
  * @author joan
@@ -37,27 +38,25 @@ public abstract class Hypercube<K,V>
 	}
 	/**
 	 * {@link Hypercube} class constructor.
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Hypercube(String name) {
-		super(name);
+	public Hypercube(XML message) {
+		super(message);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
 	 * @param parentClass {@link Class} the parent class
 	 * @param childClass {@link Class} the child class
-	 * @param name {@link String} the name
-	 * @param key the key
-	 * @param value the value
+	 * @param message {@link String} the name
 	 */
-	public Hypercube(Class<? extends Hypercube<K,V>> parentClass, Class<? extends Hyperchain<V,K>> childClass, String name, K key, V value) {
-		super(parentClass, childClass, name, key, value);
+	public Hypercube(Class<? extends DNA<K,V>> parentClass, Class<? extends Chain<V,K>> childClass, XML message) {
+		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
 	 * @param parent {@link Hypercube} the parent
 	 */
-	public Hypercube(Hypercube<K,V> parent) {
+	public Hypercube(DNA<K,V> parent) {
 		super(parent);
 	}
 	/**
@@ -67,28 +66,28 @@ public abstract class Hypercube<K,V>
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hypercube(Class<? extends Hyperchain<V,K>> childClass, Hypercube<K,V> parent, K key, V value) {
+	public Hypercube(Class<? extends Chain<V,K>> childClass, DNA<K,V> parent, K key, V value) {
 		super(childClass, parent, key, value);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
 	 * @param root {@link Hypercube} the root
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 * @param key the key
 	 */
-	public Hypercube(Hypercube<K,V> root, String name) {
-		super(root, name);
+	public Hypercube(DNA<K,V> root, XML message) {
+		super(root, message);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root {@link Hypercube} the root
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hypercube(Class<? extends Hyperchain<V,K>> childClass, Hypercube<K,V> root, String name, K key, V value) {
-		super(childClass, root, name, key, value);
+	public Hypercube(Class<? extends Chain<V,K>> childClass, DNA<K,V> root, XML message, K key, V value) {
+		super(childClass, root, message, key, value);
 	}
 	
 	@Override
@@ -115,14 +114,17 @@ public abstract class Hypercube<K,V>
     	return getValue((K) key);
     }
     public V put(K key, V value) {
-    	hyperspace.Entry<K,V> entry = getParent();
-		for(Enumeration<hyperspace.Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
-			if (key == entry.getKey()) {
-				return entry.setValue(value);
-			}
-		}
-    	entry = instance(getParentClass(), getRoot(), getName(), key, value);
-    	recurChild(entry, entry.getChild());
+//    	hyperspace.Entry<K,V> entry = getParent();
+//		for(Enumeration<hyperspace.Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
+//			if (key == entry.getKey()) {
+//				return entry.setValue(value);
+//			}
+//		}
+//    	entry = instance(getParentClass(), getRoot(), getName(), key, value);
+		setKey(key);
+		setValue(value);
+		instance(getParentClass(), getChildClass(), getParent(), key, value);
+//    	recurChild(entry, entry.getChild());
     	return null;
     }
     public void putAll(hyperspace.Entry<K,V> m) {

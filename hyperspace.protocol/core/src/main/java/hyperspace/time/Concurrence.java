@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import hyperspace.Command;
+import hyperspace.XML;
 
 /**
  * 
@@ -362,19 +363,19 @@ public abstract class Concurrence
 	}
 	/**
 	 * {@link Concurrence} class constructor.
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Concurrence(String name) {
-		super(name);
+	public Concurrence(XML message) {
+		super(message);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
 	 * @param parentClass {@link Class} the parnet class
 	 * @param childClass {@link Class} the child class
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Concurrence(Class<? extends K> parentClass, Class<? extends V> childClass, String name) {
-		super(parentClass, childClass, name);
+	public Concurrence(Class<? extends K> parentClass, Class<? extends V> childClass, XML message) {
+		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
@@ -394,19 +395,19 @@ public abstract class Concurrence
 	/**
 	 * {@link Concurrence} class constructor.
 	 * @param root the root
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Concurrence(K root, String name) {
-		super(root, name);
+	public Concurrence(K root, XML message) {
+		super(root, message);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
-	 * @param name {@link String} the gender
+	 * @param message {@link String} the gender
 	 */
-	public Concurrence(Class<? extends V> antitype, K root, String name) {
-		super(antitype, root, name);
+	public Concurrence(Class<? extends V> antitype, K root, XML message) {
+		super(antitype, root, message);
 	}
 	
 	@Override

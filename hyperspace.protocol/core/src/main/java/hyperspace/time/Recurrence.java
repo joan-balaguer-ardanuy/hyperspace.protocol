@@ -7,6 +7,8 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import hyperspace.XML;
+
 /**
  * <tt>
  * <center>
@@ -172,19 +174,19 @@ public abstract class Recurrence
 	}
 	/**
 	 * {@link Recurrence} class constructor.
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Recurrence(String name) {
-		super(name);
+	public Recurrence(XML message) {
+		super(message);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
 	 * @param parentClass {@link Class} the parent class
 	 * @param childClass {@link Class} the child class
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Recurrence(Class<? extends K> parentClass, Class<? extends V> childClass, String name) {
-		super(parentClass, childClass, name);
+	public Recurrence(Class<? extends K> parentClass, Class<? extends V> childClass, XML message) {
+		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
@@ -204,19 +206,19 @@ public abstract class Recurrence
 	/**
 	 * {@link Recurrence} class constructor.
 	 * @param root the root
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Recurrence(K root, String name) {
-		super(root, name);
+	public Recurrence(K root, XML message) {
+		super(root, message);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Recurrence(Class<? extends V> childClass, K root, String name) {
-		super(childClass, root, name);
+	public Recurrence(Class<? extends V> childClass, K root, XML message) {
+		super(childClass, root, message);
 	}
 
 	@Override

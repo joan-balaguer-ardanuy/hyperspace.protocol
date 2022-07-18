@@ -24,7 +24,7 @@ public class EventArgs extends EventObject {
 	/**
 	 * The value.
 	 */
-	Object value;
+	XML message;
 	
 	/**
 	 * Returns the command.
@@ -38,8 +38,8 @@ public class EventArgs extends EventObject {
 	 * Returns the value of this event.
 	 * @return the value of this event.
 	 */
-	public Object getValue() {
-		return value;
+	public XML getMessage() {
+		return message;
 	}
 	
 	/**
@@ -48,18 +48,18 @@ public class EventArgs extends EventObject {
 	 * @param command {@link Command} the command
 	 */
 	public EventArgs(Listener source, String command) {
-		super(source);
+		this(source, source.getMessage(), command);
 		this.command = command;
 	}
 	/**
 	 * {@link EventArgs} default class constructor.
 	 * @param source {@link Listener} the source of the event
-	 * @param value {@link Object} the value of the event.
+	 * @param message {@link Object} the value of the event.
 	 * @param command {@link Command} the command
 	 */
-	public EventArgs(Listener source, Object value, String command) {
+	private EventArgs(Listener source, XML message, String command) {
 		super(source);
-		this.value = value;
+		this.message = message;
 		this.command = command;
 	}
 }

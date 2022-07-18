@@ -9,11 +9,11 @@ public class Hyperinteger extends Hyperchain<Character,Integer> {
 	public Hyperinteger() {
 		super();
 	}
-	public Hyperinteger(String name) {
-		super(name);
+	public Hyperinteger(XMLTest message) {
+		super(message);
 	}
-	public Hyperinteger(Class<Hyperstring> antitype, String name, Character key, Integer value) {
-		super(Hyperinteger.class, antitype, name, key, value);
+	public Hyperinteger(Class<Hyperstring> antitype, XMLTest message) {
+		super(Hyperinteger.class, antitype, message);
 	}
 	public Hyperinteger(Hyperinteger parent) {
 		super(parent);
@@ -21,10 +21,10 @@ public class Hyperinteger extends Hyperchain<Character,Integer> {
 	public Hyperinteger(Class<Hyperstring> antitype, Hyperinteger parent, Character key, Integer value) {
 		super(antitype, parent, key, value);
 	}
-	public Hyperinteger(Hyperinteger root, String name) {
-		super(root, name);
+	public Hyperinteger(Hyperinteger root, XMLTest message) {
+		super(root, message);
 	}
-	public Hyperinteger(Class<Hyperstring> antitype, Hyperinteger root, String name, Character key, Integer value) {
-		super(antitype, root, name, key, value);
+	public Hyperinteger(Class<Hyperstring> antitype, Hyperinteger root, XMLTest message, Character key, Integer value) {
+		super(antitype, root, message, key, value);
 	}
-}
+}	

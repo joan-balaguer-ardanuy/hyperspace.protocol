@@ -1260,4 +1260,14 @@ Anglaterra = ENTRADA437;
 Polònia = ENTRADA264;
 Andrew Duncan = ANDROID381;
 Gort = ANDROID908;
-Europa
+París = ENTRADA99;
+Sorbonne = ENTRADA604;
+San Francisco = ENTRADA923;
+U.R.S.S = ENTRADA163;
+Iugoslàvia = ENTRADA124;
+Ucraïna = ENTRADA360;
+Bielorússia = ENTRADA344;
+Vyshinsky = ANDROID184;
+Roosevelt = ANDROID315;
+
+

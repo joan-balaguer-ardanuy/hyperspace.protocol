@@ -9,11 +9,11 @@ public class Hyperstring extends Hypercube<Integer, Character> {
 	public Hyperstring() {
 		super();
 	}
-	public Hyperstring(String name) {
-		super(name);
+	public Hyperstring(XMLTest message) {
+		super(message);
 	}
-	public Hyperstring(Class<Hyperinteger> antitype, String name, Integer key, Character value) {
-		super(Hyperstring.class, antitype, name, key, value);
+	public Hyperstring(Class<Hyperinteger> antitype, XMLTest message) {
+		super(Hyperstring.class, antitype, message);
 	}
 	public Hyperstring(Hyperstring parent) {
 		super(parent);
@@ -21,10 +21,10 @@ public class Hyperstring extends Hypercube<Integer, Character> {
 	public Hyperstring(Class<Hyperinteger> antitype, Hyperstring parent, Integer key, Character value) {
 		super(antitype, parent, key, value);
 	}
-	public Hyperstring(Hyperstring root, String name) {
-		super(root, name);
+	public Hyperstring(Hyperstring root, XMLTest message) {
+		super(root, message);
 	}
-	public Hyperstring(Class<Hyperinteger> antitype, Hyperstring root, String name, Integer key, Character value) {
-		super(antitype, root, name, key, value);
+	public Hyperstring(Class<Hyperinteger> antitype, Hyperstring root, XMLTest message, Integer key, Character value) {
+		super(antitype, root, message, key, value);
 	}
 }

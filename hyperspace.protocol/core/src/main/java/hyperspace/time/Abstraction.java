@@ -1,5 +1,6 @@
 package hyperspace.time;
 
+import hyperspace.XML;
 
 public abstract class Abstraction
 	<K extends Recursive<K,V>,V extends Recursive<V,K>>
@@ -41,19 +42,19 @@ public abstract class Abstraction
 	}
 	/**
 	 * {@link Abstraction} class constructor.
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Abstraction(String name) {
-		super(name);
+	public Abstraction(XML message) {
+		super(message);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
 	 * @param parentClass {@link Class} the parent class
 	 * @param childClass {@link Class} the child class
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Abstraction(Class<? extends K> parentClass, Class<? extends V> childClass, String name) {
-		super(childClass, name);
+	public Abstraction(Class<? extends K> parentClass, Class<? extends V> childClass, XML message) {
+		super(childClass, message);
 		setParentClass(parentClass);
 		setChildClass(childClass);
 	}
@@ -79,17 +80,17 @@ public abstract class Abstraction
 	 * @param root the root
 	 * @param {@link String} the name
 	 */
-	public Abstraction(K root, String name) {
-		super(name);
+	public Abstraction(K root, XML message) {
+		super(message);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 */
-	public Abstraction(Class<? extends V> childClass, K root, String name) {
-		super(childClass, root, name);
+	public Abstraction(Class<? extends V> childClass, K root, XML message) {
+		super(childClass, root, message);
 		setParentClass(root.getParentClass());
 		setChildClass(childClass);
 	}

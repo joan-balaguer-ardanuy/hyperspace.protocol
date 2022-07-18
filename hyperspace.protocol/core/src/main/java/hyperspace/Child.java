@@ -19,18 +19,18 @@ public abstract class Child
 	}
 	/**
 	 * {@link Child} class constructor.
-	 * @param name {@link String} the name
+	 * @param mmessage {@link String} the name
 	 */
-	public Child(String name) {
-		super(name);
+	public Child(XML mmessage) {
+		super(mmessage);
 	}
 	/**
 	 * {@link Child} class constructor.
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 * @param value the value
 	 */
-	public Child(String name, V value) {
-		super(name, value);
+	public Child(XML message, V value) {
+		super(message, value);
 		value.setChild(getParent());
 		value.setParent(value);
 	}

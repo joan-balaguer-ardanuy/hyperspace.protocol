@@ -54,23 +54,21 @@ public abstract class Hyperspace<K,V>
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
-	 * @param name
+	 * @param message
 	 */
-	public Hyperspace(String name) {
-		super(name);
+	public Hyperspace(XML message) {
+		super(message);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
 	 * @param parentClass {@link Class} the parent class
 	 * @param childClass {@link Class} the child class
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 * @param key the key
-	 * @param value the value
+	 * @param message the value
 	 */
-	public Hyperspace(Class<? extends Entry<K,V>> parentClass, Class<? extends Entry<V,K>> childClass, String name, K key, V value) {
-		super(parentClass, childClass, name);
-		setKey(key);
-		setValue(value);
+	public Hyperspace(Class<? extends Entry<K,V>> parentClass, Class<? extends Entry<V,K>> childClass, XML message) {
+		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
@@ -94,21 +92,21 @@ public abstract class Hyperspace<K,V>
 	/**
 	 * {@link Hyperspace} class constructor.
 	 * @param root {@link Entry} the root
-	 * @param name
+	 * @param message
 	 */
-	public Hyperspace(Entry<K,V> root, String name) {
-		super(root, name);
+	public Hyperspace(Entry<K,V> root, XML message) {
+		super(root, message);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root {@link Entry} the root
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, String name, K key, V value) {
-		super(childClass, root, name);
+	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, XML message, K key, V value) {
+		super(childClass, root, message);
 		setKey(key);
 		setValue(value);
 	}
@@ -191,6 +189,8 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public V putValue(K key, V value) {
+		setKey(key);
+		setValue(value);
 		instance(getParentClass(), getChildClass(), getParent(), key, value);
 		return null;
 	}
@@ -213,18 +213,19 @@ public abstract class Hyperspace<K,V>
 		return getChild().putValueIfAbsent(value, key);
 	}
 	@Override
-	public void removeValue(V value) {
+	public boolean removeValue(V value) {
 		Entry<K,V> entry = getParent();
 		for(Enumeration<Entry<K,V>> en = enumerator();en.hasMoreElements();entry = en.nextElement())  {
 			if(value == entry.getValue()) {
 				entry.clear();
-				return;
+				return true;
 			}
 		}
+		return false;
 	}
 	@Override
-	public void removeKey(K key) {
-		getChild().removeValue(key);
+	public boolean removeKey(K key) {
+		return getChild().removeValue(key);
 	}
 	@Override
 	public boolean removeValue(K key, V value) {

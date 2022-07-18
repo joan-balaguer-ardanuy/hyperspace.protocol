@@ -1,16 +1,18 @@
 package hyperspace.recurrent;
 
 import java.util.Iterator;
+
+import hyperspace.XML;
 import hyperspace.time.Time;
 
 public class AbstractCollection<E> 
-	extends Time<Map<E,java.util.Collection<E>>,Map<E,java.util.Collection<E>>>
+	extends Time<Mapping<E,Collection<E>>,Mapping<E,Collection<E>>>
 		implements CollectionMap<E> {
 
 	private static final long serialVersionUID = 8031826521414991529L;
 
 	E key;
-	java.util.Collection<E> value;
+	Collection<E> value;
 	
 	@Override
 	public E getKey() {
@@ -23,12 +25,12 @@ public class AbstractCollection<E>
 		return old;
 	}
 	@Override
-	public java.util.Collection<E> getValue() {
+	public Collection<E> getValue() {
 		return value;
 	}
 	@Override
-	public java.util.Collection<E> setValue(java.util.Collection<E> value) {
-		java.util.Collection<E> old = this.value;
+	public Collection<E> setValue(Collection<E> value) {
+		Collection<E> old = this.value;
 		this.value = value;
 		return old;
 	}
@@ -36,27 +38,27 @@ public class AbstractCollection<E>
 	public AbstractCollection() {
 		super();
 	}
-	public AbstractCollection(String name) {
-		super(name);
+	public AbstractCollection(XML message) {
+		super(message);
 	}
-	public AbstractCollection(Class<? extends CollectionMap<E>> type, String name, E key, java.util.Collection<E> value) {
-		super(type, type, name);
+	public AbstractCollection(Class<? extends CollectionMap<E>> type, XML message, E key, Collection<E> value) {
+		super(type, type, message);
 		this.key = key;
 		this.value = value;
 	}
 	public AbstractCollection(CollectionMap<E> parent) {
 		super(parent);
 	}
-	public AbstractCollection(CollectionMap<E> parent, E key, java.util.Collection<E> value) {
+	public AbstractCollection(CollectionMap<E> parent, E key, Collection<E> value) {
 		super(parent.getParentClass(), parent);
 		this.key = key;
 		this.value = value;
 	}
-	public AbstractCollection(CollectionMap<E> root, String name) {
-	  	super(root, name);
+	public AbstractCollection(CollectionMap<E> root, XML message) {
+	  	super(root, message);
 	}
-	public AbstractCollection(CollectionMap<E> root, String name, E key, java.util.Collection<E> value) {
-		super(root.getParentClass(), root, name);
+	public AbstractCollection(CollectionMap<E> root, XML message, E key, Collection<E> value) {
+		super(root.getParentClass(), root, message);
 		this.key = key;
 		this.value = value;
 	}
@@ -105,13 +107,11 @@ public class AbstractCollection<E>
 	}
 
 	@Override
-	public Transmitter<Map<E, java.util.Collection<E>>, Map<E, java.util.Collection<E>>> comparator(
-			Map<E, java.util.Collection<E>> source) {
-		// TODO Auto-generated method stub
+	public Transmitter<Mapping<E,Collection<E>>,Mapping<E,Collection<E>>> comparator(Mapping<E,Collection<E>> source) {
 		return null;
 	}
 	@Override
-	public Transmitter<Map<E, java.util.Collection<E>>, Map<E, java.util.Collection<E>>> comparator() {
+	public Transmitter<Mapping<E,Collection<E>>, Mapping<E,Collection<E>>> comparator() {
 		// TODO Auto-generated method stub
 		return null;
 	}

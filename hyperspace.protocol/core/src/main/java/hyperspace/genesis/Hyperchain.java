@@ -3,13 +3,16 @@
  */
 package hyperspace.genesis;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import hyperspace.Entry;
 import hyperspace.Hyperspace;
+import hyperspace.XML;
 
 /**
  * @author joan
@@ -33,29 +36,27 @@ public abstract class Hyperchain<K,V>
 	/**
 	 * {@link Hyperchain} class constructor.
 	 * @param type {@link Class} the type
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 * @param key the key
 	 */
-	public Hyperchain(String name) {
-		super(name);
+	public Hyperchain(XML message) {
+		super(message);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
 	 * @param parentClass {@link Class} the parent class
 	 * @param childClass {@link Class} the child class
-	 * @param name {@link String} the name
-	 * @param key the key
-	 * @param value the value
+	 * @param message {@link String} the name
 	 */
-	public Hyperchain(Class<? extends Hyperchain<K,V>> parentClass, Class<? extends Hypercube<V,K>> childClass, String name, K key, V value) {
-		super(parentClass, childClass, name, key, value);
+	public Hyperchain(Class<? extends Chain<K,V>> parentClass, Class<? extends DNA<V,K>> childClass, XML message) {
+		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
 	 * @param parent {@link Hyperchain} the parent
 	 * @param key the key
 	 */
-	public Hyperchain(Hyperchain<K,V> parent) {
+	public Hyperchain(Chain<K,V> parent) {
 		super(parent);
 	}
 	/**
@@ -65,28 +66,28 @@ public abstract class Hyperchain<K,V>
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hyperchain(Class<? extends Hypercube<V,K>> childClass, Hyperchain<K,V> parent, K key, V value) {
+	public Hyperchain(Class<? extends DNA<V,K>> childClass, Chain<K,V> parent, K key, V value) {
 		super(childClass, parent, key, value);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
 	 * @param root {@link Hyperchain} the root
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 * @param key the key
 	 */
-	public Hyperchain(Hyperchain<K,V> root, String name) {
-		super(root, name);
+	public Hyperchain(Chain<K,V> root, XML message) {
+		super(root, message);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root {@link Hyperchain} the root
-	 * @param name {@link String} the name
+	 * @param message {@link String} the name
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hyperchain(Class<? extends Hypercube<V,K>> childClass, Hyperchain<K,V> root, String name, K key, V value) {
-		super(childClass, root, name, key, value);
+	public Hyperchain(Class<? extends DNA<V,K>> childClass, Chain<K,V> root, XML message, K key, V value) {
+		super(childClass, root, message, key, value);
 	}
 	
 	@Override
@@ -109,60 +110,178 @@ public abstract class Hyperchain<K,V>
 		return i;
 	}
 	@Override
-	public boolean isEmpty() {
-		return super.isEmpty();
-	}
-	@Override
 	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
-		return false;
+		Iterator<Entry<K,V>> it = iterator();
+        if (o==null) {
+            while (it.hasNext())
+                if (it.next()==null)
+                    return true;
+        } else {
+            while (it.hasNext())
+                if (o.equals(it.next()))
+                    return true;
+        }
+        return false;
 	}
 	@Override
 	public Iterator<Entry<K,V>> iterator() {
 		return super.enumerator().asIterator();
 	}
+	public static final int SOFT_MAX_ARRAY_LENGTH = Integer.MAX_VALUE - 8;
 	@Override
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+		// Estimate size of array; be prepared to see more or fewer elements
+		Object[] r = new Object[size()];
+		Iterator<Entry<K, V>> it = iterator();
+		for (int i = 0; i < r.length; i++) {
+			if (!it.hasNext()) // fewer elements than expected
+				return Arrays.copyOf(r, i);
+			r[i] = it.next();
+		}
+		return it.hasNext() ? finishToArray(r, it) : r;
 	}
+	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T[] toArray(T[] a) {
-		// TODO Auto-generated method stub
-		return null;
+	public <X> X[] toArray(X[] a) {
+		// Estimate size of array; be prepared to see more or fewer elements
+		int size = size();
+		X[] r = a.length >= size ? a : (X[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
+		Iterator<Entry<K,V>> it = iterator();
+
+		for (int i = 0; i < r.length; i++) {
+			if (!it.hasNext()) { // fewer elements than expected
+				if (a == r) {
+					r[i] = null; // null-terminate
+				} else if (a.length < i) {
+					return Arrays.copyOf(r, i);
+				} else {
+					System.arraycopy(r, 0, a, 0, i);
+					if (a.length > i) {
+						a[i] = null;
+					}
+				}
+				return a;
+			}
+			r[i] = (X) it.next();
+		}
+		// more elements than expected
+		return it.hasNext() ? finishToArray(r, it) : r;
 	}
+
+    /**
+     * Reallocates the array being used within toArray when the iterator
+     * returned more elements than expected, and finishes filling it from
+     * the iterator.
+     *
+     * @param r the array, replete with previously stored elements
+     * @param it the in-progress iterator over this collection
+     * @return array containing the elements in the given array, plus any
+     *         further elements returned by the iterator, trimmed to size
+     */
+    @SuppressWarnings("unchecked")
+    private static <T> T[] finishToArray(T[] r, Iterator<?> it) {
+        int len = r.length;
+        int i = len;
+        while (it.hasNext()) {
+            if (i == len) {
+                len = newLength(len,
+                        1,             /* minimum growth */
+                        (len >> 1) + 1 /* preferred growth */);
+                r = Arrays.copyOf(r, len);
+            }
+            r[i++] = (T)it.next();
+        }
+        // trim if overallocated
+        return (i == len) ? r : Arrays.copyOf(r, i);
+    }
+    public static int newLength(int oldLength, int minGrowth, int prefGrowth) {
+        // preconditions not checked because of inlining
+        // assert oldLength >= 0
+        // assert minGrowth > 0
+
+        int prefLength = oldLength + Math.max(minGrowth, prefGrowth); // might overflow
+        if (0 < prefLength && prefLength <= SOFT_MAX_ARRAY_LENGTH) {
+            return prefLength;
+        } else {
+            // put code cold in a separate method
+            return hugeLength(oldLength, minGrowth);
+        }
+    }
+    private static int hugeLength(int oldLength, int minGrowth) {
+        int minLength = oldLength + minGrowth;
+        if (minLength < 0) { // overflow
+            throw new OutOfMemoryError(
+                "Required array length " + oldLength + " + " + minGrowth + " is too large");
+        } else if (minLength <= SOFT_MAX_ARRAY_LENGTH) {
+            return SOFT_MAX_ARRAY_LENGTH;
+        } else {
+            return minLength;
+        }
+    }
 	@Override
 	public boolean add(Entry<K, V> e) {
-		// TODO Auto-generated method stub
-		return false;
+		submitChild(e, e.getChild());
+		return true;
 	}
 	@Override
 	public boolean remove(Object o) {
-		// TODO Auto-generated method stub
+		Iterator<Entry<K,V>> it = iterator();
+		if (o == null) {
+			while (it.hasNext()) {
+				if (it.next() == null) {
+					it.remove();
+					return true;
+				}
+			}
+		} else {
+			while (it.hasNext()) {
+				if (o.equals(it.next())) {
+					it.remove();
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 	@Override
 	public boolean containsAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
+		for (Object e : c)
+			if (!contains(e))
+				return false;
+		return true;
 	}
 	@Override
 	public boolean addAll(Collection<? extends Entry<K, V>> c) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean modified = false;
+		for (Entry<K,V> e : c)
+			if (add(e))
+				modified = true;
+		return modified;
 	}
 	@Override
 	public boolean retainAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
+		Objects.requireNonNull(c);
+        boolean modified = false;
+        Iterator<Entry<K,V>> it = iterator();
+        while (it.hasNext()) {
+            if (!c.contains(it.next())) {
+                it.remove();
+                modified = true;
+            }
+        }
+        return modified;
 	}
 	@Override
 	public boolean removeAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public void clear() {
-		super.clear();
+		Objects.requireNonNull(c);
+		boolean modified = false;
+		Iterator<?> it = iterator();
+		while (it.hasNext()) {
+			if (c.contains(it.next())) {
+				it.remove();
+				modified = true;
+			}
+		}
+		return modified;
 	}
 }

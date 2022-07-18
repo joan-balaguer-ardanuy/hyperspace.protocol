@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import hyperspace.Entry;
+import hyperspace.XML;
 
 public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 
@@ -12,20 +13,20 @@ public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 	
 	public Hyperlist() {
 	}
-	public Hyperlist(String name) {
-		super(name);
+	public Hyperlist(XML message) {
+		super(message);
 	}
-	public Hyperlist(Class<? extends List<E>> type, Class<? extends List<E>> antitype, String name, E element) {
-		super(type, antitype, name, element);
+	public Hyperlist(Class<? extends List<E>> type, Class<? extends List<E>> antitype, XML message) {
+		super(type, antitype, message);
 	}
-	public Hyperlist(Class<? extends List<E>> antitype, List<E> root, String name, E element) {
-		super(antitype, root, name, element);
+	public Hyperlist(Class<? extends List<E>> antitype, List<E> root, XML message, E element) {
+		super(antitype, root, message, element);
 	}
 	public Hyperlist(Class<? extends List<E>> antitype, List<E> parent, E element) {
 		super(antitype, parent, element);
 	}
-	public Hyperlist(List<E> root, String name) {
-		super(root, name);
+	public Hyperlist(List<E> root, XML message) {
+		super(root, message);
 	}
 	public Hyperlist(List<E> parent) {
 		super(parent);

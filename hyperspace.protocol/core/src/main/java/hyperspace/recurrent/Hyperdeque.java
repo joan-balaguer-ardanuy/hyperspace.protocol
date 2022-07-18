@@ -3,6 +3,7 @@ package hyperspace.recurrent;
 import java.util.Iterator;
 
 import hyperspace.Entry;
+import hyperspace.XML;
 
 public abstract class Hyperdeque<E> 
 	extends Hyperqueue<E> 
@@ -13,25 +14,25 @@ public abstract class Hyperdeque<E>
 	public Hyperdeque() {
 		super();
 	}
-	public Hyperdeque(String name) {
-		super(name);
+	public Hyperdeque(XML message) {
+		super(message);
 	}
-	public Hyperdeque(Class<? extends Deque<E>> type, Class<? extends Deque<E>> antitype, String name,
-			E element) {
-		super(type, antitype, name, element);
-	}
-	public Hyperdeque(Class<? extends Deque<E>> antitype, Deque<E> root, String name, E element) {
-		super(antitype, root, name, element);
-	}
-	public Hyperdeque(Class<? extends Deque<E>> antitype, Deque<E> parent, E element) {
-		super(antitype, parent, element);
-	}
-	public Hyperdeque(Deque<E> root, String name) {
-		super(root, name);
+	public Hyperdeque(Class<? extends Deque<E>> type, Class<? extends Deque<E>> antitype, XML message) {
+		super(type, antitype, message);
 	}
 	public Hyperdeque(Deque<E> parent) {
 		super(parent);
 	}
+	public Hyperdeque(Class<? extends Deque<E>> antitype, Deque<E> parent, E element) {
+		super(antitype, parent, element);
+	}
+	public Hyperdeque(Deque<E> root, XML message) {
+		super(root, message);
+	}
+	public Hyperdeque(Class<? extends Deque<E>> antitype, Deque<E> root, XML message, E element) {
+		super(antitype, root, message, element);
+	}
+	
 	@Override
 	public void addFirst(E e) {
 		super.offer(e);

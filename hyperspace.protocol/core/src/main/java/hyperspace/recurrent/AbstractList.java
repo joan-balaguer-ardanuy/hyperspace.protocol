@@ -4,16 +4,17 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+import hyperspace.XML;
 import hyperspace.time.Time;
 
 public class AbstractList<E> 
-	extends Time<Map<E,java.util.List<E>>,Map<E,java.util.List<E>>>
+	extends Time<Mapping<E,List<E>>,Mapping<E,List<E>>>
 		implements ListMap<E> {
 
 	private static final long serialVersionUID = -391622303135762258L;
 
 	E key;
-	java.util.List<E> value;
+	List<E> value;
 
 	@Override
 	public E getKey() {
@@ -26,12 +27,12 @@ public class AbstractList<E>
 		return old;
 	}
 	@Override
-	public java.util.List<E> getValue() {
+	public List<E> getValue() {
 		return value;
 	}
 	@Override
-	public java.util.List<E> setValue(java.util.List<E> value) {
-		java.util.List<E> old = this.value;
+	public List<E> setValue(List<E> value) {
+		List<E> old = this.value;
 		this.value = value;
 		return old;
 	}
@@ -39,27 +40,27 @@ public class AbstractList<E>
 	public AbstractList() {
 		super();
 	}
-	public AbstractList(Class<? extends AbstractList<E>> type, String name) {
-		super(name);
+	public AbstractList(Class<? extends ListMap<E>> type, XML message) {
+		super(message);
 	}
-	public AbstractList(Class<? extends AbstractList<E>> type, String name, E key, java.util.List<E> value) {
-		super(type, type, name);
+	public AbstractList(Class<? extends ListMap<E>> type, XML message, E key, List<E> value) {
+		super(type, type, message);
 		this.key = key;
 		this.value = value;
 	}
-	public AbstractList(AbstractList<E> parent) {
+	public AbstractList(ListMap<E> parent) {
 		super(parent);
 	}
-	public AbstractList(AbstractList<E> parent, E key, java.util.List<E> value) {
+	public AbstractList(ListMap<E> parent, E key, List<E> value) {
 		super(parent.getParentClass(), parent);
 		this.key = key;
 		this.value = value;
 	}
-	public AbstractList(AbstractList<E> root, String name) {
-		super(root, name);
+	public AbstractList(ListMap<E> root, XML message) {
+		super(root, message);
 	}
-	public AbstractList(AbstractList<E> root, String name, E key, java.util.List<E> value) {
-		super(root.getParentClass(), root, name);
+	public AbstractList(ListMap<E> root, XML message, E key, List<E> value) {
+		super(root.getParentClass(), root, message);
 		this.key = key;
 		this.value = value;
 	}
@@ -145,12 +146,11 @@ public class AbstractList<E>
 		return getValue().subList(fromIndex, toIndex);
 	}
 	@Override
-	public Transmitter<Map<E, java.util.List<E>>, Map<E, java.util.List<E>>> comparator(
-			Map<E, java.util.List<E>> source) {
+	public Transmitter<Mapping<E,List<E>>, Mapping<E,List<E>>> comparator(Mapping<E,List<E>> source) {
 		return null;
 	}
 	@Override
-	public Transmitter<Map<E, java.util.List<E>>, Map<E, java.util.List<E>>> comparator() {
+	public Transmitter<Mapping<E,List<E>>, Mapping<E,List<E>>> comparator() {
 		return null;
 	}
 }
