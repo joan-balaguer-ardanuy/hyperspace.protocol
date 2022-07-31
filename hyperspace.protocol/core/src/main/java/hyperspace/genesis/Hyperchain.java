@@ -3,11 +3,8 @@
  */
 package hyperspace.genesis;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import hyperspace.Entry;
@@ -18,7 +15,7 @@ import hyperspace.XML;
  * @author joan
  *
  */
-public abstract class Hyperchain<K,V> 
+public class Hyperchain<K,V> 
 	extends Hyperspace<K,V> 
 		implements Chain<K,V> {
 
@@ -48,7 +45,7 @@ public abstract class Hyperchain<K,V>
 	 * @param childClass {@link Class} the child class
 	 * @param message {@link String} the name
 	 */
-	public Hyperchain(Class<? extends Chain<K,V>> parentClass, Class<? extends DNA<V,K>> childClass, XML message) {
+	public Hyperchain(Class<? extends Hyperchain<K,V>> parentClass, Class<? extends Hypercube<V,K>> childClass, XML message) {
 		super(parentClass, childClass, message);
 	}
 	/**
@@ -56,8 +53,8 @@ public abstract class Hyperchain<K,V>
 	 * @param parent {@link Hyperchain} the parent
 	 * @param key the key
 	 */
-	public Hyperchain(Chain<K,V> parent) {
-		super(parent);
+	public Hyperchain(Hyperchain<K,V> parent, XML message) {
+		super(parent, message);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
@@ -66,8 +63,8 @@ public abstract class Hyperchain<K,V>
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hyperchain(Class<? extends DNA<V,K>> childClass, Chain<K,V> parent, K key, V value) {
-		super(childClass, parent, key, value);
+	public Hyperchain(Class<? extends Hypercube<V,K>> childClass, Hyperchain<K,V> parent, XML message, K key, V value) {
+		super(childClass, parent, message, key, value);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
@@ -75,8 +72,8 @@ public abstract class Hyperchain<K,V>
 	 * @param message {@link String} the name
 	 * @param key the key
 	 */
-	public Hyperchain(Chain<K,V> root, XML message) {
-		super(root, message);
+	public Hyperchain(Hyperchain<K,V> root, Hypercube<V,K> stem, XML message) {
+		super(root, stem, message);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
@@ -86,8 +83,8 @@ public abstract class Hyperchain<K,V>
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hyperchain(Class<? extends DNA<V,K>> childClass, Chain<K,V> root, XML message, K key, V value) {
-		super(childClass, root, message, key, value);
+	public Hyperchain(Class<? extends Hypercube<V,K>> childClass, Hyperchain<K,V> root, Hypercube<V,K> stem, XML message, K key, V value) {
+		super(childClass, root, stem, message, key, value);
 	}
 	
 	@Override
@@ -95,19 +92,9 @@ public abstract class Hyperchain<K,V>
 		return (DNA<V,K>) getChild();
 	}
 	@Override
+	@Deprecated
 	public int size() {
-		int i = 0;
-		try {
-			Enumeration<Entry<K,V>> en;
-			for(en = enumerator();en.hasMoreElements();en.nextElement())  {
-				i++;
-			}
-		}
-		catch(NoSuchElementException e) {
-			return Integer.MAX_VALUE;
-		}
-		
-		return i;
+		return 0;
 	}
 	@Override
 	public boolean contains(Object o) {
@@ -125,99 +112,8 @@ public abstract class Hyperchain<K,V>
 	}
 	@Override
 	public Iterator<Entry<K,V>> iterator() {
-		return super.enumerator().asIterator();
+		return new EntryIterator(getParent());
 	}
-	public static final int SOFT_MAX_ARRAY_LENGTH = Integer.MAX_VALUE - 8;
-	@Override
-	public Object[] toArray() {
-		// Estimate size of array; be prepared to see more or fewer elements
-		Object[] r = new Object[size()];
-		Iterator<Entry<K, V>> it = iterator();
-		for (int i = 0; i < r.length; i++) {
-			if (!it.hasNext()) // fewer elements than expected
-				return Arrays.copyOf(r, i);
-			r[i] = it.next();
-		}
-		return it.hasNext() ? finishToArray(r, it) : r;
-	}
-	@SuppressWarnings("unchecked")
-	@Override
-	public <X> X[] toArray(X[] a) {
-		// Estimate size of array; be prepared to see more or fewer elements
-		int size = size();
-		X[] r = a.length >= size ? a : (X[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
-		Iterator<Entry<K,V>> it = iterator();
-
-		for (int i = 0; i < r.length; i++) {
-			if (!it.hasNext()) { // fewer elements than expected
-				if (a == r) {
-					r[i] = null; // null-terminate
-				} else if (a.length < i) {
-					return Arrays.copyOf(r, i);
-				} else {
-					System.arraycopy(r, 0, a, 0, i);
-					if (a.length > i) {
-						a[i] = null;
-					}
-				}
-				return a;
-			}
-			r[i] = (X) it.next();
-		}
-		// more elements than expected
-		return it.hasNext() ? finishToArray(r, it) : r;
-	}
-
-    /**
-     * Reallocates the array being used within toArray when the iterator
-     * returned more elements than expected, and finishes filling it from
-     * the iterator.
-     *
-     * @param r the array, replete with previously stored elements
-     * @param it the in-progress iterator over this collection
-     * @return array containing the elements in the given array, plus any
-     *         further elements returned by the iterator, trimmed to size
-     */
-    @SuppressWarnings("unchecked")
-    private static <T> T[] finishToArray(T[] r, Iterator<?> it) {
-        int len = r.length;
-        int i = len;
-        while (it.hasNext()) {
-            if (i == len) {
-                len = newLength(len,
-                        1,             /* minimum growth */
-                        (len >> 1) + 1 /* preferred growth */);
-                r = Arrays.copyOf(r, len);
-            }
-            r[i++] = (T)it.next();
-        }
-        // trim if overallocated
-        return (i == len) ? r : Arrays.copyOf(r, i);
-    }
-    public static int newLength(int oldLength, int minGrowth, int prefGrowth) {
-        // preconditions not checked because of inlining
-        // assert oldLength >= 0
-        // assert minGrowth > 0
-
-        int prefLength = oldLength + Math.max(minGrowth, prefGrowth); // might overflow
-        if (0 < prefLength && prefLength <= SOFT_MAX_ARRAY_LENGTH) {
-            return prefLength;
-        } else {
-            // put code cold in a separate method
-            return hugeLength(oldLength, minGrowth);
-        }
-    }
-    private static int hugeLength(int oldLength, int minGrowth) {
-        int minLength = oldLength + minGrowth;
-        if (minLength < 0) { // overflow
-            throw new OutOfMemoryError(
-                "Required array length " + oldLength + " + " + minGrowth + " is too large");
-        } else if (minLength <= SOFT_MAX_ARRAY_LENGTH) {
-            return SOFT_MAX_ARRAY_LENGTH;
-        } else {
-            return minLength;
-        }
-    }
 	@Override
 	public boolean add(Entry<K, V> e) {
 		submitChild(e, e.getChild());
@@ -283,5 +179,63 @@ public abstract class Hyperchain<K,V>
 			}
 		}
 		return modified;
+	}
+	@Override
+	@Deprecated
+	public Object[] toArray() {
+		return null;
+	}
+	@Override
+	@Deprecated
+	public <T> T[] toArray(T[] a) {
+		return null;
+	}
+	
+	public final class EntryIterator implements Iterator<Entry<K,V>> {
+		
+		/**
+		 * The current time-listener.
+		 */
+		Entry<K,V> current;
+		
+		/**
+		 * The next time-listener.
+		 */
+		Entry<K,V> next;
+		
+		/**
+		 * If this recursor has next time-listener.
+		 */
+		boolean hasNext;
+		
+		public EntryIterator(Entry<K,V> key) {
+			next = current = key;
+			hasNext = true;
+		}
+		
+		@Override
+		public boolean hasNext() {
+			return hasNext;
+		}
+		@Override
+		public Entry<K,V> next() {
+			Entry<K,V> k = next;
+			current = k;
+			next = k.getParent();
+			if(k == Hyperchain.this)
+				hasNext = false;
+			else hasNext = true;
+			return k;
+		}
+		@Override
+		public void remove() {
+			Entry<K,V> k = next;
+			current.clear();
+			if(!k.isEmpty()) {
+				current = k;
+				next = k.getParent();
+			}
+			else hasNext = false;
+		}
 	}
 }

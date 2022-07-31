@@ -7,10 +7,11 @@ public interface Message
 	 * Returns the name of this instance.
 	 * @return the name of this instance.
 	 */
-	XML getMessage();
+	String getName();
+	
 	/**
 	 * Sets the name of this instance.
-	 * @param message {@link String} the name of this instance.
+	 * @param name {@link String} the name of this instance.
 	 */
-	void setMessage(XML message);
+	void setName(String name);
 }

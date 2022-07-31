@@ -65,19 +65,19 @@ public class Hypermap<K,V>
 	public Hypermap(Class<? extends Map<K,V>> type, XML message) {
 		super(type, type, message);
 	}
-	public Hypermap(Map<K,V> parent) {
-		super(parent);
+	public Hypermap(Map<K,V> parent, XML message) {
+		super(parent, message);
 	}
-	public Hypermap(Map<K,V> parent, K key, V value) {
-		super(parent.getParentClass(), parent);
+	public Hypermap(Map<K,V> parent, XML message, K key, V value) {
+		super(parent.getParentClass(), parent, message);
 		setKey(key);
 		setValue(value);
 	}
-	public Hypermap(Map<K,V> root, XML message) {
-		super(root, message);
+	public Hypermap(Map<K,V> root, Map<K,V> stem, XML message) {
+		super(root, stem, message);
 	}
-	public Hypermap(Map<K,V> root, XML message, K key, V value) {
-		super(root.getParentClass(), root, message);
+	public Hypermap(Map<K,V> root, Map<K,V> stem, XML message, K key, V value) {
+		super(root.getParentClass(), root, stem, message);
 		setKey(key);
 		setValue(value);
 	}
@@ -368,7 +368,7 @@ public class Hypermap<K,V>
 			@Override
 			public Iterator<java.util.Map.Entry<K,V>> iterator() {
 				return new Iterator<java.util.Map.Entry<K,V>>() {
-					private Iterator<Map<K,V>> it = new MapIterator(Hypermap.this);
+					private Iterator<Map<K,V>> it = new MapIterator(Hypermap.this.getParent());
 					@Override
 					public boolean hasNext() {
 						return it.hasNext();

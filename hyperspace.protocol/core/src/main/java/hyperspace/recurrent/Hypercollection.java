@@ -21,20 +21,20 @@ public abstract class Hypercollection<E>
 	public Hypercollection(XML message) {
 		super(message);
 	}
-	public Hypercollection(Class<? extends Collection<E>> type, Class<? extends Collection<E>> antitype, XML message) {
+	public Hypercollection(Class<? extends Hypercollection<E>> type, Class<? extends Hypercollection<E>> antitype, XML message) {
 		super(type, antitype, message);
 	}
-	public Hypercollection(Collection<E> parent) {
-		super(parent);
+	public Hypercollection(Hypercollection<E> parent, XML message) {
+		super(parent, message);
 	}
-	public Hypercollection(Class<? extends Collection<E>> antitype, Entry<E, E> parent, E element) {
-		super(antitype, parent, element, null);
+	public Hypercollection(Class<? extends Hypercollection<E>> antitype, Hypercollection<E> parent, XML message, E element) {
+		super(antitype, parent, message, element, element);
 	}
-	public Hypercollection(Collection<E> root, XML message) {
-		super(root, message);
+	public Hypercollection(Hypercollection<E> root, Hypercollection<E> stem, XML message) {
+		super(root, stem, message);
 	}
-	public Hypercollection(Class<? extends Collection<E>> antitype, Collection<E> root, XML message, E element) {
-		super(antitype, root, message, element, null);
+	public Hypercollection(Class<? extends Hypercollection<E>> antitype, Hypercollection<E> root, Hypercollection<E> stem, XML message, E element) {
+		super(antitype, root, stem, message, element, element);
 	}
 	
 	@Override
@@ -151,7 +151,7 @@ public abstract class Hypercollection<E>
     }
 	@Override
 	public boolean add(E e) {
-		return instance(getParentClass(), getChildClass(), getParent(), e, e) != null;
+		return instance(getParentClass(), getChildClass(), getParent(), getMessage(), e) != null;
 	}
 	@Override
 	public boolean remove(Object o) {

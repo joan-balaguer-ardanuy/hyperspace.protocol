@@ -48,19 +48,19 @@ public class AbstractList<E>
 		this.key = key;
 		this.value = value;
 	}
-	public AbstractList(ListMap<E> parent) {
-		super(parent);
+	public AbstractList(ListMap<E> parent, XML message) {
+		super(parent, message);
 	}
-	public AbstractList(ListMap<E> parent, E key, List<E> value) {
-		super(parent.getParentClass(), parent);
+	public AbstractList(ListMap<E> parent, XML message, E key, List<E> value) {
+		super(parent.getParentClass(), parent, message);
 		this.key = key;
 		this.value = value;
 	}
-	public AbstractList(ListMap<E> root, XML message) {
-		super(root, message);
+	public AbstractList(ListMap<E> root, ListMap<E> stem, XML message) {
+		super(root, stem, message);
 	}
-	public AbstractList(ListMap<E> root, XML message, E key, List<E> value) {
-		super(root.getParentClass(), root, message);
+	public AbstractList(ListMap<E> root, ListMap<E> strm, XML message, E key, List<E> value) {
+		super(root.getParentClass(), root, strm, message);
 		this.key = key;
 		this.value = value;
 	}
@@ -151,6 +151,11 @@ public class AbstractList<E>
 	}
 	@Override
 	public Transmitter<Mapping<E,List<E>>, Mapping<E,List<E>>> comparator() {
+		return null;
+	}
+	@Override
+	@Deprecated
+	public Object[] toArray() {
 		return null;
 	}
 }

@@ -19,7 +19,7 @@ import jakarta.xml.bind.annotation.XmlElement;
  * @author joan
  *
  */
-public class XML {
+public class XML implements Message {
 
 	/**
 	 * 7585153185633646322L
@@ -35,10 +35,10 @@ public class XML {
 	public String getName() {
 		return name;
 	}
-	public void setMme(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	/**
 	 * {@link XML} default class constructor.
 	 */

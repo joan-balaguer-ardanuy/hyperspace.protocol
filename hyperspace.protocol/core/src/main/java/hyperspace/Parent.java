@@ -73,8 +73,8 @@ public abstract class Parent
 	 * {@link Parent} class constructor.
 	 * @param key the key
 	 */
-	public Parent(K key) {
-		this(key.getMessage());
+	public Parent(K key, XML message) {
+		this(message);
 		setParent(key);
 		setChild(key.getChild());
 	}
@@ -83,8 +83,8 @@ public abstract class Parent
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Parent(K key, V value) {
-		this(key.getMessage());
+	public Parent(K key, XML message, V value) {
+		this(message);
 		setParent(key);
 		setChild(value);
 	}

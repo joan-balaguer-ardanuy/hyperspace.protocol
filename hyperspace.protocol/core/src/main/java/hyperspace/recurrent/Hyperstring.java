@@ -1,5 +1,6 @@
 package hyperspace.recurrent;
 
+import hyperspace.genesis.Hyperchain;
 import hyperspace.genesis.Hypercube;
 
 public class Hyperstring extends Hypercube<Integer, Character> {
@@ -15,16 +16,16 @@ public class Hyperstring extends Hypercube<Integer, Character> {
 	public Hyperstring(Class<Hyperinteger> antitype, XMLTest message) {
 		super(Hyperstring.class, antitype, message);
 	}
-	public Hyperstring(Hyperstring parent) {
-		super(parent);
+	public Hyperstring(Hypercube<Integer, Character> parent, XMLTest message) {
+		super(parent, message);
 	}
-	public Hyperstring(Class<Hyperinteger> antitype, Hyperstring parent, Integer key, Character value) {
-		super(antitype, parent, key, value);
+	public Hyperstring(Class<Hyperinteger> antitype, Hypercube<Integer, Character> parent, XMLTest message, Integer key, Character value) {
+		super(antitype, parent, message, key, value);
 	}
-	public Hyperstring(Hyperstring root, XMLTest message) {
-		super(root, message);
+	public Hyperstring(Hypercube<Integer, Character> root, Hyperchain<Character,Integer> stem, XMLTest message) {
+		super(root, stem, message);
 	}
-	public Hyperstring(Class<Hyperinteger> antitype, Hyperstring root, XMLTest message, Integer key, Character value) {
-		super(antitype, root, message, key, value);
+	public Hyperstring(Class<Hyperinteger> antitype, Hypercube<Integer, Character> root, Hyperchain<Character,Integer> stem, XMLTest message, Integer key, Character value) {
+		super(antitype, root, stem, message, key, value);
 	}
 }

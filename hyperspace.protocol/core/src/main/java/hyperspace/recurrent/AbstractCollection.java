@@ -46,19 +46,19 @@ public class AbstractCollection<E>
 		this.key = key;
 		this.value = value;
 	}
-	public AbstractCollection(CollectionMap<E> parent) {
-		super(parent);
+	public AbstractCollection(CollectionMap<E> parent, XML message) {
+		super(parent, message);
 	}
-	public AbstractCollection(CollectionMap<E> parent, E key, Collection<E> value) {
-		super(parent.getParentClass(), parent);
+	public AbstractCollection(CollectionMap<E> parent, XML message, E key, Collection<E> value) {
+		super(parent.getParentClass(), parent, message);
 		this.key = key;
 		this.value = value;
 	}
-	public AbstractCollection(CollectionMap<E> root, XML message) {
-	  	super(root, message);
+	public AbstractCollection(CollectionMap<E> root, CollectionMap<E> stem,XML message) {
+	  	super(root, stem, message);
 	}
-	public AbstractCollection(CollectionMap<E> root, XML message, E key, Collection<E> value) {
-		super(root.getParentClass(), root, message);
+	public AbstractCollection(CollectionMap<E> root, CollectionMap<E> stem, XML message, E key, Collection<E> value) {
+		super(root.getParentClass(), root, stem, message);
 		this.key = key;
 		this.value = value;
 	}
@@ -113,6 +113,11 @@ public class AbstractCollection<E>
 	@Override
 	public Transmitter<Mapping<E,Collection<E>>, Mapping<E,Collection<E>>> comparator() {
 		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	@Deprecated
+	public Object[] toArray() {
 		return null;
 	}
 }

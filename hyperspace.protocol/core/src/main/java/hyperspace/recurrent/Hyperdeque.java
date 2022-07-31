@@ -17,20 +17,20 @@ public abstract class Hyperdeque<E>
 	public Hyperdeque(XML message) {
 		super(message);
 	}
-	public Hyperdeque(Class<? extends Deque<E>> type, Class<? extends Deque<E>> antitype, XML message) {
+	public Hyperdeque(Class<? extends Hyperdeque<E>> type, Class<? extends Hyperdeque<E>> antitype, XML message) {
 		super(type, antitype, message);
 	}
-	public Hyperdeque(Deque<E> parent) {
-		super(parent);
+	public Hyperdeque(Hyperdeque<E> parent, XML message) {
+		super(parent, message);
 	}
-	public Hyperdeque(Class<? extends Deque<E>> antitype, Deque<E> parent, E element) {
-		super(antitype, parent, element);
+	public Hyperdeque(Class<? extends Hyperdeque<E>> antitype, Hyperdeque<E> parent, XML message, E element) {
+		super(antitype, parent, message, element);
 	}
-	public Hyperdeque(Deque<E> root, XML message) {
-		super(root, message);
+	public Hyperdeque(Hyperdeque<E> root, Hyperdeque<E> stem, XML message) {
+		super(root, stem, message);
 	}
-	public Hyperdeque(Class<? extends Deque<E>> antitype, Deque<E> root, XML message, E element) {
-		super(antitype, root, message, element);
+	public Hyperdeque(Class<? extends Hyperdeque<E>> antitype, Hyperdeque<E> root, Hyperdeque<E> stem, XML message, E element) {
+		super(antitype, root, stem, message, element);
 	}
 	
 	@Override

@@ -2,8 +2,10 @@ package hyperspace;
 
 import java.util.Arrays;
 
+import jakarta.xml.bind.annotation.XmlElement;
+
 public abstract class Program 
-		implements Listener {
+	implements Listener {
 
 	/**
 	 * -6123701282190160441L
@@ -36,11 +38,20 @@ public abstract class Program
 		this.command = command;
 		sendEvent(new EventArgs(this, command));
 	}
+	@XmlElement
 	public XML getMessage() {
 		return message;
 	}
 	public void setMessage(XML message) {
 		this.message = message;
+	}
+	@Override
+	public String getName() {
+		return message.getName();
+	}
+	@Override
+	public void setName(String name) {
+		message.setName(name);
 	}
 	/**
 	 * {@link Program} default class constructor.
@@ -105,27 +116,47 @@ public abstract class Program
 	 * Intances new object.
 	 * @param <X> the parameter type of the returned object
 	 * @param type the {@link Class} of the object.
-	 * @param args the arguments of the construction of the object
+	 * @param object the arguments of the construction of the object
 	 * @return the new <X> instance
 	 */
-	protected static <X> X instance(Class<X> type, Object... args) {
+	protected static <X> X instance(Class<X> type, Object object) {
 		try {
-			return type.getDeclaredConstructor(getClasses(args)).newInstance(args);
+			return type.getDeclaredConstructor(object.getClass()).newInstance(object);
 		}
 		catch(Throwable t) {
 			throw new Error(t);
 		}
 	}
-	/**
-	 * Returns an array of the classes of the object array argument.
-	 * @param objects the array of the objects t
-	 * @return
-	 */
-	static Class<?>[] getClasses(Object... objects) {
-		Class<?>[] types = new Class<?>[objects.length];
-		for(int i = 0; i < objects.length; i++) {
-			types[i] = objects[i].getClass();
+	protected static <X> X instance(Class<X> type, Object parent, Object object) {
+		try {
+			return type.getDeclaredConstructor(parent.getClass().getSuperclass(), object.getClass()).newInstance(parent, object);
 		}
-		return types;
+		catch(Throwable t) {
+			throw new Error(t);
+		}
+	}
+	protected static <X> X instance(Class<X> type, Object root, Object stem, Object object) {
+		try {
+			return type.getDeclaredConstructor(root.getClass().getSuperclass(), stem.getClass().getSuperclass(), object.getClass()).newInstance(root, stem, object);
+		}
+		catch(Throwable t) {
+			throw new Error(t);
+		}
+	}
+	protected static <X> X instance(Class<X> type, Object childClass, Object parent, Object object, Object element) {
+		try {
+			return type.getDeclaredConstructor(childClass.getClass(), parent.getClass().getSuperclass(), object.getClass(), element.getClass()).newInstance(childClass, parent, object, element);
+		}
+		catch(Throwable t) {
+			throw new Error(t);
+		}
+	}
+	protected static <X> X instance(Class<X> type, Object childClass, Object parent, Object object, Object key, Object value) {
+		try {
+			return type.getDeclaredConstructor(childClass.getClass(), parent.getClass().getSuperclass(), object.getClass(), key.getClass(), value.getClass()).newInstance(childClass, parent, object, key, value);
+		}
+		catch(Throwable t) {
+			throw new Error(t);
+		}
 	}
 }

@@ -15,20 +15,20 @@ public abstract class Hyperqueue<E>
 	public Hyperqueue(XML message) {
 		super(message);
 	}
-	public Hyperqueue(Class<? extends Queue<E>> type, Class<? extends Queue<E>> antitype, XML message) {
+	public Hyperqueue(Class<? extends Hyperqueue<E>> type, Class<? extends Hyperqueue<E>> antitype, XML message) {
 		super(type, antitype, message);
 	}
-	public Hyperqueue(Queue<E> parent) {
-		super(parent);
+	public Hyperqueue(Hyperqueue<E> parent, XML message) {
+		super(parent, message);
 	}
-	public Hyperqueue(Class<? extends Queue<E>> antitype, Queue<E> parent, E element) {
-		super(antitype, parent, element);
+	public Hyperqueue(Class<? extends Hyperqueue<E>> antitype, Hyperqueue<E> parent, XML message, E element) {
+		super(antitype, parent, message, element);
 	}
-	public Hyperqueue(Collection<E> root, XML message) {
-		super(root, message);
+	public Hyperqueue(Hyperqueue<E> root, Hyperqueue<E> stem, XML message) {
+		super(root, stem, message);
 	}
-	public Hyperqueue(Class<? extends Queue<E>> antitype, Queue<E> root, XML message, E element) {
-		super(antitype, root, message, element);
+	public Hyperqueue(Class<? extends Hyperqueue<E>> antitype, Hyperqueue<E> root, Hyperqueue<E> stem, XML message, E element) {
+		super(antitype, root, stem, message, element);
 	}
 	@Override
 	public boolean offer(E e) {

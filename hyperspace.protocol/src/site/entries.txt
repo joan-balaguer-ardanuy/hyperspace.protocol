@@ -1269,5 +1269,16 @@ Ucraïna = ENTRADA360;
 Bielorússia = ENTRADA344;
 Vyshinsky = ANDROID184;
 Roosevelt = ANDROID315;
-
+Congolès = LLENGUATGE35;
+Congo = ENTRADA251;
+europeu = LLENGUATGE127;
+Àfrica = ENTRADA251;
+Amsterdam = ENTRADA626;
+Joao Gilberto = ANDROID359;
+Billie Joe = ANDROID181;
+Bobbie Gentry = ANDROID372;
+Oscar Peterson = ANDROID296;
+McCoy Tyner = ANDROID649;
+Bach = ANDROID674;
+Beethoven = ANDROID100;
 

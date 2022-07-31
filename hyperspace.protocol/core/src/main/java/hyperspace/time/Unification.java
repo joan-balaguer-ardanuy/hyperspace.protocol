@@ -1,7 +1,5 @@
 package hyperspace.time;
 
-import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.Random;
 
 import hyperspace.EventArgs;
@@ -103,6 +101,7 @@ public abstract class Unification
 	 * Your root.
 	 */
 	K root;
+	V stem;
 	
 	@Override
 	public K getRoot() {
@@ -116,11 +115,13 @@ public abstract class Unification
 	}
 	@Override
 	public V getStem() {
-		return getChild().getRoot();
+		return stem;
 	}
 	@Override
 	public V setStem(V stem) {
-		return getChild().setRoot(stem);
+		V old = this.stem;
+		this.stem = stem;
+		return old;
 	}
 	
 	/**
@@ -152,30 +153,33 @@ public abstract class Unification
 	 * {@link Unification} class constructor.
 	 * @param parent the parent
 	 */
-	public Unification(K parent) {
-		super(parent);
+	public Unification(K parent, XML message) {
+		super(parent, message);
 		// set root
 		setRoot(parent.getRoot());
+		setStem(parent.getStem());
 	}
 	/**
 	 * {@link Unification} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Unification(Class<? extends V> childClass, K parent) {
-		super(parent, instance(childClass, parent.getChild()));
+	public Unification(Class<? extends V> childClass, K parent, XML message) {
+		super(parent, message, instance(childClass, parent.getChild(), message));
 		// set root
 		setRoot(parent.getRoot());
+		setStem(parent.getStem());
 	}
 	/**
 	 * {@link Unification} class constructor.
 	 * @param root the root
 	 * @param {@link String} the name
 	 */
-	public Unification(K root, XML message) {
+	public Unification(K root, V stem, XML message) {
 		super(message);
 		// set root
 		setRoot(root);
+		setStem(stem);
 	}
 	/**
 	 * {@link Unification} class constructor.
@@ -183,26 +187,27 @@ public abstract class Unification
 	 * @param root the root
 	 * @param message {@link String} the name
 	 */
-	public Unification(Class<? extends V> antitype, K root, XML message) {
-		super(message, instance(antitype, root.getStem(), message));
+	public Unification(Class<? extends V> childClass, K root, V stem, XML message) {
+		super(message, instance(childClass, stem, root, message));
 		// set root
 		setRoot(root);
+		setStem(stem);
 	}
 
 	@Override
 	protected void sendEvent(EventArgs e) {
 		super.sendEvent(e);
-		if(root != this) {
-			root.event(e);
-		}
+		stem.event(e);
+		
 	}
 	
 	@Override
-	public  Recursive<K,V> clone() {
+	public Recursive<K,V> clone() {
 		try {
 			K k = getParentClass().getConstructor().newInstance();
 			V v = getChildClass().getConstructor().newInstance();
 			k.setMessage(getMessage());
+			v.setMessage(getMessage());
 			k.setParent(k);
 			v.setParent(v);
 			k.setChild(v);
@@ -211,86 +216,8 @@ public abstract class Unification
 			v.setRoot(getStem());
 			return k;
 		} catch (Throwable t) {
-			throw new Error("hyperspace.Parent: clone exception.", t);
+			throw new Error("hyperspace.time.Unification: clone exception.", t);
 		}
-	}
-	
-	public Object[] toArray() {
-		int quantity = 0;
-		Enumeration<K> en;
-		for(en = enumerator();en.hasMoreElements();en.nextElement())  {
-			quantity++;
-		}
-        // Estimate size of array; be prepared to see more or fewer elements
-        Object[] r = new Object[quantity];
-        Enumeration<K> it = enumerator();
-        for (int i = 0; i < r.length; i++) {
-            if (! it.hasMoreElements()) // fewer elements than expected
-                return Arrays.copyOf(r, i);
-            r[i] = it.nextElement();
-        }
-        return it.hasMoreElements() ? orderToArray(r, it) : r;
-    }
-	@SuppressWarnings({ "unchecked" })
-	public <X> X[] toArray(X[] a) {
-		// Estimate size of array; be prepared to see more or fewer elements
-		int quantity = 0;
-		Enumeration<K> en;
-		for (en = enumerator(); en.hasMoreElements(); en.nextElement()) {
-			quantity++;
-		}
-		X[] r = a.length >= quantity ? a
-				: (X[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), quantity);
-		Enumeration<K> it = enumerator();
-
-		for (int i = 0; i < r.length; i++) {
-			if (!it.hasMoreElements()) { // fewer elements than expected
-				if (a == r) {
-					r[i] = null; // null-terminate
-				} else if (a.length < i) {
-					return Arrays.copyOf(r, i);
-				} else {
-					System.arraycopy(r, 0, a, 0, i);
-					if (a.length > i) {
-						a[i] = null;
-					}
-				}
-				return a;
-			}
-			r[i] = (X) it.nextElement();
-		}
-		// more elements than expected
-		return it.hasMoreElements() ? orderToArray(r, it) : r;
-	}
-	/**
-	 * @param r
-	 * @param it
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> T[] orderToArray(T[] r, Enumeration<?> it) {
-		int i = r.length;
-		while (it.hasMoreElements()) {
-			int cap = r.length;
-			if (i == cap) {
-				int newCap = cap + (cap >> 1) + 1;
-				if (newCap - MAX_ARRAY_SIZE > 0)
-					newCap = hugeCapacity(cap + 1);
-				r = Arrays.copyOf(r, newCap);
-			}
-			r[i++] = (T) it.nextElement();
-		}
-		return (i == r.length) ? r : Arrays.copyOf(r, i);
-	}
-	/**
-	 * @param minCapacity
-	 * @return
-	 */
-	protected static int hugeCapacity(int minCapacity) {
-		if (minCapacity < 0) // overflow
-			throw new OutOfMemoryError("Required array size too large");
-		return (minCapacity > MAX_ARRAY_SIZE) ? 
-				Integer.MAX_VALUE : MAX_ARRAY_SIZE;
 	}
 	
 	/**

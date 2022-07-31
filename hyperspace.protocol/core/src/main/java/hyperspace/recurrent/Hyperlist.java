@@ -16,20 +16,20 @@ public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 	public Hyperlist(XML message) {
 		super(message);
 	}
-	public Hyperlist(Class<? extends List<E>> type, Class<? extends List<E>> antitype, XML message) {
+	public Hyperlist(Class<? extends Hyperlist<E>> type, Class<? extends Hyperlist<E>> antitype, XML message) {
 		super(type, antitype, message);
 	}
-	public Hyperlist(Class<? extends List<E>> antitype, List<E> root, XML message, E element) {
-		super(antitype, root, message, element);
+	public Hyperlist(Class<? extends Hyperlist<E>> antitype, Hyperlist<E> root, Hyperlist<E> stem, XML message, E element) {
+		super(antitype, root, stem, message, element);
 	}
-	public Hyperlist(Class<? extends List<E>> antitype, List<E> parent, E element) {
-		super(antitype, parent, element);
+	public Hyperlist(Class<? extends Hyperlist<E>> antitype, Hyperlist<E> parent, XML message, E element) {
+		super(antitype, parent, message, element);
 	}
-	public Hyperlist(List<E> root, XML message) {
-		super(root, message);
+	public Hyperlist(Hyperlist<E> root, Hyperlist<E> stem, XML message) {
+		super(root, stem, message);
 	}
-	public Hyperlist(List<E> parent) {
-		super(parent);
+	public Hyperlist(Hyperlist<E> parent, XML message) {
+		super(parent, message);
 	}
 	@Override
 	public boolean addAll(int index, Collection<? extends E> c) {

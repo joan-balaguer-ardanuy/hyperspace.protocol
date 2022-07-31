@@ -39,6 +39,18 @@ public interface Listener
 	void setCommand(String command);	
 	
 	/**
+	 * Gets the {@link XML} message
+	 * @return {@link XML} the XML message
+	 */
+	XML getMessage();
+	
+	/**
+	 * Sets the {@link XML} message
+	 * @param message {@link XML} the message
+	 */
+	void setMessage(XML message);
+	
+	/**
 	 * Adds new event listener to the event listeners array.
 	 * @param listener {@link Listener} the new listener to be added.
 	 */
