@@ -1,10 +1,8 @@
 package hyperspace.recurrent;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import hyperspace.Entry;
 import hyperspace.XML;
 
 public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
@@ -12,27 +10,23 @@ public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 	private static final long serialVersionUID = -8462491103350194008L;
 	
 	public Hyperlist() {
+		super();
+	}
+	public Hyperlist(Class<? extends Collection<E>> type, Collection<E> key, XML message, E element) {
+		super(type, key, message, element);
+	}
+	public Hyperlist(Class<? extends Collection<E>> type, XML message, E element) {
+		super(type, message, element);
+	}
+	public Hyperlist(Collection<E> key, XML message) {
+		super(key, message);
 	}
 	public Hyperlist(XML message) {
 		super(message);
 	}
-	public Hyperlist(Class<? extends Hyperlist<E>> type, Class<? extends Hyperlist<E>> antitype, XML message) {
-		super(type, antitype, message);
-	}
-	public Hyperlist(Class<? extends Hyperlist<E>> antitype, Hyperlist<E> root, Hyperlist<E> stem, XML message, E element) {
-		super(antitype, root, stem, message, element);
-	}
-	public Hyperlist(Class<? extends Hyperlist<E>> antitype, Hyperlist<E> parent, XML message, E element) {
-		super(antitype, parent, message, element);
-	}
-	public Hyperlist(Hyperlist<E> root, Hyperlist<E> stem, XML message) {
-		super(root, stem, message);
-	}
-	public Hyperlist(Hyperlist<E> parent, XML message) {
-		super(parent, message);
-	}
+
 	@Override
-	public boolean addAll(int index, Collection<? extends E> c) {
+	public boolean addAll(int index, java.util.Collection<? extends E> c) {
 		boolean modified = false;
         for (E e : c) {
             add(index++, e);
@@ -125,29 +119,29 @@ public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 		/**
 		 * The current time-listener.
 		 */
-		Entry<E,E> init;
+		Collection<E> init;
 		
 		/**
 		 * The current time-listener.
 		 */
-		Entry<E,E> current;
+		Collection<E> current;
 
 		/**
 		 * The next time-listener.
 		 */
-		Entry<E,E> next;
+		Collection<E> next;
 
 		/**
 		 * The next time-listener.
 		 */
-		Entry<E,E> previous;
+		Collection<E> previous;
 
 		/**
 		 * If this recursor has next time-listener.
 		 */
 		boolean hasNext;
 		
-		public RecursiveListIterator(Entry<E,E> source) {
+		public RecursiveListIterator(Collection<E> source) {
 			init = next = previous = current = source;
 		}
 		
@@ -157,7 +151,7 @@ public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 		}
 		@Override
 		public E next() {
-			Entry<E,E> c = next;
+			Collection<E> c = next;
 			current = c;
 			next = c.getParent();
 			previous = c.getChild().getChild();
@@ -165,7 +159,7 @@ public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 				hasNext = false;
 			else
 				hasNext = true;
-			return c.getKey();
+			return c.getElement();
 		}
 		@Override
 		public boolean hasPrevious() {
@@ -173,7 +167,7 @@ public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 		}
 		@Override
 		public E previous() {
-			Entry<E,E> c = previous;
+			Collection<E> c = previous;
 			current = c;
 			next = c.getParent();
 			previous = c.getChild().getChild();
@@ -181,7 +175,7 @@ public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 				hasNext = false;
 			else
 				hasNext = true;
-			return c.getKey();
+			return c.getElement();
 		}
 		@Override
 		public int nextIndex() {
@@ -193,7 +187,7 @@ public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 		}
 		@Override
 		public void remove() {
-			Entry<E,E> k = next;
+			Collection<E> k = next;
 			current.clear();
 			if (!k.isEmpty()) {
 				current = k;
@@ -204,12 +198,11 @@ public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 		}
 		@Override
 		public void set(E e) {
-			current.setKey(e);
-			current.setValue(e);
+			current.setElement(e);
 		}
 		@Override
 		public void add(E e) {
-			current = instance(getParentClass(), getParentClass(), current, e);
+			current = instance(type, type, current, e);
 			next = current.getParent();
 			previous = current.getChild().getChild();
 		}

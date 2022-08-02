@@ -1,6 +1,6 @@
 package hyperspace.time;
 
-import java.util.Enumeration;
+import java.util.Iterator;
 
 import hyperspace.XML;
 
@@ -102,9 +102,9 @@ public abstract class Recursion
 	}
 
 	@Override
-	public abstract Recursive.Transmitter<K,V> comparator(K source);
+	public abstract Recursive.Reproducer<K,V> comparator(K source);
 	@Override
-	public abstract Recursive.Transmitter<K,V> comparator();
+	public abstract Recursive.Reproducer<K,V> comparator();
 	
 	/**
 	 * <tt>this</tt> is your not first {@link java.util.EventObject}. Not before <tt>this</tt>, there is no recurrence.
@@ -115,7 +115,7 @@ public abstract class Recursion
 	 * @author joan
 	 */
 	protected abstract class Matrix
-		implements Recursive.Transmitter<K,V> {
+		implements Recursive.Reproducer<K,V> {
 		
 		/**
 		 * The source.
@@ -143,19 +143,19 @@ public abstract class Recursion
 
 		@Override
 		public void compare(K parent, V child) {
-			Enumeration<K> parentIterator = parent.enumerator();
-			Enumeration<V> childIterator = child.enumerator();
+			Iterator<K> parentIterator = parent.iterator();
+			Iterator<V> childIterator = child.iterator();
 			
 			while(true) {
-				if(parentIterator.hasMoreElements() && childIterator.hasMoreElements()) {
-					K key = parentIterator.nextElement();
-					V value = childIterator.nextElement();
+				if(parentIterator.hasNext() && childIterator.hasNext()) {
+					K key = parentIterator.next();
+					V value = childIterator.next();
 					key.compareTo(value);
 					addParent(key.comparator().source());
 					
-					if(childIterator.hasMoreElements() && parentIterator.hasMoreElements()) {
-						value = childIterator.nextElement();
-						key = parentIterator.nextElement();
+					if(childIterator.hasNext() && parentIterator.hasNext()) {
+						value = childIterator.next();
+						key = parentIterator.next();
 						value.compareTo(key);
 						addChild(value.comparator().source());
 					}

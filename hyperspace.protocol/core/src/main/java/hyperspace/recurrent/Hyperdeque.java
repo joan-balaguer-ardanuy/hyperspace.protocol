@@ -2,7 +2,6 @@ package hyperspace.recurrent;
 
 import java.util.Iterator;
 
-import hyperspace.Entry;
 import hyperspace.XML;
 
 public abstract class Hyperdeque<E> 
@@ -17,20 +16,14 @@ public abstract class Hyperdeque<E>
 	public Hyperdeque(XML message) {
 		super(message);
 	}
-	public Hyperdeque(Class<? extends Hyperdeque<E>> type, Class<? extends Hyperdeque<E>> antitype, XML message) {
-		super(type, antitype, message);
+	public Hyperdeque(Class<? extends Collection<E>> type, Collection<E> key, XML message, E element) {
+		super(type, key, message, element);
 	}
-	public Hyperdeque(Hyperdeque<E> parent, XML message) {
-		super(parent, message);
+	public Hyperdeque(Class<? extends Collection<E>> type, XML message, E element) {
+		super(type, message, element);
 	}
-	public Hyperdeque(Class<? extends Hyperdeque<E>> antitype, Hyperdeque<E> parent, XML message, E element) {
-		super(antitype, parent, message, element);
-	}
-	public Hyperdeque(Hyperdeque<E> root, Hyperdeque<E> stem, XML message) {
-		super(root, stem, message);
-	}
-	public Hyperdeque(Class<? extends Hyperdeque<E>> antitype, Hyperdeque<E> root, Hyperdeque<E> stem, XML message, E element) {
-		super(antitype, root, stem, message, element);
+	public Hyperdeque(Collection<E> key, XML message) {
+		super(key, message);
 	}
 	
 	@Override
@@ -39,7 +32,7 @@ public abstract class Hyperdeque<E>
 	}
 	@Override
 	public void addLast(E e) {
-		instance(getParentClass(), this, e);	
+		instance(getType(), this, e);	
 	}
 	@Override
 	public boolean offerFirst(E e) {
@@ -55,7 +48,7 @@ public abstract class Hyperdeque<E>
 	public E removeFirst() {
 		E element = pollFirst();
 		if(getParent() == this) {
-			if(getKey() == null) {
+			if(getElement() == null) {
 				throw new Error("deque is empty");
 			}
 		}
@@ -65,7 +58,7 @@ public abstract class Hyperdeque<E>
 	public E removeLast() {
 		E element = pollLast();
 		if(getParent() == this) {
-			if(getKey() == null) {
+			if(getElement() == null) {
 				throw new Error("deque is empty");
 			}
 		}
@@ -73,31 +66,31 @@ public abstract class Hyperdeque<E>
 	}
 	@Override
 	public E pollFirst() {
-		Entry<E,E> parent = getParent();
+		Collection<E> parent = getParent();
 		parent.clear();
-		return parent.getKey();
+		return parent.getElement();
 	}
 	@Override
 	public E pollLast() {
-		Entry<E,E> child = getChild().getChild();
+		Collection<E> child = getChild().getChild();
 		child.clear();
-		return child.getKey();
+		return child.getElement();
 	}
 	@Override
 	public E getFirst() {
-		return getParent().getKey();
+		return getParent().getElement();
 	}
 	@Override
 	public E getLast() {
-		return getKey();
+		return getElement();
 	}
 	@Override
 	public E peekFirst() {
-		return getParent().getKey();
+		return getParent().getElement();
 	}
 	@Override
 	public E peekLast() {
-		return getChild().getChild().getKey();
+		return getChild().getChild().getElement();
 	}
 	@Override
 	public boolean removeFirstOccurrence(Object o) {

@@ -1,7 +1,5 @@
 package hyperspace.time;
 
-import hyperspace.recurrent.Enumerable;
-
 /**
  * The recurrent {@link Past} class.
  * 
@@ -9,7 +7,7 @@ import hyperspace.recurrent.Enumerable;
  *
  * @param <K> is the key
  */
-public interface Recurrent<K> extends Past<K>, Enumerable<K>, java.util.concurrent.Callable<K> {
+public interface Recurrent<K> extends Past<K>, Iterable<K>, java.util.concurrent.Callable<K> {
 
 	// properties
 	/**

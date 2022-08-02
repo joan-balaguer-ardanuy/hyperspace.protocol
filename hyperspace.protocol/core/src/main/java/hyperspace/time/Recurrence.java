@@ -1,7 +1,6 @@
 package hyperspace.time;
 
 import java.util.ConcurrentModificationException;
-import java.util.Enumeration;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -223,8 +222,7 @@ public abstract class Recurrence
 
 	@Override
 	public K getParent(int N) {
-		K parent = getParent();
-		for(Enumeration<K> en = enumerator();en.hasMoreElements();parent = en.nextElement())  {
+		for(K parent : this)  {
 			if(N < 1) {
 				return parent;
 			}
@@ -247,8 +245,8 @@ public abstract class Recurrence
 	}
 	@Override
 	public boolean containsParent(K key) {
-		K parent = getParent();
-		for(Enumeration<K> en = enumerator();en.hasMoreElements();parent = en.nextElement())  {
+		
+		for(K parent : this)  {
 			if(parent == key) {
 				return true;
 			}
@@ -261,8 +259,7 @@ public abstract class Recurrence
 	}
 	@Override
 	public boolean removeParent(K key) {
-		K parent = getParent();
-		for(Enumeration<K> en = enumerator();en.hasMoreElements();parent = en.nextElement())  {
+		for(K parent : this)  {
 			if(parent == key) {
 				parent.clear();
 				return true;
@@ -277,8 +274,7 @@ public abstract class Recurrence
 	@Override
 	public int indexOfParent(K key) {
 		int i = 0;
-		K parent = getParent();
-		for(Enumeration<K> en = enumerator();en.hasMoreElements();parent = en.nextElement())  {
+		for(K parent : this)  {
 			if(parent == key) {
 				return i;
 			}
@@ -300,8 +296,7 @@ public abstract class Recurrence
 	}
 	@Override
 	public V putChild(K key, V value) {
-		K parent = getParent();
-		for(Enumeration<K> en = enumerator();en.hasMoreElements();parent = en.nextElement())  {
+		for(K parent : this)  {
 			if(parent == key) {
 				value.setParent(key.getParent().getChild());
 				key.getChild().getChild().getChild().setParent(value);
@@ -341,8 +336,7 @@ public abstract class Recurrence
 	}
 	@Override
 	public void removeParent(int N) {
-		K parent = getParent();
-		for(Enumeration<K> en = enumerator();en.hasMoreElements();parent = en.nextElement())  {
+		for(K parent : this)  {
 			if(N < 1) {
 				parent.clear();
 				return;
@@ -413,8 +407,7 @@ public abstract class Recurrence
 	@Override
 	public void forEachChild(BiConsumer<? super K, ? super V> action) {
 		Objects.requireNonNull(action);
-		K parent = getParent();
-		for(Enumeration<K> en = enumerator();en.hasMoreElements();parent = en.nextElement())  {
+		for(K parent : this)  {
 			K k;
 			V v;
 			try {

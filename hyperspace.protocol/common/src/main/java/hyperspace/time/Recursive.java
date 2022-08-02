@@ -1259,13 +1259,13 @@ public interface Recursive<K,V>
 	 * Returns the inheritance comparator.
 	 * @return the inheritance comparator
 	 */
-	Recursive.Transmitter<K,V> comparator();
+	Recursive.Reproducer<K,V> comparator();
 	
 	/**
 	 * Returns the inheritance comparator.
 	 * @return the inheritance comparator
 	 */
-	Recursive.Transmitter<K,V> comparator(K source);
+	Recursive.Reproducer<K,V> comparator(K source);
 	
 	/**
 	 * {@link TimeListener} information transmitter.
@@ -1273,7 +1273,7 @@ public interface Recursive<K,V>
 	 * @param <K> is the key
 	 * @param <V> is the value
 	 */
-	interface Transmitter<K,V> extends Comparator<K,V> {
+	interface Reproducer<K,V> extends Comparator<K,V> {
 		
 		K source();
 	}

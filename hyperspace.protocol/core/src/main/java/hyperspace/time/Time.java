@@ -1,6 +1,6 @@
 package hyperspace.time;
 
-import java.util.Enumeration;
+import java.util.Iterator;
 
 import hyperspace.XML;
 
@@ -73,11 +73,11 @@ public abstract class Time
 	}
 
 	@Override
-	public Enumeration<K> enumerator() {
-		return new ParentEnumerator(getParent());
+	public Iterator<K> iterator() {
+		return new RecurrentIterator(getParent());
 	}
 	
-	protected final class ParentEnumerator implements Enumeration<K> {
+	protected final class RecurrentIterator implements Iterator<K> {
 		
 		/**
 		 * The current time-listener.
@@ -94,16 +94,16 @@ public abstract class Time
 		 */
 		protected boolean hasNext;
 		
-		public ParentEnumerator(K key) {
+		public RecurrentIterator(K key) {
 			next = current = key;
 			hasNext = true;
 		}
 		@Override
-		public boolean hasMoreElements() {
+		public boolean hasNext() {
 			return hasNext;
 		}
 		@Override
-		public K nextElement() {
+		public K next() {
 			K k = next;
 			current = k;
 			next = k.getParent();
@@ -112,15 +112,15 @@ public abstract class Time
 			else hasNext = true;
 			return k;
 		}
-//		@Override
-//		public void remove() {
-//			K k = next;
-//			current.clear();
-//			if(!k.isEmpty()) {
-//				current = k;
-//				next = k.getParent();
-//			}
-//			else hasNext = false;
-//		}
+		@Override
+		public void remove() {
+			K k = next;
+			current.clear();
+			if(!k.isEmpty()) {
+				current = k;
+				next = k.getParent();
+			}
+			else hasNext = false;
+		}
 	}
 }

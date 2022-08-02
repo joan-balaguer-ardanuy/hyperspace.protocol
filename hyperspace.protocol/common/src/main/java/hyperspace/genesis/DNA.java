@@ -9,7 +9,7 @@ import hyperspace.Entry;
  * @author joan
  *
  */
-public interface DNA<K,V> extends Entry<K,V>, java.util.Map<K,V>, Iterable<K> {
+public interface DNA<K,V> extends Entry<K,V>, java.util.Map<K,V> {
 
 	default Chain<V,K> entryChain() {
 		return (Chain<V,K>) getChild();

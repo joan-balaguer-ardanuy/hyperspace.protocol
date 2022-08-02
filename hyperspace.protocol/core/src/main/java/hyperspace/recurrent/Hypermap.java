@@ -6,9 +6,7 @@ package hyperspace.recurrent;
 import java.util.AbstractCollection;
 import java.util.AbstractSet;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import hyperspace.XML;
@@ -88,18 +86,7 @@ public class Hypermap<K,V>
 	
 	@Override
 	public int size() {
-		int i = 0;
-		try {
-			Enumeration<Map<K,V>> en;
-			for(en = enumerator();en.hasMoreElements();en.nextElement())  {
-				i++;
-			}
-		}
-		catch(NoSuchElementException e) {
-			return Integer.MAX_VALUE;
-		}
-		
-		return i;
+		return 0;
 	}
 	@Override
 	public void putAll(java.util.Map<? extends K, ? extends V> m) {
@@ -390,11 +377,11 @@ public class Hypermap<K,V>
 		};
 	}
 	@Override
-	public Transmitter<Map<K, V>, Map<K, V>> comparator(Map<K, V> source) {
+	public Reproducer<Map<K, V>, Map<K, V>> comparator(Map<K, V> source) {
 		return null;
 	}
 	@Override
-	public Transmitter<Map<K, V>, Map<K, V>> comparator() {
+	public Reproducer<Map<K, V>, Map<K, V>> comparator() {
 		return null;
 	}
 	protected final class MapIterator implements Iterator<Map<K,V>> {
@@ -442,19 +429,5 @@ public class Hypermap<K,V>
 			}
 			else hasNext = false;
 		}
-	}
-	@Override
-	public Iterator<K> iterator() {
-		return new Iterator<K>() {
-			private Iterator<Map<K,V>> it = new MapIterator(Hypermap.this.getParent());
-			@Override
-			public boolean hasNext() {
-				return it.hasNext();
-			}
-			@Override
-			public K next() {
-				return it.next().getKey();
-			}
-		};
 	}
 }

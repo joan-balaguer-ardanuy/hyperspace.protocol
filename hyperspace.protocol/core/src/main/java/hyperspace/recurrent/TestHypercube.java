@@ -1,7 +1,5 @@
 package hyperspace.recurrent;
 
-import hyperspace.XML;
-
 public class TestHypercube {
 
 	public TestHypercube() {
@@ -19,6 +17,5 @@ public class TestHypercube {
 			cube.putValue(key, value);
 			System.out.println(cube.getParent().getKey());
 		}
-		System.out.println(cube.size());
 	}
 }

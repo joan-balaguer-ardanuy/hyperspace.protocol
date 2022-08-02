@@ -1,6 +1,5 @@
 package hyperspace.recurrent;
 
-import hyperspace.Entry;
 import hyperspace.XML;
 
 public abstract class Hyperqueue<E>
@@ -15,43 +14,38 @@ public abstract class Hyperqueue<E>
 	public Hyperqueue(XML message) {
 		super(message);
 	}
-	public Hyperqueue(Class<? extends Hyperqueue<E>> type, Class<? extends Hyperqueue<E>> antitype, XML message) {
-		super(type, antitype, message);
+	public Hyperqueue(Class<? extends Collection<E>> type, Collection<E> key, XML message, E element) {
+		super(type, key, message, element);
 	}
-	public Hyperqueue(Hyperqueue<E> parent, XML message) {
-		super(parent, message);
+	public Hyperqueue(Class<? extends Collection<E>> type, XML message, E element) {
+		super(type, message, element);
 	}
-	public Hyperqueue(Class<? extends Hyperqueue<E>> antitype, Hyperqueue<E> parent, XML message, E element) {
-		super(antitype, parent, message, element);
+	public Hyperqueue(Collection<E> key, XML message) {
+		super(key, message);
 	}
-	public Hyperqueue(Hyperqueue<E> root, Hyperqueue<E> stem, XML message) {
-		super(root, stem, message);
-	}
-	public Hyperqueue(Class<? extends Hyperqueue<E>> antitype, Hyperqueue<E> root, Hyperqueue<E> stem, XML message, E element) {
-		super(antitype, root, stem, message, element);
-	}
+	
 	@Override
 	public boolean offer(E e) {
 		return super.add(e);
 	}
 	@Override
 	public E remove() {
-		Entry<E,E> parent = getParent();
+		Collection<E> parent = getParent();
 		parent.clear();
-		return parent.getKey();
+		return parent.getElement();
 	}
 	@Override
 	public E poll() {
-		Entry<E,E> parent = getParent();
+		Collection<E> parent = getParent();
 		parent.clear();
-		return parent.getKey() == null ? null : parent.getKey();
+		return parent.getElement() == null ? null : parent.getElement();
 	}
 	@Override
 	public E element() {
-		return getParent().getKey();
+		return getParent().getElement();
 	}
 	@Override
 	public E peek() {
-		return getParent().getKey();
+		return getParent().getElement();
 	}
 }

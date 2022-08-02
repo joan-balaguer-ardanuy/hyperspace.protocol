@@ -111,10 +111,6 @@ public class Hyperchain<K,V>
         return false;
 	}
 	@Override
-	public Iterator<Entry<K,V>> iterator() {
-		return new EntryIterator(getParent());
-	}
-	@Override
 	public boolean add(Entry<K, V> e) {
 		submitChild(e, e.getChild());
 		return true;
@@ -191,51 +187,4 @@ public class Hyperchain<K,V>
 		return null;
 	}
 	
-	public final class EntryIterator implements Iterator<Entry<K,V>> {
-		
-		/**
-		 * The current time-listener.
-		 */
-		Entry<K,V> current;
-		
-		/**
-		 * The next time-listener.
-		 */
-		Entry<K,V> next;
-		
-		/**
-		 * If this recursor has next time-listener.
-		 */
-		boolean hasNext;
-		
-		public EntryIterator(Entry<K,V> key) {
-			next = current = key;
-			hasNext = true;
-		}
-		
-		@Override
-		public boolean hasNext() {
-			return hasNext;
-		}
-		@Override
-		public Entry<K,V> next() {
-			Entry<K,V> k = next;
-			current = k;
-			next = k.getParent();
-			if(k == Hyperchain.this)
-				hasNext = false;
-			else hasNext = true;
-			return k;
-		}
-		@Override
-		public void remove() {
-			Entry<K,V> k = next;
-			current.clear();
-			if(!k.isEmpty()) {
-				current = k;
-				next = k.getParent();
-			}
-			else hasNext = false;
-		}
-	}
 }

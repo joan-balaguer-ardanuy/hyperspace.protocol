@@ -6,7 +6,6 @@ package hyperspace.genesis;
 import java.util.AbstractCollection;
 import java.util.AbstractSet;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -86,11 +85,6 @@ public abstract class Hypercube<K,V>
 	public Hypercube(Class<? extends Hyperchain<V,K>> childClass, Hypercube<K,V> root, Chain<V,K> stem, XML message, K key, V value) {
 		super(childClass, root, stem, message, key, value);
 	}
-	
-	@Override
-	public Iterator<K> iterator() {
-		return keySet().iterator();
-	}
 	@Override
 	@Deprecated
 	public int size() {
@@ -107,24 +101,23 @@ public abstract class Hypercube<K,V>
     	return null;
     }
     public void putAll(hyperspace.Entry<K,V> m) {
-    	Enumeration<hyperspace.Entry<K,V>> en = enumerator();
-		for(hyperspace.Entry<K,V> entry = en.nextElement();en.hasMoreElements();entry = en.nextElement())  {
+		for(hyperspace.Entry<K,V> entry : this)  {
 			put(entry.getKey(), entry.getValue());
 		}
     }
 	@Override
 	public V remove(Object key) {
-		Enumeration<hyperspace.Entry<K,V>> i = enumerator();
+		Iterator<hyperspace.Entry<K,V>> i = iterator();
 		hyperspace.Entry<K,V> correctEntry = null;
         if (key==null) {
-            while (correctEntry==null && i.hasMoreElements()) {
-            	hyperspace.Entry<K,V> e = i.nextElement();
+            while (correctEntry==null && i.hasNext()) {
+            	hyperspace.Entry<K,V> e = i.next();
                 if (e.getKey()==null)
                     correctEntry = e;
             }
         } else {
-            while (correctEntry==null && i.hasMoreElements()) {
-            	hyperspace.Entry<K,V> e = i.nextElement();
+            while (correctEntry==null && i.hasNext()) {
+            	hyperspace.Entry<K,V> e = i.next();
                 if (key.equals(e.getKey()))
                     correctEntry = e;
             }
@@ -252,17 +245,17 @@ public abstract class Hypercube<K,V>
 			
 			@Override
 			public Iterator<Entry<K,V>> iterator() {
-				Enumeration<hyperspace.Entry<K,V>> en = Hypercube.this.enumerator();
+				Iterator<hyperspace.Entry<K,V>> it = Hypercube.this.iterator();
 				return iterator == null ? iterator = new Iterator<Entry<K,V>>() {
 
 					@Override
 					public boolean hasNext() {
-						return en.hasMoreElements();
+						return it.hasNext();
 					}
 
 					@Override
 					public Entry<K, V> next() {
-						return en.nextElement();
+						return it.next();
 					}
 					
 				}: iterator;

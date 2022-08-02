@@ -4,7 +4,7 @@ import hyperspace.time.Recursive;
 
 public interface Map<K,V>
 	extends Recursive<Map<K,V>,Map<K,V>>, 
-		java.util.Map.Entry<K,V>, java.util.Map<K,V>, Iterable<K> {
+		java.util.Map.Entry<K,V>, java.util.Map<K,V> {
 
 	/**
      * Replaces the key corresponding to this entry with the specified
