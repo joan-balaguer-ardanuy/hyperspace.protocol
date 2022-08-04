@@ -1,29 +1,23 @@
 package hyperspace.recurrent;
 
-import hyperspace.XML;
-
-public abstract class Hyperqueue<E>
-	extends Hypercollection<E> 
+public abstract class AbstractQueue<E>
+	extends AbstractCollection<E> 
 		implements Queue<E> {
 
 	private static final long serialVersionUID = 7287603745781871134L;
 
-	public Hyperqueue() {
+	public AbstractQueue() {
 		super();
 	}
-	public Hyperqueue(XML message) {
-		super(message);
-	}
-	public Hyperqueue(Class<? extends Collection<E>> type, Collection<E> key, XML message, E element) {
-		super(type, key, message, element);
-	}
-	public Hyperqueue(Class<? extends Collection<E>> type, XML message, E element) {
-		super(type, message, element);
-	}
-	public Hyperqueue(Collection<E> key, XML message) {
-		super(key, message);
-	}
 	
+	public AbstractQueue(Class<? extends Collection<E>> type, E element) {
+		super(type, element);
+	}
+
+	public AbstractQueue(Collection<E> parent, E element) {
+		super(parent, element);
+	}
+
 	@Override
 	public boolean offer(E e) {
 		return super.add(e);

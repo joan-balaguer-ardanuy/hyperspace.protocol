@@ -2,37 +2,36 @@ package hyperspace.recurrent;
 
 import java.util.Iterator;
 
-import hyperspace.XML;
-
-public abstract class Hyperdeque<E> 
-	extends Hyperqueue<E> 
+public abstract class AbstractDeque<E> 
+	extends AbstractQueue<E> 
 		implements Deque<E> {
 
 	private static final long serialVersionUID = 5923318731838756664L;
 
-	public Hyperdeque() {
+	public AbstractDeque() {
 		super();
 	}
-	public Hyperdeque(XML message) {
-		super(message);
-	}
-	public Hyperdeque(Class<? extends Collection<E>> type, Collection<E> key, XML message, E element) {
-		super(type, key, message, element);
-	}
-	public Hyperdeque(Class<? extends Collection<E>> type, XML message, E element) {
-		super(type, message, element);
-	}
-	public Hyperdeque(Collection<E> key, XML message) {
-		super(key, message);
-	}
 	
+	
+	public AbstractDeque(Class<? extends Collection<E>> type, E element) {
+		super(type, element);
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public AbstractDeque(Collection<E> parent, E element) {
+		super(parent, element);
+		// TODO Auto-generated constructor stub
+	}
+
+
 	@Override
 	public void addFirst(E e) {
 		super.offer(e);
 	}
 	@Override
 	public void addLast(E e) {
-		instance(getType(), this, e);	
+		instance(getParentClass(), this, e);	
 	}
 	@Override
 	public boolean offerFirst(E e) {
@@ -72,7 +71,7 @@ public abstract class Hyperdeque<E>
 	}
 	@Override
 	public E pollLast() {
-		Collection<E> child = getChild().getChild();
+		Collection<E> child = call();
 		child.clear();
 		return child.getElement();
 	}
@@ -90,7 +89,7 @@ public abstract class Hyperdeque<E>
 	}
 	@Override
 	public E peekLast() {
-		return getChild().getChild().getElement();
+		return call().getElement();
 	}
 	@Override
 	public boolean removeFirstOccurrence(Object o) {
@@ -105,7 +104,7 @@ public abstract class Hyperdeque<E>
 	}
 	@Override
 	public boolean removeLastOccurrence(Object o) {
-		Iterator<E> it = new ConcurrentIterator(getChild().getChild());
+		Iterator<E> it = new ConcurrentIterator(call());
 		for(E element = it.next(); it.hasNext(); element = it.next()) {
 			if(element == o) {
 				it.remove();
@@ -124,6 +123,6 @@ public abstract class Hyperdeque<E>
 	}
 	@Override
 	public Iterator<E> descendingIterator() {
-		return new ConcurrentIterator(getChild().getChild());
+		return new ConcurrentIterator(call());
 	}
 }

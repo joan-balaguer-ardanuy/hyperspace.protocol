@@ -1281,4 +1281,6 @@ Oscar Peterson = ANDROID296;
 McCoy Tyner = ANDROID649;
 Bach = ANDROID674;
 Beethoven = ANDROID100;
-
+Amparo = ROBOT391;
+M.Carme = ROBOT337;
+Pirineus = ENTRADA251;

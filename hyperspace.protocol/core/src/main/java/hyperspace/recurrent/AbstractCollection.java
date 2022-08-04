@@ -3,17 +3,11 @@ package hyperspace.recurrent;
 import java.util.Iterator;
 import java.util.Objects;
 
-import hyperspace.Command;
-import hyperspace.Toroid;
-import hyperspace.XML;
-
-public class Hypercollection<E>
-	extends Toroid<Collection<E>,Collection<E>>
+public class AbstractCollection<E> 
+	extends AbstractRecurrence<Collection<E>> 
 		implements Collection<E> {
 
-	private static final long serialVersionUID = 8031826521414991529L;
-
-	Class<? extends Collection<E>> type;
+	private static final long serialVersionUID = -3175794994944973984L;
 
 	E element;
 	
@@ -21,75 +15,60 @@ public class Hypercollection<E>
 	public E getElement() {
 		return element;
 	}
+
 	@Override
 	public E setElement(E element) {
 		E old = this.element;
 		this.element = element;
 		return old;
 	}
-	public Class<? extends Collection<E>> getType() {
-		return type;
-	}
-	public void setType(Class<? extends Collection<E>> type) {
-		this.type = type;
-	}
 	
-	public Hypercollection() {
+	public AbstractCollection() {
 		super();
 	}
-	public Hypercollection(Class<? extends Collection<E>> type, Collection<E> key, XML message, E element) {
-		super(key, message, instance(type, key.getChild(), message));
-		this.type = type;
-		this.element = element;
-	}
-	public Hypercollection(Collection<E> key, XML message) {
-		super(key, message);
-	}
-	public Hypercollection(Class<? extends Collection<E>> type, XML message, E element) {
-		super(message, instance(type, message));
-		this.type = type;
-		this.element = element;
-	}
-	public Hypercollection(XML message) {
-		super(message);
+
+	public AbstractCollection(Class<? extends Collection<E>> type, E element) {
+		super(type);
+		setElement(element);
 	}
 
-
-	@Override
-	public Collection<E> clone() {
-		return null;
+	public AbstractCollection(Collection<E> parent, E element) {
+		super(parent);
+		setElement(element);
 	}
+
 	@Override
 	@Deprecated
 	public int size() {
-		return 0;
+		return 1;
 	}
+
 	@Override
 	public boolean contains(Object o) {
-		Iterator<E> it = iterator();
-        if (o==null) {
-            while (it.hasNext())
-                if (it.next()==null)
-                    return true;
-        } else {
-            while (it.hasNext())
-                if (o.equals(it.next()))
-                    return true;
-        }
-        return false;
+		return false;
 	}
+
 	@Override
-	public Iterator<E> iterator() {
-		return new RecurrentIterator(getParent());
-	}
-	
-    @Deprecated
-    public <X> X[] toArray(X[] a) {
+	@Deprecated
+	public Object[] toArray() {
+		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	@Deprecated
+	public <T> T[] toArray(T[] a) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@Override
 	public boolean add(E e) {
-		return instance(type, type, getParent(), getMessage(), e) != null;
+		if(getElement() == null) {
+			setElement(e);
+			return true;
+		}
+		return instance(getParentClass(), getParent(), e) != null;
 	}
 	@Override
 	public boolean remove(Object o) {
@@ -130,9 +109,9 @@ public class Hypercollection<E>
 	public boolean removeAll(java.util.Collection<?> c) {
 		Objects.requireNonNull(c);
 		boolean modified = false;
-		Iterator<?> it = iterator();
+		Iterator<E> it = iterator();
 		while (it.hasNext()) {
-			if (c.contains(it.next())) {
+			if (!c.contains(it.next())) {
 				it.remove();
 				modified = true;
 			}
@@ -142,37 +121,19 @@ public class Hypercollection<E>
 	@Override
 	public boolean retainAll(java.util.Collection<?> c) {
 		Objects.requireNonNull(c);
-        boolean modified = false;
-        Iterator<E> it = iterator();
-        while (it.hasNext()) {
-            if (!c.contains(it.next())) {
-                it.remove();
-                modified = true;
-            }
-        }
-        return modified;
+		boolean modified = false;
+		Iterator<E> it = iterator();
+		while (it.hasNext()) {
+			if (!c.contains(it.next())) {
+				it.remove();
+				modified = true;
+			}
+		}
+		return modified;
 	}
 	@Override
-	public void run() {
-		setCommand(Command.TRANSFER);
-	}
-	@Override
-	public boolean isEmpty() {
-		return getParent() == this;
-	}
-	@Override
-	@Deprecated
-	public Object[] toArray() {
-		return null;
-	}
-	@Override
-	public void clear() {
-		getChild().getChild().setParent(getParent());
-		getChild().getChild().getChild().setParent(getParent().getChild());
-		getParent().getChild().setChild(getChild().getChild());
-		getChild().setChild(getParent().getChild().getChild());
-		setParent(getChild().getChild());
-		getChild().setParent(getChild());
+	public Iterator<E> iterator() {
+		return new RecurrentIterator(getParent());
 	}
 	protected final class RecurrentIterator implements Iterator<E> {
 
@@ -185,7 +146,7 @@ public class Hypercollection<E>
 		 * The next time-listener.
 		 */
 		Collection<E> next;
-
+		
 		/**
 		 * If this recursor has next time-listener.
 		 */
@@ -205,7 +166,7 @@ public class Hypercollection<E>
 			Collection<E> c = next;
 			current = c;
 			next = c.getParent();
-			if (c == Hypercollection.this)
+			if (c == AbstractCollection.this)
 				hasNext = false;
 			else
 				hasNext = true;
@@ -252,8 +213,8 @@ public class Hypercollection<E>
 		public E next() {
 			Collection<E> c = next;
 			current = c;
-			next = c.getChild().getChild();
-			if (c == Hypercollection.this)
+			next = c.call();
+			if (c == AbstractCollection.this)
 				hasNext = false;
 			else
 				hasNext = true;
@@ -265,7 +226,7 @@ public class Hypercollection<E>
 			current.clear();
 			if (!k.isEmpty()) {
 				current = k;
-				next = k.getChild().getChild();
+				next = k.call();
 			} else
 				hasNext = false;
 		 }

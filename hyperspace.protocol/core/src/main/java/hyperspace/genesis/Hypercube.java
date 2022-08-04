@@ -6,6 +6,7 @@ package hyperspace.genesis;
 import java.util.AbstractCollection;
 import java.util.AbstractSet;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -101,23 +102,24 @@ public abstract class Hypercube<K,V>
     	return null;
     }
     public void putAll(hyperspace.Entry<K,V> m) {
-		for(hyperspace.Entry<K,V> entry : this)  {
+		Enumeration<hyperspace.Entry<K,V>> en = enumerator();
+		for(Entry<K,V> entry = en.nextElement(); en.hasMoreElements(); entry = en.nextElement())  {
 			put(entry.getKey(), entry.getValue());
 		}
     }
 	@Override
 	public V remove(Object key) {
-		Iterator<hyperspace.Entry<K,V>> i = iterator();
+		Enumeration<hyperspace.Entry<K,V>> i = enumerator();
 		hyperspace.Entry<K,V> correctEntry = null;
         if (key==null) {
-            while (correctEntry==null && i.hasNext()) {
-            	hyperspace.Entry<K,V> e = i.next();
+            while (correctEntry==null && i.hasMoreElements()) {
+            	hyperspace.Entry<K,V> e = i.nextElement();
                 if (e.getKey()==null)
                     correctEntry = e;
             }
         } else {
-            while (correctEntry==null && i.hasNext()) {
-            	hyperspace.Entry<K,V> e = i.next();
+            while (correctEntry==null && i.hasMoreElements()) {
+            	hyperspace.Entry<K,V> e = i.nextElement();
                 if (key.equals(e.getKey()))
                     correctEntry = e;
             }
@@ -245,17 +247,17 @@ public abstract class Hypercube<K,V>
 			
 			@Override
 			public Iterator<Entry<K,V>> iterator() {
-				Iterator<hyperspace.Entry<K,V>> it = Hypercube.this.iterator();
+				Enumeration<hyperspace.Entry<K,V>> it = Hypercube.this.enumerator();
 				return iterator == null ? iterator = new Iterator<Entry<K,V>>() {
 
 					@Override
 					public boolean hasNext() {
-						return it.hasNext();
+						return it.hasMoreElements();
 					}
 
 					@Override
 					public Entry<K, V> next() {
-						return it.next();
+						return it.nextElement();
 					}
 					
 				}: iterator;

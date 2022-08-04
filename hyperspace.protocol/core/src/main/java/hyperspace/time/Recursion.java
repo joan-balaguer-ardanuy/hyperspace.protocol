@@ -1,5 +1,6 @@
 package hyperspace.time;
 
+import java.util.Enumeration;
 import java.util.Iterator;
 
 import hyperspace.XML;
@@ -143,19 +144,19 @@ public abstract class Recursion
 
 		@Override
 		public void compare(K parent, V child) {
-			Iterator<K> parentIterator = parent.iterator();
-			Iterator<V> childIterator = child.iterator();
+			Enumeration<K> parentEnumeration = parent.enumerator();
+			Enumeration<V> childEnumeration = child.enumerator();
 			
 			while(true) {
-				if(parentIterator.hasNext() && childIterator.hasNext()) {
-					K key = parentIterator.next();
-					V value = childIterator.next();
+				if(parentEnumeration.hasMoreElements() && childEnumeration.hasMoreElements()) {
+					K key = parentEnumeration.nextElement();
+					V value = childEnumeration.nextElement();
 					key.compareTo(value);
 					addParent(key.comparator().source());
 					
-					if(childIterator.hasNext() && parentIterator.hasNext()) {
-						value = childIterator.next();
-						key = parentIterator.next();
+					if(childEnumeration.hasMoreElements() && parentEnumeration.hasMoreElements()) {
+						value = childEnumeration.nextElement();
+						key = parentEnumeration.nextElement();
 						value.compareTo(key);
 						addChild(value.comparator().source());
 					}

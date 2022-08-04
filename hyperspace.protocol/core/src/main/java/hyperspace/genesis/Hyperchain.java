@@ -186,5 +186,55 @@ public class Hyperchain<K,V>
 	public <T> T[] toArray(T[] a) {
 		return null;
 	}
-	
+	@Override
+	public Iterator<Entry<K, V>> iterator() {
+		return new RecurrentIterator(getParent());
+	}
+
+	protected final class RecurrentIterator implements Iterator<Entry<K,V>> {
+		
+		/**
+		 * The current time-listener.
+		 */
+		protected Entry<K,V> current;
+		
+		/**
+		 * The next time-listener.
+		 */
+		protected Entry<K,V> next;
+		
+		/**
+		 * If this recursor has next time-listener.
+		 */
+		protected boolean hasNext;
+		
+		public RecurrentIterator(Entry<K,V> key) {
+			next = current = key;
+			hasNext = true;
+		}
+		@Override
+		public boolean hasNext() {
+			return hasNext;
+		}
+		@Override
+		public Entry<K,V> next() {
+			Entry<K,V> k = next;
+			current = k;
+			next = k.getParent();
+			if(k == Hyperchain.this)
+				hasNext = false;
+			else hasNext = true;
+			return k;
+		}
+//		@Override
+//		public void remove() {
+//			K k = next;
+//			current.clear();
+//			if(!k.isEmpty()) {
+//				current = k;
+//				next = k.getParent();
+//			}
+//			else hasNext = false;
+//		}
+	}
 }

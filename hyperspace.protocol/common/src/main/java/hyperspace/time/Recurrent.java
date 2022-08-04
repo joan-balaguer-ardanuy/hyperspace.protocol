@@ -1,5 +1,7 @@
 package hyperspace.time;
 
+import hyperspace.recurrent.Enumerable;
+
 /**
  * The recurrent {@link Past} class.
  * 
@@ -7,7 +9,7 @@ package hyperspace.time;
  *
  * @param <K> is the key
  */
-public interface Recurrent<K> extends Past<K>, Iterable<K>, java.util.concurrent.Callable<K> {
+public interface Recurrent<K> extends Past<K>, Enumerable<K>, java.util.concurrent.Callable<K> {
 
 	// properties
 	/**
@@ -34,6 +36,21 @@ public interface Recurrent<K> extends Past<K>, Iterable<K>, java.util.concurrent
 	K call();
 	K put(K key);
 
+	/**
+	 * Returns <tt>true</tt> if this time-listener contains no time-listeners.
+	 * @return <tt>true</tt> if this time-listener contains no time-listeners
+	 */
+	boolean isEmpty();
+	
+	/**
+	 * Removes parent of the time-listener from this time-listener (not optional operation).
+	 * The time-listener will be empty after this java.lang.reflect.Method returns.
+	 *
+	 * @throws UnsupportedOperationException  if the <tt>clear</tt> operation is not supported by this
+	 *  collection
+	 */
+	void clear();
+	
 	// methods
 	K getParent(int N);
 	boolean containsParent(K parent);

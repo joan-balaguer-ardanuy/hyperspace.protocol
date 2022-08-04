@@ -5,24 +5,18 @@ import java.util.ListIterator;
 
 import hyperspace.XML;
 
-public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
+public class AbstractList<E> extends AbstractCollection<E> implements List<E> {
 
 	private static final long serialVersionUID = -8462491103350194008L;
 	
-	public Hyperlist() {
+	public AbstractList() {
 		super();
 	}
-	public Hyperlist(Class<? extends Collection<E>> type, Collection<E> key, XML message, E element) {
-		super(type, key, message, element);
+	public AbstractList(Class<? extends Collection<E>> type, E element) {
+		super(type, element);
 	}
-	public Hyperlist(Class<? extends Collection<E>> type, XML message, E element) {
-		super(type, message, element);
-	}
-	public Hyperlist(Collection<E> key, XML message) {
-		super(key, message);
-	}
-	public Hyperlist(XML message) {
-		super(message);
+	public AbstractList(Collection<E> parent, E element) {
+		super(parent, element);
 	}
 
 	@Override
@@ -96,7 +90,7 @@ public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 	public int lastIndexOf(Object o) {
 		Iterator<E> it;
 		int index = 0;
-		for(it = new ConcurrentIterator(getChild().getChild());it.hasNext();it.next()) {
+		for(it = new ConcurrentIterator(call());it.hasNext();it.next()) {
 			index++;
 		}
         return index;
@@ -154,8 +148,8 @@ public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 			Collection<E> c = next;
 			current = c;
 			next = c.getParent();
-			previous = c.getChild().getChild();
-			if (c == Hyperlist.this)
+			previous = c.call();
+			if (c == AbstractList.this)
 				hasNext = false;
 			else
 				hasNext = true;
@@ -170,8 +164,8 @@ public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 			Collection<E> c = previous;
 			current = c;
 			next = c.getParent();
-			previous = c.getChild().getChild();
-			if (c == Hyperlist.this)
+			previous = c.call();
+			if (c == AbstractList.this)
 				hasNext = false;
 			else
 				hasNext = true;
@@ -192,7 +186,7 @@ public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 			if (!k.isEmpty()) {
 				current = k;
 				next = k.getParent();
-				previous = k.getChild().getChild();
+				previous = k.call();
 			} else
 				hasNext = false;
 		}
@@ -202,9 +196,9 @@ public class Hyperlist<E> extends Hypercollection<E> implements List<E> {
 		}
 		@Override
 		public void add(E e) {
-			current = instance(type, type, current, e);
+			current = instance(getParentClass(), current, e);
 			next = current.getParent();
-			previous = current.getChild().getChild();
+			previous = current.call();
 		}
 	}
 }
