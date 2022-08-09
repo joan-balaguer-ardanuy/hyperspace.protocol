@@ -49,18 +49,6 @@ public interface Listener
 	 * @param message {@link XML} the message
 	 */
 	void setMessage(XML message);
-	
-	/**
-	 * Adds new event listener to the event listeners array.
-	 * @param listener {@link Listener} the new listener to be added.
-	 */
-	void addEventListener(Listener listener);
-	
-	/**
-	 * Removes old event listener from the event listeners array.
-	 * @param listener {@link Listener} the old listener to be removed.
-	 */
-	void removeEventListener(Listener listener);
 
 	/**
 	 * The event.

@@ -19,7 +19,7 @@ import hyperspace.time.Past;
  * @param <V> is the child
  */
 public interface TimeListener<K,V>
-	extends Past<K>, Future<V> {
+	extends Past<K>, Future<V>, Listener {
 
 	// properties
 	K getParent();

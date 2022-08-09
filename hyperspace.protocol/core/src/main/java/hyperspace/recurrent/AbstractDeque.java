@@ -6,22 +6,15 @@ public abstract class AbstractDeque<E>
 	extends AbstractQueue<E> 
 		implements Deque<E> {
 
-	private static final long serialVersionUID = 5923318731838756664L;
-
+	private static final long serialVersionUID = 4488580658335223540L;
 	public AbstractDeque() {
 		super();
 	}
-	
-	
-	public AbstractDeque(Class<? extends Collection<E>> type, E element) {
+	public AbstractDeque(Class<? extends AbstractDeque<E>> type, E element) {
 		super(type, element);
-		// TODO Auto-generated constructor stub
 	}
-
-
-	public AbstractDeque(Collection<E> parent, E element) {
+	public AbstractDeque(AbstractDeque<E> parent, E element) {
 		super(parent, element);
-		// TODO Auto-generated constructor stub
 	}
 
 

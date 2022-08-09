@@ -53,8 +53,8 @@ public class Hyperchain<K,V>
 	 * @param parent {@link Hyperchain} the parent
 	 * @param key the key
 	 */
-	public Hyperchain(Hyperchain<K,V> parent, XML message) {
-		super(parent, message);
+	public Hyperchain(Hyperchain<K,V> parent) {
+		super(parent);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
@@ -63,8 +63,8 @@ public class Hyperchain<K,V>
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hyperchain(Class<? extends Hypercube<V,K>> childClass, Hyperchain<K,V> parent, XML message, K key, V value) {
-		super(childClass, parent, message, key, value);
+	public Hyperchain(Class<? extends Hypercube<V,K>> childClass, Hyperchain<K,V> parent, K key, V value) {
+		super(childClass, parent, key, value);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
@@ -72,8 +72,8 @@ public class Hyperchain<K,V>
 	 * @param message {@link String} the name
 	 * @param key the key
 	 */
-	public Hyperchain(Hyperchain<K,V> root, Hypercube<V,K> stem, XML message) {
-		super(root, stem, message);
+	public Hyperchain(Hyperchain<K,V> root, Hypercube<V,K> stem) {
+		super(root, stem);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
@@ -83,8 +83,8 @@ public class Hyperchain<K,V>
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hyperchain(Class<? extends Hypercube<V,K>> childClass, Hyperchain<K,V> root, Hypercube<V,K> stem, XML message, K key, V value) {
-		super(childClass, root, stem, message, key, value);
+	public Hyperchain(Class<? extends Hypercube<V,K>> childClass, Hyperchain<K,V> root, Hypercube<V,K> stem, K key, V value) {
+		super(childClass, root, stem, key, value);
 	}
 	
 	@Override

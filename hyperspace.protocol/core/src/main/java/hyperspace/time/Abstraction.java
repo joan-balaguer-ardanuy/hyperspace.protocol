@@ -62,16 +62,16 @@ public abstract class Abstraction
 	 * {@link Abstraction} class constructor.
 	 * @param parent parent parent
 	 */
-	public Abstraction(K parent, XML message) {
-		super(parent, message);
+	public Abstraction(K parent) {
+		super(parent);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Abstraction(Class<? extends V> childClass, K parent, XML message) {
-		super(childClass, parent, message);
+	public Abstraction(Class<? extends V> childClass, K parent) {
+		super(childClass, parent);
 		setParentClass(parent.getParentClass());
 		setChildClass(childClass);
 	}
@@ -80,8 +80,8 @@ public abstract class Abstraction
 	 * @param root the root
 	 * @param {@link String} the name
 	 */
-	public Abstraction(K root, V stem, XML message) {
-		super(root, stem, message);
+	public Abstraction(K root, V stem) {
+		super(root, stem);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
@@ -89,8 +89,8 @@ public abstract class Abstraction
 	 * @param root the root
 	 * @param message {@link String} the name
 	 */
-	public Abstraction(Class<? extends V> childClass, K root, V stem, XML message) {
-		super(childClass, root, stem, message);
+	public Abstraction(Class<? extends V> childClass, K root, V stem) {
+		super(childClass, root, stem);
 		setParentClass(root.getParentClass());
 		setChildClass(childClass);
 	}

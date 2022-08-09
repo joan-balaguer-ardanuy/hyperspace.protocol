@@ -1,7 +1,6 @@
 package hyperspace.time;
 
 import java.util.Enumeration;
-import java.util.Iterator;
 
 import hyperspace.XML;
 
@@ -68,24 +67,24 @@ public abstract class Recursion
 	 * {@link Recursion} class constructor.
 	 * @param parent the parent
 	 */
-	public Recursion(K parent, XML message) {
-		super(parent, message);
+	public Recursion(K parent) {
+		super(parent);
 	}
 	/**
 	 * {@link Recursion} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Recursion(Class<? extends V> childClass, K parent, XML message) {
-		super(childClass, parent, message);
+	public Recursion(Class<? extends V> childClass, K parent) {
+		super(childClass, parent);
 	}
 	/**
 	 * {@link Recursion} class constructor.
 	 * @param root the root
 	 * @param message {@link String} the name
 	 */
-	public Recursion(K root, V stem, XML message) {
-		super(root, stem, message);
+	public Recursion(K root, V stem) {
+		super(root, stem);
 	}
 	/**
 	 * {@link Recursion} class constructor.
@@ -93,8 +92,8 @@ public abstract class Recursion
 	 * @param root the root
 	 * @param message {@link String} the name
 	 */
-	public Recursion(Class<? extends V> childClass, K root, V stem, XML message) {
-		super(childClass, root, stem, message);
+	public Recursion(Class<? extends V> childClass, K root, V stem) {
+		super(childClass, root, stem);
 	}
 
 	@Override
@@ -173,8 +172,6 @@ public abstract class Recursion
 			this.source.submitChild(key, key.getChild());
 			key.setRoot(this.source);
 			key.setStem(this.source.getStem());
-			key.addEventListener(this.source);
-			key.getChild().addEventListener(this.source.getStem());
 		}
 		public void addChild(V value) {
 			if(this.source == null) {
@@ -184,8 +181,6 @@ public abstract class Recursion
 			this.source.submitChild(value.getChild(), value);
 			value.setStem(this.source);
 			value.setRoot(this.source.getStem());
-			value.addEventListener(this.source.getStem());
-			value.getChild().addEventListener(this.source);
 		}
 	}
 }

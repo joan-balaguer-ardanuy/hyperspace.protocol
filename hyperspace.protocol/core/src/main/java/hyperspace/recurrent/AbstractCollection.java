@@ -4,11 +4,10 @@ import java.util.Iterator;
 import java.util.Objects;
 
 public class AbstractCollection<E> 
-	extends AbstractRecurrence<Collection<E>> 
+	extends AbstractRecurrent<Collection<E>> 
 		implements Collection<E> {
 
-	private static final long serialVersionUID = -3175794994944973984L;
-
+	private static final long serialVersionUID = -7062454426060890047L;
 	E element;
 	
 	@Override
@@ -27,12 +26,12 @@ public class AbstractCollection<E>
 		super();
 	}
 
-	public AbstractCollection(Class<? extends Collection<E>> type, E element) {
+	public AbstractCollection(Class<? extends AbstractCollection<E>> type, E element) {
 		super(type);
 		setElement(element);
 	}
 
-	public AbstractCollection(Collection<E> parent, E element) {
+	public AbstractCollection(AbstractCollection<E> parent, E element) {
 		super(parent);
 		setElement(element);
 	}

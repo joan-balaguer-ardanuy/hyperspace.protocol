@@ -3,19 +3,19 @@ package hyperspace.recurrent;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import hyperspace.XML;
-
-public class AbstractList<E> extends AbstractCollection<E> implements List<E> {
-
-	private static final long serialVersionUID = -8462491103350194008L;
+public class AbstractList<E> 
+	extends AbstractCollection<E> 
+		implements List<E> {
 	
+	private static final long serialVersionUID = -6164865301667522745L;
+
 	public AbstractList() {
 		super();
 	}
-	public AbstractList(Class<? extends Collection<E>> type, E element) {
+	public AbstractList(Class<? extends AbstractCollection<E>> type, E element) {
 		super(type, element);
 	}
-	public AbstractList(Collection<E> parent, E element) {
+	public AbstractList(AbstractList<E> parent, E element) {
 		super(parent, element);
 	}
 

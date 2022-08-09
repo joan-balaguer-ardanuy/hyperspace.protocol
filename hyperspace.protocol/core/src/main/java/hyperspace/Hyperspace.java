@@ -8,14 +8,14 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import hyperspace.time.Time;
+import hyperspace.time.Order;
 
 /**
  * @author joan
  *
  */
 public abstract class Hyperspace<K,V> 
-	extends Time<Entry<K,V>,Entry<V,K>>
+	extends Order<Entry<K,V>,Entry<V,K>>
 		implements Entry<K,V> {
 
 	/**
@@ -74,8 +74,8 @@ public abstract class Hyperspace<K,V>
 	 * {@link Hyperspace} class constructor.
 	 * @param parent {@link Entry} the parent
 	 */
-	public Hyperspace(Entry<K,V> parent, XML message) {
-		super(parent, message);
+	public Hyperspace(Entry<K,V> parent) {
+		super(parent);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
@@ -84,8 +84,8 @@ public abstract class Hyperspace<K,V>
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> parent, XML message, K key, V value) {
-		super(childClass, parent, message);
+	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> parent, K key, V value) {
+		super(childClass, parent);
 		setKey(key);
 		setValue(value);
 	}
@@ -94,8 +94,8 @@ public abstract class Hyperspace<K,V>
 	 * @param root {@link Entry} the root
 	 * @param message
 	 */
-	public Hyperspace(Entry<K,V> root, Entry<V,K> stem, XML message) {
-		super(root, stem, message);
+	public Hyperspace(Entry<K,V> root, Entry<V,K> stem) {
+		super(root, stem);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
@@ -105,8 +105,8 @@ public abstract class Hyperspace<K,V>
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, Entry<V,K> stem, XML message, K key, V value) {
-		super(childClass, root, stem, message);
+	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, Entry<V,K> stem, K key, V value) {
+		super(childClass, root, stem);
 		setKey(key);
 		setValue(value);
 	}
@@ -191,7 +191,7 @@ public abstract class Hyperspace<K,V>
 	public V putValue(K key, V value) {
 		setKey(key);
 		setValue(value);
-		instance(getParentClass(), getChildClass(), getParent(), getMessage(), key, value);
+		instance(getParentClass(), getChildClass(), getParent(), key, value);
 		return null;
 	}
 	@Override

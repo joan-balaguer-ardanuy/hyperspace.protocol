@@ -1,11 +1,10 @@
 package hyperspace.time;
 
 import java.util.Enumeration;
-import java.util.Iterator;
 
 import hyperspace.XML;
 
-public abstract class Time
+public abstract class Order
 	<K extends Recursive<K,V>,V extends Recursive<V,K>>
 		extends Inheritance<K,V>
 			implements Recursive<K,V> {
@@ -15,62 +14,62 @@ public abstract class Time
 	 */
 	private static final long serialVersionUID = -1495539127840786666L;
 	/**
-	 * {@link Time} default class constructor.<br/>
+	 * {@link Order} default class constructor.<br/>
 	 * 1. instance this and value;<br/>
 	 * 2. put(this) and set(value);<br/>
 	 * 3. value.set(this);<br/>
 	 * 4. setParent(this) and setChild(value);<br/> 
 	 */
-	public Time() {
+	public Order() {
 		super();
 	}
 	/**
-	 * {@link Time} class constructor.
+	 * {@link Order} class constructor.
 	 * @param message {@link String} the name
 	 */
-	public Time(XML message) {
+	public Order(XML message) {
 		super(message);
 	}
 	/**
-	 * {@link Time} class constructor.
+	 * {@link Order} class constructor.
 	 * @param parentClass {@link Class} the type
 	 * @param childClass {@link Class} the child class
 	 * @param message {@link String} the name
 	 */
-	public Time(Class<? extends K> parentClass, Class<? extends V> childClass,  XML message) {
+	public Order(Class<? extends K> parentClass, Class<? extends V> childClass,  XML message) {
 		super(parentClass, childClass, message);
 	}
 	/**
-	 * {@link Time} class constructor.
+	 * {@link Order} class constructor.
 	 * @param parent the parent
 	 */
-	public Time(K parent, XML message) {
-		super(parent, message);
+	public Order(K parent) {
+		super(parent);
 	}
 	/**
-	 * {@link Time} class constructor.
+	 * {@link Order} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Time(Class<? extends V> childClass, K parent, XML message) {
-		super(childClass, parent, message);
+	public Order(Class<? extends V> childClass, K parent) {
+		super(childClass, parent);
 	}
 	/**
-	 * {@link Time} class constructor.
+	 * {@link Order} class constructor.
 	 * @param root the root
 	 * @param message {@link String} the name
 	 */
-	public Time(K root, V stem, XML message) {
-		super(root, stem, message);
+	public Order(K root, V stem) {
+		super(root, stem);
 	}
 	/**
-	 * {@link Time} class constructor.
+	 * {@link Order} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param message {@link String} the name
 	 */
-	public Time(Class<? extends V> childClass, K root, V stem, XML message) {
-		super(childClass, root, stem, message);
+	public Order(Class<? extends V> childClass, K root, V stem) {
+		super(childClass, root, stem);
 	}
 
 	@Override
@@ -108,7 +107,7 @@ public abstract class Time
 			K k = next;
 			current = k;
 			next = k.getParent();
-			if(k == Time.this)
+			if(k == Order.this)
 				hasNext = false;
 			else hasNext = true;
 			return k;

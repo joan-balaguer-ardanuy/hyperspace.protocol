@@ -1,8 +1,6 @@
 package hyperspace.time;
 
-import hyperspace.Listener;
-
-public interface Past<K> extends Listener {
+public interface Past<K> {
 	
 	K getParent();
 	K setParent(K key);

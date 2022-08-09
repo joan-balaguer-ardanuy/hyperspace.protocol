@@ -53,8 +53,8 @@ public abstract class Hypercube<K,V>
 	 * {@link Hypercube} class constructor.
 	 * @param parent {@link Hypercube} the parent
 	 */
-	public Hypercube(Hypercube<K,V> parent, XML message) {
-		super(parent, message);
+	public Hypercube(Hypercube<K,V> parent) {
+		super(parent);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
@@ -63,8 +63,8 @@ public abstract class Hypercube<K,V>
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hypercube(Class<? extends Hyperchain<V,K>> childClass, Hypercube<K,V> parent, XML message, K key, V value) {
-		super(childClass, parent, message, key, value);
+	public Hypercube(Class<? extends Hyperchain<V,K>> childClass, Hypercube<K,V> parent, K key, V value) {
+		super(childClass, parent, key, value);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
@@ -72,8 +72,8 @@ public abstract class Hypercube<K,V>
 	 * @param message {@link String} the name
 	 * @param key the key
 	 */
-	public Hypercube(Hypercube<K,V> root, Hyperchain<V,K> stem, XML message) {
-		super(root, stem, message);
+	public Hypercube(Hypercube<K,V> root, Hyperchain<V,K> stem) {
+		super(root, stem);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
@@ -83,8 +83,8 @@ public abstract class Hypercube<K,V>
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hypercube(Class<? extends Hyperchain<V,K>> childClass, Hypercube<K,V> root, Chain<V,K> stem, XML message, K key, V value) {
-		super(childClass, root, stem, message, key, value);
+	public Hypercube(Class<? extends Hyperchain<V,K>> childClass, Hypercube<K,V> root, Hyperchain<V,K> stem, K key, V value) {
+		super(childClass, root, stem, key, value);
 	}
 	@Override
 	@Deprecated
@@ -96,10 +96,7 @@ public abstract class Hypercube<K,V>
     	return getValue((K) key);
     }
     public V put(K key, V value) {
-		setKey(key);
-		setValue(value);
-		instance(getParentClass(), getChildClass(), getParent(), getMessage(), key, value);
-    	return null;
+    	return putValue(key, value);
     }
     public void putAll(hyperspace.Entry<K,V> m) {
 		Enumeration<hyperspace.Entry<K,V>> en = enumerator();
@@ -137,6 +134,10 @@ public abstract class Hypercube<K,V>
 		for(Entry<? extends K, ? extends V> entry : m.entrySet()) {
 			put(entry.getKey(), entry.getValue());
 		}
+	}
+	@Override
+	public Iterator<K> iterator() {
+		return keySet().iterator();
 	}
 
 	transient Set<K> keySet;

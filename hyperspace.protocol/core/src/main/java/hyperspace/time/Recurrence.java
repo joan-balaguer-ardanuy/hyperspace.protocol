@@ -127,7 +127,7 @@ import hyperspace.XML;
  * in parent poblations and recursions of <b>this</b> planet.<br/>
  * <br/>
  * To concur <b>this</b> recurrence is to not allow oneself.<br/>
- * <b>this</b> recurrence is preceded by a recurrent {@link Time}.<br/>
+ * <b>this</b> recurrence is preceded by a recurrent {@link Order}.<br/>
  * <br/>
  * It who would in its parent {@link Recursive} recurred parent event of <b>root</b>'s transmutation<br/>
  * concur program child by parent living recursion and since recursion parent<br/>
@@ -192,24 +192,24 @@ public abstract class Recurrence
 	 * {@link Recurrence} class constructor.
 	 * @param parent the parent
 	 */
-	public Recurrence(K parent, XML message) {
-		super(parent, message);
+	public Recurrence(K parent) {
+		super(parent);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Recurrence(Class<? extends V> childClass, K parent, XML message) {
-		super(childClass, parent, message);
+	public Recurrence(Class<? extends V> childClass, K parent) {
+		super(childClass, parent);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
 	 * @param root the root
 	 * @param message {@link String} the name
 	 */
-	public Recurrence(K root, V stem, XML message) {
-		super(root, stem, message);
+	public Recurrence(K root, V stem) {
+		super(root, stem);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
@@ -217,8 +217,8 @@ public abstract class Recurrence
 	 * @param root the root
 	 * @param message {@link String} the name
 	 */
-	public Recurrence(Class<? extends V> childClass, K root, V stem, XML message) {
-		super(childClass, root, stem, message);
+	public Recurrence(Class<? extends V> childClass, K root, V stem) {
+		super(childClass, root, stem);
 	}
 
 	@Override

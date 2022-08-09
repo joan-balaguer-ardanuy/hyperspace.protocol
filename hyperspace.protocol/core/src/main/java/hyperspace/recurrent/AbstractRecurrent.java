@@ -1,16 +1,14 @@
 package hyperspace.recurrent;
 
+import java.io.Serializable;
 import java.util.Enumeration;
 
-import hyperspace.Command;
-import hyperspace.Program;
 import hyperspace.time.Recurrent;
 
-public class AbstractRecurrence<E extends Recurrent<E>> 
-	extends Program 
-		implements Recurrent<E> {
+public class AbstractRecurrent<E extends Recurrent<E>> 
+	implements Recurrent<E>, Serializable {
 
-	private static final long serialVersionUID = 2529757152751234697L;
+	private static final long serialVersionUID = 5022583607150859450L;
 	E root;
 	E parent;
 	E past;
@@ -55,15 +53,13 @@ public class AbstractRecurrence<E extends Recurrent<E>>
 		this.type = type;
 	}
 
-	public AbstractRecurrence() {
-		super();
+	public AbstractRecurrent() {
 	}
-	public AbstractRecurrence(Class<? extends E> type) {
+	public AbstractRecurrent(Class<? extends E> type) {
 		root = parent = past = type.cast(this);
 		this.type = type;
 	}
-	public AbstractRecurrence(E parent) {
-		super();
+	public AbstractRecurrent(E parent) {
 		setParentClass(parent.getParentClass());
 		setParent(parent);
 		put(parent.call());
@@ -72,10 +68,6 @@ public class AbstractRecurrence<E extends Recurrent<E>>
 		setRoot(parent.getRoot());
 	}
 	
-	@Override
-	public void run() {
-		setCommand(Command.TRANSFER);
-	}
 	@Override
 	public boolean isEmpty() {
 		return this.parent == this;
@@ -159,6 +151,14 @@ public class AbstractRecurrence<E extends Recurrent<E>>
 			N--;
 		}
 	}
+	protected static <X> X instance(Class<X> type, Object parent, Object object) {
+		try {
+			return type.getDeclaredConstructor(parent.getClass(), object.getClass()).newInstance(parent, object);
+		}
+		catch(Throwable t) {
+			throw new Error(t);
+		}
+	}
 
 	@Override
 	public Enumeration<E> enumerator() {
@@ -198,7 +198,7 @@ public class AbstractRecurrence<E extends Recurrent<E>>
 			E e = next;
 			current = e;
 			next = e.getParent();
-			if(e == AbstractRecurrence.this)
+			if(e == AbstractRecurrent.this)
 				hasNext = false;
 			else hasNext = true;
 			return e;
@@ -235,7 +235,7 @@ public class AbstractRecurrence<E extends Recurrent<E>>
 			E e = next;
 			current = e;
 			next = e.call();
-			if (e == AbstractRecurrence.this)
+			if (e == AbstractRecurrent.this)
 				hasNext = false;
 			else
 				hasNext = true;

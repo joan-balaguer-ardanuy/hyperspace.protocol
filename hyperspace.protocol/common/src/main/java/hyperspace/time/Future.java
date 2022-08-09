@@ -1,8 +1,6 @@
 package hyperspace.time;
 
-import hyperspace.Listener;
-
-public interface Future<V> extends Listener {
+public interface Future<V> {
 	
 	V getChild();
 	V setChild(V value);

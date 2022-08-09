@@ -10,14 +10,14 @@ import java.util.Iterator;
 import java.util.Set;
 
 import hyperspace.XML;
-import hyperspace.time.Time;
+import hyperspace.time.Order;
 
 /**
  * @author joan
  *
  */
 public class Hypermap<K,V> 
-	extends Time<Map<K,V>,Map<K,V>>
+	extends Order<Map<K,V>,Map<K,V>>
 		implements Map<K,V> {
 
 	/**
@@ -63,19 +63,19 @@ public class Hypermap<K,V>
 	public Hypermap(Class<? extends Map<K,V>> type, XML message) {
 		super(type, type, message);
 	}
-	public Hypermap(Map<K,V> parent, XML message) {
-		super(parent, message);
+	public Hypermap(Map<K,V> parent) {
+		super(parent);
 	}
-	public Hypermap(Map<K,V> parent, XML message, K key, V value) {
-		super(parent.getParentClass(), parent, message);
+	public Hypermap(Map<K,V> parent, K key, V value) {
+		super(parent.getParentClass(), parent);
 		setKey(key);
 		setValue(value);
 	}
-	public Hypermap(Map<K,V> root, Map<K,V> stem, XML message) {
-		super(root, stem, message);
+	public Hypermap(Map<K,V> root, Map<K,V> stem) {
+		super(root, stem);
 	}
-	public Hypermap(Map<K,V> root, Map<K,V> stem, XML message, K key, V value) {
-		super(root.getParentClass(), root, stem, message);
+	public Hypermap(Map<K,V> root, Map<K,V> stem, K key, V value) {
+		super(root.getParentClass(), root, stem);
 		setKey(key);
 		setValue(value);
 	}

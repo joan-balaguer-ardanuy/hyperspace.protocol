@@ -2,7 +2,7 @@ package hyperspace.recurrent;
 
 public class IntegerCollection extends AbstractCollection<Integer> {
 
-	private static final long serialVersionUID = 8329625439490271449L;
+	private static final long serialVersionUID = 2595284205255420069L;
 
 	public IntegerCollection() {
 	}
@@ -11,7 +11,7 @@ public class IntegerCollection extends AbstractCollection<Integer> {
 		super(IntegerCollection.class, element);
 	}
 
-	public IntegerCollection(AbstractCollection<Integer> parent, Integer element) {
+	public IntegerCollection(IntegerCollection parent, Integer element) {
 		super(parent, element);
 	}
 
