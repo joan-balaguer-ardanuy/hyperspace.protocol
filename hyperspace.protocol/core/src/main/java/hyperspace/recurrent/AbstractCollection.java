@@ -3,14 +3,18 @@ package hyperspace.recurrent;
 import java.util.Iterator;
 import java.util.Objects;
 
+import jakarta.xml.bind.annotation.XmlTransient;
+
 public class AbstractCollection<E> 
 	extends AbstractRecurrent<Collection<E>> 
 		implements Collection<E> {
 
 	private static final long serialVersionUID = -7062454426060890047L;
+	
 	E element;
 	
 	@Override
+	@XmlTransient
 	public E getElement() {
 		return element;
 	}
@@ -22,8 +26,9 @@ public class AbstractCollection<E>
 		return old;
 	}
 	
-	public AbstractCollection() {
-		super();
+	public AbstractCollection(Class<? extends AbstractCollection<E>> type) {
+		super(type);
+		setElement(null);
 	}
 
 	public AbstractCollection(Class<? extends AbstractCollection<E>> type, E element) {
@@ -37,28 +42,18 @@ public class AbstractCollection<E>
 	}
 
 	@Override
-	@Deprecated
-	public int size() {
-		return 1;
-	}
-
-	@Override
 	public boolean contains(Object o) {
-		return false;
-	}
-
-	@Override
-	@Deprecated
-	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	@Deprecated
-	public <T> T[] toArray(T[] a) {
-		// TODO Auto-generated method stub
-		return null;
+		Iterator<E> it = iterator();
+        if (o==null) {
+            while (it.hasNext())
+                if (it.next()==null)
+                    return true;
+        } else {
+            while (it.hasNext())
+                if (o.equals(it.next()))
+                    return true;
+        }
+        return false;
 	}
 
 	@Override
@@ -229,5 +224,22 @@ public class AbstractCollection<E>
 			} else
 				hasNext = false;
 		 }
+	}
+	@Override
+	@Deprecated
+	public int size() {
+		return 0;
+	}
+
+	@Override
+	@Deprecated
+	public Object[] toArray() {
+		return null;
+	}
+
+	@Override
+	@Deprecated
+	public <T> T[] toArray(T[] a) {
+		return null;
 	}
 }

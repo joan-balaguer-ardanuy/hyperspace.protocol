@@ -76,24 +76,24 @@ public abstract class Inheritance
 	 * {@link Inheritance} class constructor.
 	 * @param parent the parent
 	 */
-	public Inheritance(K parent) {
-		super(parent);
+	public Inheritance(K parent, XML message) {
+		super(parent, message);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
 	 * @param parent the parent
 	 * @param child the child
 	 */
-	public Inheritance(Class<? extends V> antitype, K parent) {
-		super(antitype, parent);
+	public Inheritance(Class<? extends V> antitype, K parent, XML message) {
+		super(antitype, parent, message);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
 	 * @param root the root
 	 * @param message {@link String} the name
 	 */
-	public Inheritance(K root, V stem) {
-		super(root, stem);
+	public Inheritance(K root, V stem, XML message) {
+		super(root, stem, message);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
@@ -101,8 +101,8 @@ public abstract class Inheritance
 	 * @param message {@link String} the name
 	 * @param child the child
 	 */
-	public Inheritance(Class<? extends V> antitype, K root, V stem) {
-		super(antitype, root, stem);
+	public Inheritance(Class<? extends V> antitype, K root, V stem, XML message) {
+		super(antitype, root, stem, message);
 	}
 
 	@Override

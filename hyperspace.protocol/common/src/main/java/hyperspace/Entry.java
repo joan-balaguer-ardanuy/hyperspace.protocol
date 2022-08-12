@@ -110,8 +110,8 @@ public interface Entry<K,V>
     void replaceAllValues(BiFunction<? super K, ? super V, ? extends V> function);
     void replaceAllKeys(BiFunction<? super V, ? super K, ? extends K> function);
     
-    boolean containsKey(Object key);
-    boolean containsValue(Object value);
+    boolean hasKey(K key);
+    boolean hasValue(V value);
     
     V removeValue(K key);
     K removeKey(V key);

@@ -5,8 +5,8 @@ public abstract class AbstractQueue<E>
 		implements Queue<E> {
 
 	private static final long serialVersionUID = -9119766514516058287L;
-	public AbstractQueue() {
-		super();
+	public AbstractQueue(Class<? extends AbstractQueue<E>> type) {
+		super(type);
 	}
 	public AbstractQueue(Class<? extends AbstractQueue<E>> type, E element) {
 		super(type, element);

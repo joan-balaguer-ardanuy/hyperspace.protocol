@@ -43,24 +43,24 @@ public abstract class Order
 	 * {@link Order} class constructor.
 	 * @param parent the parent
 	 */
-	public Order(K parent) {
-		super(parent);
+	public Order(K parent, XML message) {
+		super(parent, message);
 	}
 	/**
 	 * {@link Order} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Order(Class<? extends V> childClass, K parent) {
-		super(childClass, parent);
+	public Order(Class<? extends V> childClass, K parent, XML message) {
+		super(childClass, parent, message);
 	}
 	/**
 	 * {@link Order} class constructor.
 	 * @param root the root
 	 * @param message {@link String} the name
 	 */
-	public Order(K root, V stem) {
-		super(root, stem);
+	public Order(K root, V stem, XML message) {
+		super(root, stem, message);
 	}
 	/**
 	 * {@link Order} class constructor.
@@ -68,8 +68,8 @@ public abstract class Order
 	 * @param root the root
 	 * @param message {@link String} the name
 	 */
-	public Order(Class<? extends V> childClass, K root, V stem) {
-		super(childClass, root, stem);
+	public Order(Class<? extends V> childClass, K root, V stem, XML message) {
+		super(childClass, root, stem, message);
 	}
 
 	@Override

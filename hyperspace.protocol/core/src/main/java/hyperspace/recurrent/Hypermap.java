@@ -63,19 +63,19 @@ public class Hypermap<K,V>
 	public Hypermap(Class<? extends Map<K,V>> type, XML message) {
 		super(type, type, message);
 	}
-	public Hypermap(Map<K,V> parent) {
-		super(parent);
+	public Hypermap(Map<K,V> parent, XML message) {
+		super(parent, message);
 	}
-	public Hypermap(Map<K,V> parent, K key, V value) {
-		super(parent.getParentClass(), parent);
+	public Hypermap(Map<K,V> parent, K key, V value, XML message) {
+		super(parent.getParentClass(), parent, message);
 		setKey(key);
 		setValue(value);
 	}
-	public Hypermap(Map<K,V> root, Map<K,V> stem) {
-		super(root, stem);
+	public Hypermap(Map<K,V> root, Map<K,V> stem, XML message) {
+		super(root, stem, message);
 	}
-	public Hypermap(Map<K,V> root, Map<K,V> stem, K key, V value) {
-		super(root.getParentClass(), root, stem);
+	public Hypermap(Map<K,V> root, Map<K,V> stem, K key, V value, XML message) {
+		super(root.getParentClass(), root, stem, message);
 		setKey(key);
 		setValue(value);
 	}

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Enumeration;
 
 import hyperspace.time.Recurrent;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 public class AbstractRecurrent<E extends Recurrent<E>> 
 	implements Recurrent<E>, Serializable {
@@ -15,6 +16,7 @@ public class AbstractRecurrent<E extends Recurrent<E>>
 	Class<? extends E> type;
 
 	@Override
+	@XmlTransient
 	public E getRoot() {
 		return root;
 	}
@@ -25,6 +27,7 @@ public class AbstractRecurrent<E extends Recurrent<E>>
 		return old;
 	}
 	@Override
+	@XmlTransient
 	public E getParent() {
 		return parent;
 	}
@@ -45,6 +48,7 @@ public class AbstractRecurrent<E extends Recurrent<E>>
 		return old;
 	}
 	@Override
+	@XmlTransient
 	public Class<? extends E> getParentClass() {
 		return type;
 	}

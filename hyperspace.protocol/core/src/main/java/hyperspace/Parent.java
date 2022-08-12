@@ -1,5 +1,7 @@
 package hyperspace;
 
+import jakarta.xml.bind.annotation.XmlTransient;
+
 /**
  * The parent {@link Program} class.
  * It is {@link TimeListener}.
@@ -26,6 +28,7 @@ public abstract class Parent
 	 */
 	private V child;
 	
+	@XmlTransient
 	public K getParent() {
 		return parent;
 	}
@@ -35,6 +38,7 @@ public abstract class Parent
 		this.parent = key;
 		return old;
 	}
+	@XmlTransient
 	public V getChild() {
 		return child;
 	}
@@ -73,8 +77,8 @@ public abstract class Parent
 	 * {@link Parent} class constructor.
 	 * @param key the key
 	 */
-	public Parent(K key) {
-		this(key.getMessage());
+	public Parent(K key, XML message) {
+		this(message);
 		setParent(key);
 		setChild(key.getChild());
 	}
@@ -83,8 +87,8 @@ public abstract class Parent
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Parent(K key, V value) {
-		this(key.getMessage());
+	public Parent(K key, XML message, V value) {
+		this(message);
 		setParent(key);
 		setChild(value);
 	}

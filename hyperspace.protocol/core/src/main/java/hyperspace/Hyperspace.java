@@ -9,6 +9,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import hyperspace.time.Order;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 /**
  * @author joan
@@ -29,6 +30,7 @@ public abstract class Hyperspace<K,V>
 	K key;
 	
 	@Override
+	@XmlTransient
 	public K getKey() {
 		return key;
 	}
@@ -38,6 +40,7 @@ public abstract class Hyperspace<K,V>
 		return old;
 	}
 	@Override
+	@XmlTransient
 	public V getValue() {
 		return getChild().getKey();
 	}
@@ -74,8 +77,8 @@ public abstract class Hyperspace<K,V>
 	 * {@link Hyperspace} class constructor.
 	 * @param parent {@link Entry} the parent
 	 */
-	public Hyperspace(Entry<K,V> parent) {
-		super(parent);
+	public Hyperspace(Entry<K,V> parent, XML message) {
+		super(parent, message);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
@@ -84,8 +87,8 @@ public abstract class Hyperspace<K,V>
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> parent, K key, V value) {
-		super(childClass, parent);
+	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> parent, XML message, K key, V value) {
+		super(childClass, parent, message);
 		setKey(key);
 		setValue(value);
 	}
@@ -94,8 +97,8 @@ public abstract class Hyperspace<K,V>
 	 * @param root {@link Entry} the root
 	 * @param message
 	 */
-	public Hyperspace(Entry<K,V> root, Entry<V,K> stem) {
-		super(root, stem);
+	public Hyperspace(Entry<K,V> root, Entry<V,K> stem, XML message) {
+		super(root, stem, message);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
@@ -105,8 +108,8 @@ public abstract class Hyperspace<K,V>
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, Entry<V,K> stem, K key, V value) {
-		super(childClass, root, stem);
+	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, Entry<V,K> stem, XML message, K key, V value) {
+		super(childClass, root, stem, message);
 		setKey(key);
 		setValue(value);
 	}
@@ -158,7 +161,7 @@ public abstract class Hyperspace<K,V>
 		return getChild().getValueOrDefault(value, defaultKey);
 	}
 	@Override
-	public boolean containsKey(Object key) {
+	public boolean hasKey(K key) {
 		Enumeration<Entry<K,V>> en = enumerator();
 		for(Entry<K,V> entry = en.nextElement(); en.hasMoreElements(); entry = en.nextElement())  {
 			if(key == entry.getKey()) {
@@ -168,8 +171,8 @@ public abstract class Hyperspace<K,V>
 		return false;
 	}
 	@Override
-	public boolean containsValue(Object value) {
-		return getChild().containsKey(value);
+	public boolean hasValue(V value) {
+		return getChild().hasKey(value);
 	}
 	@Override
 	public int indexOfKey(K key) {
@@ -191,7 +194,7 @@ public abstract class Hyperspace<K,V>
 	public V putValue(K key, V value) {
 		setKey(key);
 		setValue(value);
-		instance(getParentClass(), getChildClass(), getParent(), key, value);
+		instance(getParentClass(), getChildClass(), getParent(), getMessage(), key, value);
 		return null;
 	}
 	@Override

@@ -3,9 +3,7 @@
  */
 package hyperspace.genesis;
 
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.Objects;
 
 import hyperspace.Entry;
 import hyperspace.Hyperspace;
@@ -53,8 +51,8 @@ public class Hyperchain<K,V>
 	 * @param parent {@link Hyperchain} the parent
 	 * @param key the key
 	 */
-	public Hyperchain(Hyperchain<K,V> parent) {
-		super(parent);
+	public Hyperchain(Hyperchain<K,V> parent, XML message) {
+		super(parent, message);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
@@ -63,8 +61,8 @@ public class Hyperchain<K,V>
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hyperchain(Class<? extends Hypercube<V,K>> childClass, Hyperchain<K,V> parent, K key, V value) {
-		super(childClass, parent, key, value);
+	public Hyperchain(Class<? extends Hypercube<V,K>> childClass, Hyperchain<K,V> parent, XML message, K key, V value) {
+		super(childClass, parent, message, key, value);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
@@ -72,8 +70,8 @@ public class Hyperchain<K,V>
 	 * @param message {@link String} the name
 	 * @param key the key
 	 */
-	public Hyperchain(Hyperchain<K,V> root, Hypercube<V,K> stem) {
-		super(root, stem);
+	public Hyperchain(Hyperchain<K,V> root, Hypercube<V,K> stem, XML message) {
+		super(root, stem, message);
 	}
 	/**
 	 * {@link Hyperchain} class constructor.
@@ -83,109 +81,15 @@ public class Hyperchain<K,V>
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hyperchain(Class<? extends Hypercube<V,K>> childClass, Hyperchain<K,V> root, Hypercube<V,K> stem, K key, V value) {
-		super(childClass, root, stem, key, value);
+	public Hyperchain(Class<? extends Hypercube<V,K>> childClass, Hyperchain<K,V> root, Hypercube<V,K> stem, XML message, K key, V value) {
+		super(childClass, root, stem, message, key, value);
 	}
 	
 	@Override
 	public DNA<V,K> entryDNA() {
 		return (DNA<V,K>) getChild();
 	}
-	@Override
-	@Deprecated
-	public int size() {
-		return 0;
-	}
-	@Override
-	public boolean contains(Object o) {
-		Iterator<Entry<K,V>> it = iterator();
-        if (o==null) {
-            while (it.hasNext())
-                if (it.next()==null)
-                    return true;
-        } else {
-            while (it.hasNext())
-                if (o.equals(it.next()))
-                    return true;
-        }
-        return false;
-	}
-	@Override
-	public boolean add(Entry<K, V> e) {
-		submitChild(e, e.getChild());
-		return true;
-	}
-	@Override
-	public boolean remove(Object o) {
-		Iterator<Entry<K,V>> it = iterator();
-		if (o == null) {
-			while (it.hasNext()) {
-				if (it.next() == null) {
-					it.remove();
-					return true;
-				}
-			}
-		} else {
-			while (it.hasNext()) {
-				if (o.equals(it.next())) {
-					it.remove();
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	@Override
-	public boolean containsAll(Collection<?> c) {
-		for (Object e : c)
-			if (!contains(e))
-				return false;
-		return true;
-	}
-	@Override
-	public boolean addAll(Collection<? extends Entry<K, V>> c) {
-		boolean modified = false;
-		for (Entry<K,V> e : c)
-			if (add(e))
-				modified = true;
-		return modified;
-	}
-	@Override
-	public boolean retainAll(Collection<?> c) {
-		Objects.requireNonNull(c);
-        boolean modified = false;
-        Iterator<Entry<K,V>> it = iterator();
-        while (it.hasNext()) {
-            if (!c.contains(it.next())) {
-                it.remove();
-                modified = true;
-            }
-        }
-        return modified;
-	}
-	@Override
-	public boolean removeAll(Collection<?> c) {
-		Objects.requireNonNull(c);
-		boolean modified = false;
-		Iterator<?> it = iterator();
-		while (it.hasNext()) {
-			if (c.contains(it.next())) {
-				it.remove();
-				modified = true;
-			}
-		}
-		return modified;
-	}
-	@Override
-	@Deprecated
-	public Object[] toArray() {
-		return null;
-	}
-	@Override
-	@Deprecated
-	public <T> T[] toArray(T[] a) {
-		return null;
-	}
+
 	@Override
 	public Iterator<Entry<K, V>> iterator() {
 		return new RecurrentIterator(getParent());
@@ -226,15 +130,15 @@ public class Hyperchain<K,V>
 			else hasNext = true;
 			return k;
 		}
-//		@Override
-//		public void remove() {
-//			K k = next;
-//			current.clear();
-//			if(!k.isEmpty()) {
-//				current = k;
-//				next = k.getParent();
-//			}
-//			else hasNext = false;
-//		}
+		@Override
+		public void remove() {
+			Entry<K,V> k = next;
+			current.clear();
+			if(!k.isEmpty()) {
+				current = k;
+				next = k.getParent();
+			}
+			else hasNext = false;
+		}
 	}
 }

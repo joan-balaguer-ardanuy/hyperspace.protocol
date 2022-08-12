@@ -1,17 +1,59 @@
 package hyperspace.recurrent;
 
-public class TestCollection {
+import hyperspace.EventArgs;
+import hyperspace.Program;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class TestCollection extends Program {
+
+	private static final long serialVersionUID = 6554912827689942381L;
+
+	IntegerCollection integerCollection;
+	IntegerCollection integerCollection2;
+	
+	@XmlElement
+	public IntegerCollection getIntegerCollection() {
+		return integerCollection;
+	}
+	public void setIntegerCollection(IntegerCollection intengerCollection) {
+		this.integerCollection = intengerCollection;
+	}
+	@XmlElement
+	public IntegerCollection getIntegerCollection2() {
+		return integerCollection2;
+	}
+	public void setIntegerCollection2(IntegerCollection integerCollection2) {
+		this.integerCollection2 = integerCollection2;
+	}
 
 	public TestCollection() {
+		super(new XMLTest());
+		integerCollection = new IntegerCollection(0);
+		integerCollection2 = new IntegerCollection(0);
+		
+		for(int i = 1; i < 10; i++) {
+			integerCollection.add(i);
+		}
+		for(int i = 1; i < 10; i++) {
+			integerCollection2.add(i);
+		}
+		System.out.println(this.toString());
 	}
 
 	public static void main(String[] args) {
-		IntegerCollection intCol = new IntegerCollection(null);
+		new TestCollection();
+	}
+
+	@Override
+	public void run() {
 		
-		for(Integer i = 0; i < Integer.MAX_VALUE - 8; i++) {
-			intCol.add(i);
-			System.out.println(intCol.getParent().getElement());
-		}
+	}
+
+	@Override
+	protected void sendEvent(EventArgs e) {
+		
 	}
 
 }

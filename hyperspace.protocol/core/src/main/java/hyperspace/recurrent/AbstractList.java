@@ -9,10 +9,10 @@ public class AbstractList<E>
 	
 	private static final long serialVersionUID = -6164865301667522745L;
 
-	public AbstractList() {
-		super();
+	public AbstractList(Class<? extends AbstractList<E>> type) {
+		super(type);
 	}
-	public AbstractList(Class<? extends AbstractCollection<E>> type, E element) {
+	public AbstractList(Class<? extends AbstractList<E>> type, E element) {
 		super(type, element);
 	}
 	public AbstractList(AbstractList<E> parent, E element) {
@@ -104,7 +104,7 @@ public class AbstractList<E>
 		throw new UnsupportedOperationException();
 	}
 	@Override
-	public java.util.List<E> subList(int fromIndex, int toIndex) {
+	public List<E> subList(int fromIndex, int toIndex) {
 		throw new UnsupportedOperationException();
 	}
 	

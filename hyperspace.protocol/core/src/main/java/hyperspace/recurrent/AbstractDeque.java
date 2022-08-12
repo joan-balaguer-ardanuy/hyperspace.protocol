@@ -7,8 +7,8 @@ public abstract class AbstractDeque<E>
 		implements Deque<E> {
 
 	private static final long serialVersionUID = 4488580658335223540L;
-	public AbstractDeque() {
-		super();
+	public AbstractDeque(Class<? extends AbstractDeque<E>> type) {
+		super(type);
 	}
 	public AbstractDeque(Class<? extends AbstractDeque<E>> type, E element) {
 		super(type, element);

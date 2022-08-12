@@ -3,14 +3,10 @@
  */
 package hyperspace.genesis;
 
-import java.util.AbstractCollection;
-import java.util.AbstractSet;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
+import hyperspace.Entry;
 import hyperspace.Hyperspace;
 import hyperspace.XML;
 
@@ -53,8 +49,8 @@ public abstract class Hypercube<K,V>
 	 * {@link Hypercube} class constructor.
 	 * @param parent {@link Hypercube} the parent
 	 */
-	public Hypercube(Hypercube<K,V> parent) {
-		super(parent);
+	public Hypercube(Hypercube<K,V> parent, XML message) {
+		super(parent, message);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
@@ -63,8 +59,8 @@ public abstract class Hypercube<K,V>
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hypercube(Class<? extends Hyperchain<V,K>> childClass, Hypercube<K,V> parent, K key, V value) {
-		super(childClass, parent, key, value);
+	public Hypercube(Class<? extends Hyperchain<V,K>> childClass, Hypercube<K,V> parent, XML message, K key, V value) {
+		super(childClass, parent, message, key, value);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
@@ -72,8 +68,8 @@ public abstract class Hypercube<K,V>
 	 * @param message {@link String} the name
 	 * @param key the key
 	 */
-	public Hypercube(Hypercube<K,V> root, Hyperchain<V,K> stem) {
-		super(root, stem);
+	public Hypercube(Hypercube<K,V> root, Hyperchain<V,K> stem, XML message) {
+		super(root, stem, message);
 	}
 	/**
 	 * {@link Hypercube} class constructor.
@@ -83,14 +79,10 @@ public abstract class Hypercube<K,V>
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hypercube(Class<? extends Hyperchain<V,K>> childClass, Hypercube<K,V> root, Hyperchain<V,K> stem, K key, V value) {
-		super(childClass, root, stem, key, value);
+	public Hypercube(Class<? extends Hyperchain<V,K>> childClass, Hypercube<K,V> root, Hyperchain<V,K> stem, XML message, K key, V value) {
+		super(childClass, root, stem, message, key, value);
 	}
-	@Override
-	@Deprecated
-	public int size() {
-		return 0;
-	}
+
 	@SuppressWarnings("unchecked")
 	public V get(Object key) {
     	return getValue((K) key);
@@ -98,25 +90,25 @@ public abstract class Hypercube<K,V>
     public V put(K key, V value) {
     	return putValue(key, value);
     }
-    public void putAll(hyperspace.Entry<K,V> m) {
-		Enumeration<hyperspace.Entry<K,V>> en = enumerator();
+    public void putAll(Entry<K,V> m) {
+		Enumeration<Entry<K,V>> en = enumerator();
 		for(Entry<K,V> entry = en.nextElement(); en.hasMoreElements(); entry = en.nextElement())  {
 			put(entry.getKey(), entry.getValue());
 		}
     }
 	@Override
-	public V remove(Object key) {
-		Enumeration<hyperspace.Entry<K,V>> i = enumerator();
-		hyperspace.Entry<K,V> correctEntry = null;
+	public V remove(K key) {
+		Enumeration<Entry<K,V>> en = enumerator();
+		Entry<K,V> correctEntry = null;
         if (key==null) {
-            while (correctEntry==null && i.hasMoreElements()) {
-            	hyperspace.Entry<K,V> e = i.nextElement();
+            while (correctEntry==null && en.hasMoreElements()) {
+            	Entry<K,V> e = en.nextElement();
                 if (e.getKey()==null)
                     correctEntry = e;
             }
         } else {
-            while (correctEntry==null && i.hasMoreElements()) {
-            	hyperspace.Entry<K,V> e = i.nextElement();
+            while (correctEntry==null && en.hasMoreElements()) {
+            	Entry<K,V> e = en.nextElement();
                 if (key.equals(e.getKey()))
                     correctEntry = e;
             }
@@ -130,149 +122,19 @@ public abstract class Hypercube<K,V>
         return oldValue;
 	}
 	@Override
-	public void putAll(Map<? extends K, ? extends V> m) {
-		for(Entry<? extends K, ? extends V> entry : m.entrySet()) {
-			put(entry.getKey(), entry.getValue());
-		}
-	}
-	@Override
 	public Iterator<K> iterator() {
-		return keySet().iterator();
-	}
-
-	transient Set<K> keySet;
-	transient Collection<V> values;
-   
-	@Override
-	public Set<K> keySet() {
-		Set<K> ks = keySet;
-		if (ks == null) {
-			ks = new AbstractSet<K>() {
-				public Iterator<K> iterator() {
-					return new Iterator<K>() {
-						private Iterator<Entry<K, V>> i = entrySet().iterator();
-
-						public boolean hasNext() {
-							return i.hasNext();
-						}
-
-						public K next() {
-							return i.next().getKey();
-						}
-
-						public void remove() {
-							i.remove();
-						}
-					};
-				}
-				@Deprecated
-				public int size() {
-					return 0;
-				}
-
-				public boolean isEmpty() {
-					return Hypercube.this.isEmpty();
-				}
-
-				public void clear() {
-					Hypercube.this.clear();
-				}
-
-				public boolean contains(Object k) {
-					return Hypercube.this.containsKey(k);
-				}
-			};
-			keySet = ks;
-		}
-		return ks;
-	}
-	@Override
-	public Collection<V> values() {
-		Collection<V> vals = values;
-        if (vals == null) {
-            vals = new AbstractCollection<V>() {
-                public Iterator<V> iterator() {
-                    return new Iterator<V>() {
-                        private Iterator<Entry<K,V>> i = entrySet().iterator();
-
-                        public boolean hasNext() {
-                            return i.hasNext();
-                        }
-
-                        public V next() {
-                            return i.next().getValue();
-                        }
-
-                        public void remove() {
-                            i.remove();
-                        }
-                    };
-                }
-
-                @Deprecated
-                public int size() {
-                    return 0;
-                }
-
-                public boolean isEmpty() {
-                    return Hypercube.this.isEmpty();
-                }
-
-                public void clear() {
-                	Hypercube.this.clear();
-                }
-
-                public boolean contains(Object v) {
-                    return Hypercube.this.containsValue(v);
-                }
-            };
-            values = vals;
-        }
-        return vals;
-	}
-	
-	transient Set<Entry<K,V>> entrySet;
-	
-	@Override
-	public Set<Entry<K,V>> entrySet() {
-		
-		return entrySet == null ? entrySet = new AbstractSet<Map.Entry<K,V>>() {
+		Enumeration<Entry<K,V>> en = enumerator();
+		return new Iterator<K>() {
 
 			@Override
-			@Deprecated
-			public int size() {
-				return 0;
+			public boolean hasNext() {
+				return en.hasMoreElements();
 			}
-			
-			transient Iterator<Map.Entry<K,V>> iterator;
-			
-			@Override
-			public Iterator<Entry<K,V>> iterator() {
-				Enumeration<hyperspace.Entry<K,V>> it = Hypercube.this.enumerator();
-				return iterator == null ? iterator = new Iterator<Entry<K,V>>() {
 
-					@Override
-					public boolean hasNext() {
-						return it.hasMoreElements();
-					}
-
-					@Override
-					public Entry<K, V> next() {
-						return it.nextElement();
-					}
-					
-				}: iterator;
-			}
 			@Override
-			@Deprecated
-			public Object[] toArray() {
-				return null;
+			public K next() {
+				return en.nextElement().getKey();
 			}
-			@Override
-			@Deprecated
-		    public <T> T[] toArray(T[] a) {
-		        return null;
-		    }
-		} : entrySet;
+		};
 	}
 }

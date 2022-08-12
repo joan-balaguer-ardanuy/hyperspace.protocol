@@ -11,11 +11,11 @@ public class TestHypercube {
 		XMLTest xml = new XMLTest();
 		
 		Hyperstring cube = new Hyperstring(Hyperinteger.class, xml);
-		for(int i = 0; i < Integer.MAX_VALUE; i++) {
+		for(int i = 0; i < 10; i++) {
 			char value = (char) i;
 			Integer key = i;
 			cube.putValue(key, value);
-			System.out.println(cube.getParent().getKey());
 		}
+		System.out.println(cube);
 	}
 }

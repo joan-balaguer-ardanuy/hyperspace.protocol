@@ -5,6 +5,7 @@ import java.util.Random;
 import hyperspace.EventArgs;
 import hyperspace.Toroid;
 import hyperspace.XML;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 /**
  * <tt>
@@ -104,6 +105,7 @@ public abstract class Unification
 	V stem;
 	
 	@Override
+	@XmlTransient
 	public K getRoot() {
 		return root;
 	}
@@ -114,6 +116,7 @@ public abstract class Unification
 		return old;
 	}
 	@Override
+	@XmlTransient
 	public V getStem() {
 		return stem;
 	}
@@ -153,8 +156,8 @@ public abstract class Unification
 	 * {@link Unification} class constructor.
 	 * @param parent the parent
 	 */
-	public Unification(K parent) {
-		super(parent);
+	public Unification(K parent, XML message) {
+		super(parent, message);
 		// set root
 		setRoot(parent.getRoot());
 		setStem(parent.getStem());
@@ -164,8 +167,8 @@ public abstract class Unification
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Unification(Class<? extends V> childClass, K parent) {
-		super(parent, instance(childClass, parent.getChild()));
+	public Unification(Class<? extends V> childClass, K parent, XML message) {
+		super(parent, message, instance(childClass, parent.getChild(), message));
 		// set root
 		setRoot(parent.getRoot());
 		setStem(parent.getStem());
@@ -175,8 +178,8 @@ public abstract class Unification
 	 * @param root the root
 	 * @param {@link String} the name
 	 */
-	public Unification(K root, V stem) {
-		super(root.getMessage());
+	public Unification(K root, V stem, XML message) {
+		super(message);
 		// set root
 		setRoot(root);
 		setStem(stem);
@@ -187,8 +190,8 @@ public abstract class Unification
 	 * @param root the root
 	 * @param message {@link String} the name
 	 */
-	public Unification(Class<? extends V> childClass, K root, V stem) {
-		super(root.getMessage(), instance(childClass, stem, root));
+	public Unification(Class<? extends V> childClass, K root, V stem, XML message) {
+		super(root.getMessage(), instance(childClass, stem, root, message));
 		// set root
 		setRoot(root);
 		setStem(stem);
