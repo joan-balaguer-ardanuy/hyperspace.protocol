@@ -21,6 +21,4 @@ import hyperspace.time.Past;
 public interface TimeListener<K,V>
 	extends Past<K>, Future<V>, Listener {
 	
-	Message getXML();
-	void setXML(Message xml);
 }

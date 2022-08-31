@@ -2,6 +2,7 @@ package hyperspace.time;
 
 import hyperspace.Message;
 import hyperspace.XML;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 public abstract class Abstraction
 	<K extends Recursive<K,V>,V extends Recursive<V,K>>
@@ -19,6 +20,7 @@ public abstract class Abstraction
 	Class<? extends K> type;
 
 	@Override
+	@XmlTransient
 	public Class<? extends K> getParentClass() {
 		return type;
 	}
@@ -27,6 +29,7 @@ public abstract class Abstraction
 		this.type = type;
 	}
 	@Override
+	@XmlTransient
 	public Class<? extends V> getChildClass() {
 		return getChild().getParentClass();
 	}

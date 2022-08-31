@@ -4,13 +4,15 @@ import java.util.Enumeration;
 
 import hyperspace.EventArgs;
 import hyperspace.Listener;
+import hyperspace.Message;
 import hyperspace.Time;
+import hyperspace.XML;
 import hyperspace.time.Recurrent;
 import jakarta.xml.bind.annotation.XmlTransient;
 
 public class AbstractRecurrent<E extends Recurrent<E>>
-	extends Time
-		implements Recurrent<E>, Listener {
+	extends XML
+		implements Recurrent<E> {
 	
 	private static final long serialVersionUID = -2189724676292955895L;
 	E root;
@@ -67,8 +69,8 @@ public class AbstractRecurrent<E extends Recurrent<E>>
 		setRoot(parent.getRoot());
 	}
 	@Override
-	public Listener clone() {
-		return super.clone();
+	public Message clone() {
+		return null;
 	}
 	@Override
 	public boolean isEmpty() {
@@ -235,25 +237,5 @@ public class AbstractRecurrent<E extends Recurrent<E>>
 				hasNext = true;
 			return e;
 		}
-	}
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void addEventListener(Listener listener) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void removeEventListener(Listener listener) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void event(EventArgs e) {
-		// TODO Auto-generated method stub
-		
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import jakarta.xml.bind.annotation.XmlTransient;
 
+
 public abstract class AbstractCollection<E> 
 	extends AbstractRecurrent<Collection<E>> 
 		implements Collection<E> {

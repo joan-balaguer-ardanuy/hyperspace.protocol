@@ -39,7 +39,7 @@ public abstract class AbstractMap<K,V>
 	public AbstractMap(Class<? extends AbstractMap<K,V>> type) {
 		super(type);
 	}
-	public AbstractMap(AbstractSet<Entry<K,V>> parent, java.util.Map.Entry<K, V> entry) {
+	public AbstractMap(AbstractMap<K,V> parent, java.util.Map.Entry<K, V> entry) {
 		super(parent, entry);
 	}
 	

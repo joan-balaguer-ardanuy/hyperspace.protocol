@@ -25,6 +25,9 @@ import java.util.EventListener;
  *
  */
 public interface Listener extends EventListener, Runnable, Message {
+
+	Message getXML();
+	void setXML(Message xml);
 	
 	void addEventListener(Listener listener);
 	void removeEventListener(Listener listener);

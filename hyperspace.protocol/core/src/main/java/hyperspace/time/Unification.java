@@ -195,12 +195,6 @@ public abstract class Unification
 	}
 	
 	@Override
-	protected void sendEvent(EventArgs e) {
-		super.sendEvent(e);
-		stem.event(e);
-	}
-	
-	@Override
 	public Recursive<K,V> clone() {
 		try {
 			K k = getParentClass().getConstructor().newInstance();

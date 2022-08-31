@@ -1,6 +1,7 @@
 package hyperspace;
 
 import hyperspace.recurrent.Collection;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 public abstract class Time 
 	extends XML
@@ -10,6 +11,27 @@ public abstract class Time
 	
 	private Collection<Listener> listeners;
 	
+	private Message xml;
+	
+	@XmlTransient
+	public Message getXML() {
+		return xml;
+	}
+	@Override
+	public void setXML(Message xml) {
+		this.xml = xml;	
+	}
+	
+	@Override
+	public String getCommand() {
+		return super.getCommand();
+	}
+	@Override
+	public void setCommand(String command) {
+		super.setCommand(command);
+		event(new EventArgs(this, getXML()));
+	}
+	
 	/**
 	 * {@link Time} class constructor.
 	 * @param xml {@link String} the name
@@ -17,8 +39,9 @@ public abstract class Time
 	public Time() {
 		super();
 	}
-	public Time(String name) {
-		super(name);
+	public Time(Message xml) {
+		super(xml.getName());
+		this.xml = xml;
 	}
 	
 	@Override
@@ -49,7 +72,9 @@ public abstract class Time
 	}
 	
 	@Override
-	public abstract void event(EventArgs e);
+	public void event(EventArgs e) {
+		sendEvent(e);
+	}
 	
 	/**
 	 * Intances new object.

@@ -1,5 +1,6 @@
 package hyperspace.recurrent;
 
+import hyperspace.EventArgs;
 import hyperspace.Time;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -28,18 +29,19 @@ public class TestCollection extends Time {
 	public TestCollection() {
 		super();
 		integerCollection = new IntegerCollection();
-		integerCollection2 = new IntegerCollection();
 		
-		for(int i = 1; i < 10; i++) {
-			integerCollection.add(i);
-		}
-		for(int i = 1; i < 10; i++) {
-			integerCollection2.add(i);
-		}
+		integerCollection.add(1);
+		integerCollection.add(2);
+		
 		System.out.println(this.toString());
 	}
 
 	public static void main(String[] args) {
 		new TestCollection();
+	}
+	@Override
+	public void event(EventArgs e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -114,7 +114,7 @@ public abstract class Order
 			K k = next;
 			current = k;
 			next = k.getParent();
-			if(k == Order.this)
+			if(k == Order.this.getRoot())
 				hasNext = false;
 			else hasNext = true;
 			return k;

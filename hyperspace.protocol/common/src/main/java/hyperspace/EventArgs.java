@@ -30,19 +30,19 @@ public class EventArgs extends EventObject implements Message {
 	}
 	@Override
 	public String getCommand() {
-		return xml.getCommand();
+		return getSource().getCommand();
 	}
 	@Override
 	public void setCommand(String command) {
-		xml.setCommand(command);
+		getSource().setCommand(command);
 	}
 	@Override
 	public String getName() {
-		return xml.getName();
+		return getSource().getName();
 	}
 	@Override
 	public void setName(String name) {
-		xml.setName(name);
+		getSource().setName(name);
 	}
 	
 	/**

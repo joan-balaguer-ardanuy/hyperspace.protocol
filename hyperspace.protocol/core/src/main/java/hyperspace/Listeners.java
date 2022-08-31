@@ -13,15 +13,6 @@ public class Listeners extends AbstractCollection<Listener> {
 	public Listeners(Listeners parent, Listener element) {
 		super(parent, element);
 	}
-	
-	protected static <X> X instance(Class<X> type, Collection<Listener> parent, Listener object) {
-		try {
-			return type.getDeclaredConstructor(parent.getClass(), Listener.class).newInstance(parent, object);
-		}
-		catch(Throwable t) {
-			throw new Error(t);
-		}
-	}
 	@Override
 	public boolean add(Listener e) {
 		if(isEmpty()) {
@@ -30,4 +21,13 @@ public class Listeners extends AbstractCollection<Listener> {
 		}
 		return instance(getParentClass(), getParent(), e) != null;
 	}
+	private static <X> X instance(Class<X> type, Collection<Listener> parent, Listener element) {
+		try {
+			return type.getDeclaredConstructor(parent.getClass(), Listener.class).newInstance(parent, element);
+		}
+		catch(Throwable t) {
+			throw new Error(t);
+		}
+	}
+	
 }

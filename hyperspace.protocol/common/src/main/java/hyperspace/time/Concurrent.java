@@ -1,6 +1,5 @@
 package hyperspace.time;
 
-import hyperspace.Listener;
 import hyperspace.Message;
 
 /**
@@ -16,8 +15,8 @@ public interface Concurrent<V>
 		Comparable<V>, 
 			java.util.concurrent.Future<V>, 
 				java.util.concurrent.ThreadFactory, 
-					java.util.concurrent.Executor,
-						Listener {
+					java.util.concurrent.Executor, 
+						Message {
 
     
 	// properties

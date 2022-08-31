@@ -16,17 +16,6 @@ public abstract class Parent
 	 */
 	private static final long serialVersionUID = -2358327935955938422L;
 	
-	Message message;
-	
-	@Override
-	public Message getXML() {
-		return message;
-	}
-	@Override
-	public void setXML(Message message) {
-		this.message = message;
-	}
-	
 	public Parent() {
 		super();
 	}
@@ -35,8 +24,7 @@ public abstract class Parent
 	 * @param xml {@link String} the name
 	 */
 	public Parent(Message xml) {
-		super(xml.getName());
-		this.message = xml;
+		super(xml);
 	}
 	/**
 	 * {@link Parent} class constructor.

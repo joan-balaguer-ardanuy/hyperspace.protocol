@@ -1,6 +1,6 @@
 package hyperspace.time;
 
-import hyperspace.Listener;
+import hyperspace.Message;
 import hyperspace.recurrent.Enumerable;
 
 /**
@@ -10,7 +10,11 @@ import hyperspace.recurrent.Enumerable;
  *
  * @param <K> is the key
  */
-public interface Recurrent<K> extends Past<K>, Enumerable<K>, java.util.concurrent.Callable<K>, Listener {
+public interface Recurrent<K> 
+	extends Past<K>, 
+		Enumerable<K>,
+			java.util.concurrent.Callable<K>, 
+				Message {
 
 	// properties
 	/**

@@ -109,18 +109,18 @@ public abstract class Inheritance
 	}
 	@Override
 	public void clear() {
-//		K current = getParent().getChild().setChild(getChild().getChild());
-//		getChild().getChild().setParent(getParent());
-//		getChild().getChild().getChild().setParent(getParent().getChild());
+//		K current = getParent().put(call());
+//		call().setParent(getParent());
+//		get().setParent(getParent().getChild());
 //		setParent(current);
 //		getChild().setParent(getChild());
-//		getChild().setChild(current);
-
-		getChild().getChild().setParent(getParent());
-		getChild().getChild().getChild().setParent(getParent().getChild());
-		getParent().getChild().setChild(getChild().getChild());
-		getChild().setChild(getParent().getChild().getChild());
-		setParent(getChild().getChild());
+//		put(current);
+		K current = getParent().call();
+		call().setParent(getParent());
+		get().setParent(getParent().getChild());
+		getParent().put(call());
+		put(current);
+		setParent(call());
 		getChild().setParent(getChild());
 	}
 	@Override

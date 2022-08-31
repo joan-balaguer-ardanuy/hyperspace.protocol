@@ -108,8 +108,10 @@ public abstract class XML implements Message {
 			JAXBContext context = JAXBContext.newInstance(getClass());
 			// create marshaller
 			Marshaller marshaller = context.createMarshaller();
+			
 			// output pretty printed
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
 			// instances new StringWriter
 			StringWriter sw = new StringWriter();
 			// marshall XML message into StringWriter

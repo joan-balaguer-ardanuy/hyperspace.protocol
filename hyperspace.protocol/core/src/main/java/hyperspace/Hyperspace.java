@@ -48,7 +48,13 @@ public abstract class Hyperspace<K,V>
 	public V setValue(V value) {
 		return getChild().setKey(value);
 	}
-	
+
+	/**
+	 * {@link Hyperspace} class constructor.
+	 */
+	public Hyperspace() {
+		super();
+	}
 	/**
 	 * {@link Hyperspace} class constructor.
 	 * @param message

@@ -1,5 +1,6 @@
 package hyperspace.recurrent;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -207,7 +208,7 @@ import hyperspace.time.Recurrent;
  *
  */
 public interface Collection<E>
-		extends Recurrent<Collection<E>>, java.util.Collection<E> {
+		extends Recurrent<Collection<E>>, java.util.Collection<E>, Serializable {
 
 	// property
 	/**
