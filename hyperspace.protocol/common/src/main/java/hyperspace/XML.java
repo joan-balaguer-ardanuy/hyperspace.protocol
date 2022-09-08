@@ -31,8 +31,11 @@ public abstract class XML implements Message {
 	 * The name.
 	 */
 	private String name;
+	/**
+	 * The command.
+	 */
 	private String command;
-	
+
 	@XmlElement
 	public String getName() {
 		return name;
@@ -40,23 +43,22 @@ public abstract class XML implements Message {
 	public void setName(String name) {
 		this.name = name;
 	}
+	@Override
 	@XmlElement
 	public String getCommand() {
 		return command;
 	}
+	@Override
 	public void setCommand(String command) {
 		this.command = command;
 	}
+	
 	/**
 	 * {@link XML} default class constructor.
 	 */
 	public XML() {
 		super();
 	}
-	/**
-	 * {@link XML} class constructor.
-	 * @param name {@link String} the name
-	 */
 	public XML(String name) {
 		super();
 		this.name = name;
@@ -64,7 +66,35 @@ public abstract class XML implements Message {
 	}
 	
 	@Override
-	public abstract Message clone();
+	public abstract XML clone();
+	
+	@Override
+	public String toString() {
+		return toString(this);
+	}
+	
+	/**
+	 * Intances new object.
+	 * @param <X> the parameter type of the returned object
+	 * @param type the {@link Class} of the object.
+	 * @param object the arguments of the construction of the object
+	 * @return the new <X> instance
+	 */
+	public static <X> X instance(Class<X> type, Object... objects) {
+		try {
+			return type.getDeclaredConstructor(getClasses(objects)).newInstance(objects);
+		}
+		catch(Throwable t) {
+			throw new Error(t);
+		}
+	}
+	private static Class<?>[] getClasses(Object... objects) {
+		Class<?>[] classes = new Class<?>[objects.length];
+		for(int i = 0; i < objects.length; i++) {
+			classes[i] = objects[i].getClass();
+		}
+		return classes;
+	}
 	
 	/**
 	 * XML unmarshall method. Generates new {@link JAXBContext} for current class,
@@ -73,7 +103,7 @@ public abstract class XML implements Message {
 	 * @throws JAXBException thrown when something is wrong
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends XML> T read(Class<T> type, InputStream inputStream) throws JAXBException {
+	public static <T> T read(Class<T> type, InputStream inputStream) throws JAXBException {
 		try {
 			JAXBContext context = JAXBContext.newInstance(type);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
@@ -98,14 +128,10 @@ public abstract class XML implements Message {
 			throw new JAXBException(e.getMessage(), e.getCause());
 		}
 	}
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
+	public static String toString(Object object) {
 		try {
 			// instances new JAXBContext for current class
-			JAXBContext context = JAXBContext.newInstance(getClass());
+			JAXBContext context = JAXBContext.newInstance(object.getClass());
 			// create marshaller
 			Marshaller marshaller = context.createMarshaller();
 			
@@ -115,7 +141,7 @@ public abstract class XML implements Message {
 			// instances new StringWriter
 			StringWriter sw = new StringWriter();
 			// marshall XML message into StringWriter
-			marshaller.marshal(this, sw);
+			marshaller.marshal(object, sw);
 			// get the XML message as string
 			String strXml = sw.toString();
 			// return string XML message
@@ -131,9 +157,9 @@ public abstract class XML implements Message {
 	 * Writes the string XML message into a file.
 	 * @param path {@link String} the destination path of the string XML message.
 	 */
-	public void toFile(String path) {
+	public static void toFile(Object object, String path) {
 		// parse XML message into string.
-		String str = toString();
+		String str = toString(object);
 		// declare new buffered writer
 	    BufferedWriter writer;
 		try {

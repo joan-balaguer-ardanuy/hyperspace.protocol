@@ -1,6 +1,5 @@
 package hyperspace.recurrent;
 
-import hyperspace.Message;
 import hyperspace.XML;
 
 public class XMLTest extends XML {
@@ -12,7 +11,7 @@ public class XMLTest extends XML {
 	}
 
 	@Override
-	public Message clone() {
+	public XML clone() {
 		// TODO Auto-generated method stub
 		return null;
 	}

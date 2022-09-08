@@ -1,7 +1,6 @@
 package hyperspace.time;
 
-import hyperspace.Message;
-import hyperspace.XML;
+import hyperspace.XML2;
 
 /**
  * <tt>
@@ -47,60 +46,62 @@ public abstract class Inheritance
 	private static final long serialVersionUID = -1292694172982192537L;
 	
 	/**
-	 * {@link Inheritance} class constructor.
-	 * @param type {@link Class} the type
-	 * @param xml {@link Message} the xml
+	 * {@link Inheritance} defaault class constructor.
 	 */
 	public Inheritance() {
 		super();
 	}
 	/**
 	 * {@link Inheritance} class constructor.
-	 * @param type {@link Class} the type
-	 * @param xml {@link Message} the xml
+	 * @param message {@link XML2} the message
 	 */
-	public Inheritance(Message xml) {
-		super(xml);
+	public Inheritance(XML2<?,?> message) {
+		super(message);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
-	 * @param parentClass {@link Class} the parent type
-	 * @param childClass {@link Class} the child type
-	 * @param message {@link Message} the xml
+	 * @param parentClass {@link Class} the parent class
+	 * @param childClass {@link Class} the child class
+	 * @param message {@link XML2} the message
 	 */
-	public Inheritance(Class<? extends K> parentClass, Class<? extends V> childClass, Message message) {
+	public Inheritance(Class<? extends K> parentClass, Class<? extends V> childClass, XML2<?,?> message) {
 		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
 	 * @param parent the parent
+	 * @param message {@link XML2} the message
 	 */
-	public Inheritance(K parent) {
-		super(parent);
+	public Inheritance(K parent, XML2<?,?> message) {
+		super(parent, message);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
+	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
-	 * @param child the child
+	 * @param message {@link XML2} the message
 	 */
-	public Inheritance(Class<? extends V> childClass, K parent) {
-		super(childClass, parent);
+	public Inheritance(Class<? extends V> childClass, K parent, XML2<?,?> message) {
+		super(childClass, parent, message);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
 	 * @param root the root
 	 * @param stem the stem
+	 * @param message {@link XML2} the message
 	 */
-	public Inheritance(K root, V stem) {
-		super(root, stem);
+	public Inheritance(K root, V stem, XML2<?,?> message) {
+		super(root, stem, message);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
+	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param stme the stem
+	 * @param message {@link XML2} the message
 	 */
-	public Inheritance(Class<? extends V> childClass, K root, V stem) {
-		super(childClass, root, stem);
+	public Inheritance(Class<? extends V> childClass, K root, V stem, XML2<?,?> message) {
+		super(childClass, root, stem, message);
 	}
 
 	@Override
@@ -109,12 +110,6 @@ public abstract class Inheritance
 	}
 	@Override
 	public void clear() {
-//		K current = getParent().put(call());
-//		call().setParent(getParent());
-//		get().setParent(getParent().getChild());
-//		setParent(current);
-//		getChild().setParent(getChild());
-//		put(current);
 		K current = getParent().call();
 		call().setParent(getParent());
 		get().setParent(getParent().getChild());

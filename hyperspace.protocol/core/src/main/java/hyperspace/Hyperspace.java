@@ -50,43 +50,45 @@ public abstract class Hyperspace<K,V>
 	}
 
 	/**
-	 * {@link Hyperspace} class constructor.
+	 * {@link Hyperspace} default class constructor.
 	 */
 	public Hyperspace() {
 		super();
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
-	 * @param message
+	 * @param message {@link XML2} the message
 	 */
-	public Hyperspace(Message message) {
+	public Hyperspace(XML2<?,?> message) {
 		super(message);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
 	 * @param parentClass {@link Class} the parent class
 	 * @param childClass {@link Class} the child class
-	 * @param xml {@link Message} the xml
+	 * @param message {@link XML2} the message
 	 */
-	public Hyperspace(Class<? extends Entry<K,V>> parentClass, Class<? extends Entry<V,K>> childClass, Message xml) {
-		super(parentClass, childClass, xml);
+	public Hyperspace(Class<? extends Entry<K,V>> parentClass, Class<? extends Entry<V,K>> childClass, XML2<?,?> message) {
+		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
 	 * @param parent {@link Entry} the parent
+	 * @param message {@link XML2} the message
 	 */
-	public Hyperspace(Entry<K,V> parent) {
-		super(parent);
+	public Hyperspace(Entry<K,V> parent, XML2<?,?> message) {
+		super(parent, message);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent {@link Entry} the parent
+	 * @param message {@link XML2} the message
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> parent, K key, V value) {
-		super(childClass, parent);
+	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> parent, XML2<?,?> message, K key, V value) {
+		super(childClass, parent, message);
 		setKey(key);
 		setValue(value);
 	}
@@ -94,20 +96,22 @@ public abstract class Hyperspace<K,V>
 	 * {@link Hyperspace} class constructor.
 	 * @param root {@link Entry} the root
 	 * @param stem {@link Entry} the stem
+	 * @param message {@link XML2} the message
 	 */
-	public Hyperspace(Entry<K,V> root, Entry<V,K> stem) {
-		super(root, stem);
+	public Hyperspace(Entry<K,V> root, Entry<V,K> stem, XML2<?,?> message) {
+		super(root, stem, message);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root {@link Entry} the root
 	 * @param stem {@link Entry} the stem
+	 * @param message {@link XML2} the message
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, Entry<V,K> stem, K key, V value) {
-		super(childClass, root, stem);
+	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, Entry<V,K> stem, XML2<?,?> message, K key, V value) {
+		super(childClass, root, stem, message);
 		setKey(key);
 		setValue(value);
 	}
@@ -192,7 +196,7 @@ public abstract class Hyperspace<K,V>
 	public V putValue(K key, V value) {
 		setKey(key);
 		setValue(value);
-		instance(getParentClass(), getChildClass(), getParent(), key, value);
+		XML.instance(getParentClass(), getChildClass(), getParent(), key, value);
 		return null;
 	}
 	@Override
@@ -410,14 +414,14 @@ public abstract class Hyperspace<K,V>
 		}
 
 		public Grid(Class<? extends Entry<K,V>> type, K key, V value) {
-			super(instance(type, key, value));
+			super(XML.instance(type, key, value));
 		}
 		public void put(K key, V value) {
 			if(this.source == null) {
-				this.source = instance(Hyperspace.this.getParentClass(), key, value);
+				this.source = XML.instance(Hyperspace.this.getParentClass(), key, value);
 				return;
 			}
-			instance(getParentClass(), this.source, key, value);
+			XML.instance(getParentClass(), this.source, key, value);
 		}
 	}
 }

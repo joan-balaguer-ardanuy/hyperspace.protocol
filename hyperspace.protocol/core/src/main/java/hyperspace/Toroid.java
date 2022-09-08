@@ -21,33 +21,33 @@ public abstract class Toroid
 	}
 	/**
 	 * {@link Toroid} class constructor.
-	 * @param xml {@link Message} the xml
+	 * @param message {@link XML} the message
 	 */
-	public Toroid(Message xml) {
-		super(xml);
+	public Toroid(XML2<?,?> message) {
+		super(message);
 	}
 	/**
 	 * {@link Toroid} class constructor.
-	 * @param xml {@link Message} the xml
+	 * @param message {@link XML} the message
 	 * @param value the value
 	 */
-	public Toroid(Message xml, V value) {
-		super(xml, value);
+	public Toroid(XML2<?,?> message, V value) {
+		super(message, value);
 	}
 	/**
 	 * {@link Toroid} class constructor.
 	 * @param key the key
 	 */
-	public Toroid(K key) {
-		super(key);
+	public Toroid(K key, XML2<?,?> message) {
+		super(key, message);
 	}
 	/**
 	 * {@link Toroid} class constructor.
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Toroid(K key, V value) {
-		super(key, value);
+	public Toroid(K key, XML2<?,?> message, V value) {
+		super(key, message, value);
 		getChild().getChild().setParent(key.getChild().getChild());
 		getChild().getChild().getChild().setParent(value);
 	}

@@ -13,15 +13,15 @@ public class Command {
 	/**
 	 * Instance state.
 	 */
-	public final static String INSTANCE = "0";
+	public final static String INSTANCE = "INSTANCE";
 	
 	/**
 	 * Listen time.
 	 */
-	public final static String LISTEN = "1";
+	public final static String LISTEN = "LISTEN";
 	
 	/**
 	 * Transfer message contents.
 	 */
-	public final static String TRANSFER = "2";
+	public final static String TRANSFER = "TRANSFER";
 }

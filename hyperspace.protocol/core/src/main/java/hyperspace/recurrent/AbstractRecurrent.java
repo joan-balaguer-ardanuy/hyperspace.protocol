@@ -2,16 +2,12 @@ package hyperspace.recurrent;
 
 import java.util.Enumeration;
 
-import hyperspace.EventArgs;
-import hyperspace.Listener;
-import hyperspace.Message;
 import hyperspace.Time;
-import hyperspace.XML;
 import hyperspace.time.Recurrent;
 import jakarta.xml.bind.annotation.XmlTransient;
 
 public class AbstractRecurrent<E extends Recurrent<E>>
-	extends XML
+	extends Time
 		implements Recurrent<E> {
 	
 	private static final long serialVersionUID = -2189724676292955895L;
@@ -19,7 +15,7 @@ public class AbstractRecurrent<E extends Recurrent<E>>
 	E parent;
 	E past;
 	Class<? extends E> type;
-
+	
 	@Override
 	@XmlTransient
 	public E getRoot() {
@@ -68,9 +64,11 @@ public class AbstractRecurrent<E extends Recurrent<E>>
 		parent.put(parent.call().getParent());
 		setRoot(parent.getRoot());
 	}
+	@SuppressWarnings("unchecked")
 	@Override
-	public Message clone() {
-		return null;
+	public AbstractRecurrent<E> clone() {
+		// TODO Auto-generated method stub
+		return (AbstractRecurrent<E>) super.clone();
 	}
 	@Override
 	public boolean isEmpty() {

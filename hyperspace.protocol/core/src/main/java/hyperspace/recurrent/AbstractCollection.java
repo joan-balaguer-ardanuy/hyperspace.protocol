@@ -6,7 +6,7 @@ import java.util.Objects;
 import jakarta.xml.bind.annotation.XmlTransient;
 
 
-public abstract class AbstractCollection<E> 
+public class AbstractCollection<E> 
 	extends AbstractRecurrent<Collection<E>> 
 		implements Collection<E> {
 
@@ -41,9 +41,10 @@ public abstract class AbstractCollection<E>
 		return super.isEmpty() ? this.element == null : false;
 	}
 	@Override
-	public Collection<E> clone() {
+	public AbstractCollection<E> clone() {
 		try {
-			Collection<E> c = getParentClass().getDeclaredConstructor().newInstance();
+			@SuppressWarnings("unchecked")
+			AbstractCollection<E> c = (AbstractCollection<E>) getParentClass().getDeclaredConstructor().newInstance();
 			c.setElement(getElement());
 			return c;
 		} catch (Throwable e) {

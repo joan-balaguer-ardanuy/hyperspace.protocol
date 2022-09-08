@@ -5,8 +5,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import hyperspace.Command;
-import hyperspace.Message;
-import hyperspace.XML;
+import hyperspace.XML2;
 
 /**
  * 
@@ -364,51 +363,55 @@ public abstract class Concurrence
 	}
 	/**
 	 * {@link Concurrence} class constructor.
-	 * @param xml {@link Message} the xml
+	 * @param message {@link XML2} the message
 	 */
-	public Concurrence(Message xml) {
-		super(xml);
+	public Concurrence(XML2<?,?> message) {
+		super(message);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
 	 * @param parentClass {@link Class} the parnet class
 	 * @param childClass {@link Class} the child class
-	 * @param xml {@link Message} the xml
+	 * @param message {@link XML2} the message
 	 */
-	public Concurrence(Class<? extends K> parentClass, Class<? extends V> childClass, Message xml) {
-		super(parentClass, childClass, xml);
+	public Concurrence(Class<? extends K> parentClass, Class<? extends V> childClass, XML2<?,?> message) {
+		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
 	 * @param parent the parent
+	 * @param message {@link XML2} the message
 	 */
-	public Concurrence(K parent) {
-		super(parent);
+	public Concurrence(K parent, XML2<?,?> message) {
+		super(parent, message);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
+	 * @param message {@link XML2} the message
 	 */
-	public Concurrence(Class<? extends V> childClass, K parent) {
-		super(childClass, parent);
+	public Concurrence(Class<? extends V> childClass, K parent, XML2<?,?> message) {
+		super(childClass, parent, message);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
 	 * @param root the root
 	 * @param stem the stem
+	 * @param message {@link XML2} the message
 	 */
-	public Concurrence(K root, V stem) {
-		super(root, stem);
+	public Concurrence(K root, V stem, XML2<?,?> message) {
+		super(root, stem, message);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param stem the stem
+	 * @param message {@link XML2} the message
 	 */
-	public Concurrence(Class<? extends V> childClass, K root, V stem) {
-		super(childClass, root, stem);
+	public Concurrence(Class<? extends V> childClass, K root, V stem, XML2<?,?> message) {
+		super(childClass, root, stem, message);
 	}
 	
 	@Override

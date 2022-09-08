@@ -1,47 +1,37 @@
 package hyperspace;
 
 import hyperspace.recurrent.Collection;
-import jakarta.xml.bind.annotation.XmlTransient;
+
+import jakarta.xml.bind.annotation.XmlElement;
 
 public abstract class Time 
-	extends XML
+	extends Language
 		implements Listener {
 	
 	private static final long serialVersionUID = -6531537504810067678L;
 	
 	private Collection<Listener> listeners;
 	
-	private Message xml;
-	
-	@XmlTransient
-	public Message getXML() {
-		return xml;
-	}
 	@Override
-	public void setXML(Message xml) {
-		this.xml = xml;	
-	}
-	
-	@Override
+	@XmlElement
 	public String getCommand() {
 		return super.getCommand();
 	}
 	@Override
 	public void setCommand(String command) {
 		super.setCommand(command);
-		event(new EventArgs(this, getXML()));
+		event(new EventArgs(this, getMessage()));
 	}
 	
 	/**
 	 * {@link Time} class constructor.
-	 * @param xml {@link String} the name
+	 * @param message {@link String} the name
 	 */
 	public Time() {
 		super();
 	}
-	public Time(Message xml) {
-		super(xml.getName());
-		this.xml = xml;
+	public Time(XML2<?,?> message) {
+		super(message);
 	}
 	
 	@Override
@@ -58,7 +48,6 @@ public abstract class Time
 		}
 		listeners.remove(listener);
 	}
-	
 	/**
 	 * Sends event to all event {@link Listener} added in the set.
 	 * @param e {@link EventArgs} the arguments of the event
@@ -70,40 +59,14 @@ public abstract class Time
 			}
 		}
 	}
-	
 	@Override
 	public void event(EventArgs e) {
 		sendEvent(e);
 	}
-	
-	/**
-	 * Intances new object.
-	 * @param <X> the parameter type of the returned object
-	 * @param type the {@link Class} of the object.
-	 * @param object the arguments of the construction of the object
-	 * @return the new <X> instance
-	 */
-	protected static <X> X instance(Class<X> type, Object... objects) {
-		try {
-			return type.getDeclaredConstructor(getClasses(objects)).newInstance(objects);
-		}
-		catch(Throwable t) {
-			throw new Error(t);
-		}
-	}
-	private static Class<?>[] getClasses(Object... objects) {
-		Class<?>[] classes = new Class<?>[objects.length];
-		for(int i = 0; i < objects.length; i++) {
-			classes[i] = objects[i].getClass();
-		}
-		return classes;
-	}
-
 	@Override
 	public void run() {
 		setCommand(Command.TRANSFER);
 	}
-
 	@Override
 	public Listener clone() {
 		// TODO Auto-generated method stub

@@ -8,6 +8,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class TestCollection extends Time {
 
+	private static final long serialVersionUID = 5729439108207739645L;
 	IntegerCollection integerCollection;
 	IntegerCollection integerCollection2;
 	

@@ -44,8 +44,8 @@ public abstract class AbstractMap<K,V>
 	}
 	
 	@Override
-	public Collection<Entry<K, V>> clone() {
-		return (Collection<Entry<K, V>>) super.clone();
+	public AbstractSet<Entry<K, V>> clone() {
+		return (AbstractSet<Entry<K, V>>) super.clone();
 	}
 	
 	@Override

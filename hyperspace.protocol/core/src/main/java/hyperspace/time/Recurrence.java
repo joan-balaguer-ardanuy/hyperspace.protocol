@@ -7,8 +7,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import hyperspace.Message;
-import hyperspace.XML;
+import hyperspace.XML2;
 
 /**
  * <tt>
@@ -175,51 +174,55 @@ public abstract class Recurrence
 	}
 	/**
 	 * {@link Recurrence} class constructor.
-	 * @param xml {@link Message} the xml
+	 * @param message {@link XML2} the message
 	 */
-	public Recurrence(Message xml) {
-		super(xml);
+	public Recurrence(XML2<?,?> message) {
+		super(message);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
 	 * @param parentClass {@link Class} the parent class
 	 * @param childClass {@link Class} the child class
-	 * @param xml {@link Message} the xml
+	 * @param message {@link XML2} the message
 	 */
-	public Recurrence(Class<? extends K> parentClass, Class<? extends V> childClass, Message xml) {
-		super(parentClass, childClass, xml);
+	public Recurrence(Class<? extends K> parentClass, Class<? extends V> childClass, XML2<?,?> message) {
+		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
 	 * @param parent the parent
+	 * @param message {@link XML2} the message
 	 */
-	public Recurrence(K parent) {
-		super(parent);
+	public Recurrence(K parent, XML2<?,?> message) {
+		super(parent, message);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
+	 * @param message {@link XML2} the message
 	 */
-	public Recurrence(Class<? extends V> childClass, K parent) {
-		super(childClass, parent);
+	public Recurrence(Class<? extends V> childClass, K parent, XML2<?,?> message) {
+		super(childClass, parent, message);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
 	 * @param root the root
-	 * @param message {@link String} the name
+	 * @param stem the stem
+	 * @param message {@link XML2} the message
 	 */
-	public Recurrence(K root, V stem) {
-		super(root, stem);
+	public Recurrence(K root, V stem, XML2<?,?> message) {
+		super(root, message);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param stem the stem
+	 * @param message {@link XML2} the message
 	 */
-	public Recurrence(Class<? extends V> childClass, K root, V stem) {
-		super(childClass, root, stem);
+	public Recurrence(Class<? extends V> childClass, K root, V stem, XML2<?,?> message) {
+		super(childClass, root, stem, message);
 	}
 
 	@Override

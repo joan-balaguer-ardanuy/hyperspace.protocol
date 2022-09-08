@@ -1,7 +1,5 @@
 package hyperspace;
 
-import jakarta.xml.bind.annotation.XmlTransient;
-
 public abstract class Child
 	<K extends TimeListener<K,V>,V extends TimeListener<V,K>> 
 		extends Parent<K,V>
@@ -13,33 +11,6 @@ public abstract class Child
 	private static final long serialVersionUID = -4078570118307293600L;
 
 	/**
-	 * The key.
-	 */
-	private K parent;
-	
-	/**
-	 * The value.
-	 */
-	private V child;
-	
-	@XmlTransient
-	public K getParent() {
-		return parent;
-	}
-	@Override
-	public void setParent(K key) {
-		this.parent = key;
-	}
-	@XmlTransient
-	public V getChild() {
-		return child;
-	}
-	@Override
-	public void setChild(V value) {
-		this.child = value;
-	}
-
-	/**
 	 * {@link Child} class constructor.
 	 */
 	public Child() {
@@ -47,18 +18,18 @@ public abstract class Child
 	}
 	/**
 	 * {@link Child} class constructor.
-	 * @param xml {@link Message} the xml
+	 * @param message {@link Message} the xml
 	 */
-	public Child(Message xml) {
-		super(xml);
+	public Child(XML2<?,?> message) {
+		super(message);
 	}
 	/**
 	 * {@link Child} class constructor.
-	 * @param xml {@link Message} the xml
+	 * @param message {@link Message} the xml
 	 * @param value the value
 	 */
-	public Child(Message xml, V value) {
-		super(xml, value);
+	public Child(XML2<?,?> message, V value) {
+		super(message, value);
 		value.setChild(getParent());
 		value.setParent(value);
 	}
@@ -66,8 +37,8 @@ public abstract class Child
 	 * {@link Child} class constructor.
 	 * @param key the key
 	 */
-	public Child(K key) {
-		super(key);
+	public Child(K key, XML2<?,?> message) {
+		super(key, message);
 	}
 	/**
 	 * {@link Child} class constructor.
@@ -75,8 +46,8 @@ public abstract class Child
 	 * @param value the value
 	 */
 	@SuppressWarnings("unchecked")
-	public Child(K key, V value) {
-		super(key, value);
+	public Child(K key, XML2<?,?> message, V value) {
+		super(key, message, value);
 		key.getChild().setChild((K) this);
 	}
 }

@@ -2,10 +2,9 @@ package hyperspace.time;
 
 import java.util.Random;
 
-import hyperspace.EventArgs;
-import hyperspace.Message;
 import hyperspace.Toroid;
-
+import hyperspace.XML;
+import hyperspace.XML2;
 import jakarta.xml.bind.annotation.XmlTransient;
 
 /**
@@ -132,18 +131,18 @@ public abstract class Unification
 	}
 	/**
 	 * {@link Unification} class constructor.
-	 * @param xml {@link Message} the xml
+	 * @param message {@link XML2} the message
 	 */
-	public Unification(Message xml) {
-		super(xml);
+	public Unification(XML2<?,?> message) {
+		super(message);
 	}
 	/**
 	 * {@link Unification} class constructor.
 	 * @param childClass {@link Class} the child class
-	 * @param xml {@link Message} the xml
+	 * @param message {@link XML2} the message
 	 */
-	public Unification(Class<? extends V> childClass, Message xml) {
-		super(xml, instance(childClass, xml));
+	public Unification(Class<? extends V> childClass, XML2<?,?> message) {
+		super(message, XML.instance(childClass, message.getValue()));
 		// set root
 		setRoot(getParent());
 		// set stem
@@ -152,9 +151,10 @@ public abstract class Unification
 	/**
 	 * {@link Unification} class constructor.
 	 * @param parent the parent
+	 * @param message {@link XML2} the message
 	 */
-	public Unification(K parent) {
-		super(parent);
+	public Unification(K parent, XML2<?,?> message) {
+		super(parent, message);
 		// set root
 		setRoot(parent.getRoot());
 		setStem(parent.getStem());
@@ -163,9 +163,10 @@ public abstract class Unification
 	 * {@link Unification} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
+	 * @param message {@link XML2} the message
 	 */
-	public Unification(Class<? extends V> childClass, K parent) {
-		super(parent, instance(childClass, parent.getChild()));
+	public Unification(Class<? extends V> childClass, K parent, XML2<?,?> message) {
+		super(parent, message, XML.instance(childClass, parent.getChild(), message.getValue()));
 		// set root
 		setRoot(parent.getRoot());
 		setStem(parent.getStem());
@@ -173,10 +174,11 @@ public abstract class Unification
 	/**
 	 * {@link Unification} class constructor.
 	 * @param root the root
-	 * @param {@link String} the name
+	 * @param stem the stem
+	 * @param message {@link XML2} the message
 	 */
-	public Unification(K root, V stem) {
-		super(root.getXML());
+	public Unification(K root, V stem, XML2<?,?> message) {
+		super(message);
 		// set root
 		setRoot(root);
 		setStem(stem);
@@ -185,10 +187,11 @@ public abstract class Unification
 	 * {@link Unification} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
-	 * @param message {@link String} the name
+	 * @param stem the stem
+	 * @param message {@link XML2} the message
 	 */
-	public Unification(Class<? extends V> childClass, K root, V stem) {
-		super(root.getXML(), instance(childClass, stem, root));
+	public Unification(Class<? extends V> childClass, K root, V stem, XML2<?,?> message) {
+		super(message, XML.instance(childClass, stem, root, message.getValue()));
 		// set root
 		setRoot(root);
 		setStem(stem);
@@ -199,8 +202,8 @@ public abstract class Unification
 		try {
 			K k = getParentClass().getConstructor().newInstance();
 			V v = getChildClass().getConstructor().newInstance();
-			k.setXML(getXML());
-			v.setXML(getXML());
+			k.setMessage(getMessage());
+			v.setMessage(getMessage());
 			k.setParent(k);
 			v.setParent(v);
 			k.setChild(v);

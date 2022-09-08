@@ -9,7 +9,7 @@ import java.util.EventObject;
  * @author joan
  *
  */
-public class EventArgs extends EventObject implements Message {
+public class EventArgs extends EventObject implements Listener {
 
 	/**
 	 * 6347247597829991161L
@@ -17,48 +17,63 @@ public class EventArgs extends EventObject implements Message {
 	private static final long serialVersionUID = 6347247597829991161L;
 
 	/**
-	 * The value.
+	 * The message.
 	 */
-	Message xml;
+	XML2<?,?> message;
 	
-	/**
-	 * Returns the XML of this event.
-	 * @return the XML of this event.
-	 */
-	public Message getMessage() {
-		return xml;
+	@Override
+	public XML2<?,?> getMessage() {
+		return message;
+	}
+	@Override
+	public void setMessage(XML2<?,?> message) {
+		this.message = message;
 	}
 	@Override
 	public String getCommand() {
-		return getSource().getCommand();
+		return message.getCommand();
 	}
 	@Override
 	public void setCommand(String command) {
-		getSource().setCommand(command);
+		message.setCommand(command);
 	}
 	@Override
 	public String getName() {
-		return getSource().getName();
+		return message.getName();
 	}
 	@Override
 	public void setName(String name) {
-		getSource().setName(name);
+		message.setName(name);
 	}
 	
 	/**
 	 * {@link EventArgs} default class constructor.
 	 * @param source {@link Listener} the source of the event
-	 * @param xml {@link Message} the xml
+	 * @param message {@link Message} the message
 	 */
-	public EventArgs(Listener source, Message xml) {
+	public EventArgs(Listener source, XML2<?,?> message) {
 		super(source);
-		this.xml = xml;
+		this.message = message;
 	}
 	
 	@Override
 	public Listener getSource() {
 		return (Listener) super.getSource();
 	}
-
-
+	@Override
+	public void run() {
+		getSource().run();
+	}
+	@Override
+	public void addEventListener(Listener listener) {
+		getSource().addEventListener(listener);
+	}
+	@Override
+	public void removeEventListener(Listener listener) {
+		getSource().removeEventListener(listener);
+	}
+	@Override
+	public void event(EventArgs e) {
+		getSource().event(e);
+	}
 }

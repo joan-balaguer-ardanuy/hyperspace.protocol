@@ -25,11 +25,29 @@ import java.util.EventListener;
  *
  */
 public interface Listener extends EventListener, Runnable, Message {
-
-	Message getXML();
-	void setXML(Message xml);
 	
+	/**
+	 * Returns the {@link XML2} message.
+	 * @return {@link XML2} the message
+	 */
+	XML2<?,?> getMessage();
+	
+	/**
+	 * Sets the {@link XML2} message.
+	 * @param message  {@link XML2} the message
+	 */
+	void setMessage(XML2<?,?> message);
+
+	/**
+	 * Adds new {@link Listener} for current instance.
+	 * @param listener {@link Listener} the new listener.
+	 */
 	void addEventListener(Listener listener);
+	
+	/**
+	 * Removes new {@link Listener} for current instance.
+	 * @param listener {@link Listener} the new listener.
+	 */
 	void removeEventListener(Listener listener);
 	
 	/**
