@@ -23,7 +23,7 @@ public abstract class Hyperspace<K,V>
 	 * -7683518704143350984L
 	 */
 	private static final long serialVersionUID = -7683518704143350984L;
-	
+
 	/**
 	 * The key.
 	 */
@@ -69,7 +69,7 @@ public abstract class Hyperspace<K,V>
 	 * @param message {@link XML} the message
 	 */
 	public Hyperspace(Class<? extends Entry<K,V>> parentClass, Class<? extends Entry<V,K>> childClass, XML message) {
-		super(parentClass, childClass, message);
+		super(parentClass, message, instance(childClass, message));
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
@@ -88,7 +88,7 @@ public abstract class Hyperspace<K,V>
 	 * @param value the value
 	 */
 	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> parent, XML message, K key, V value) {
-		super(childClass, parent, message);
+		super(parent, message, instance(childClass, parent.getChild(), message));
 		setKey(key);
 		setValue(value);
 	}
@@ -111,7 +111,7 @@ public abstract class Hyperspace<K,V>
 	 * @param value the value
 	 */
 	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, Entry<V,K> stem, XML message, K key, V value) {
-		super(childClass, root, stem, message);
+		super(root, stem, message, instance(childClass, stem, root, message));
 		setKey(key);
 		setValue(value);
 	}
@@ -193,12 +193,13 @@ public abstract class Hyperspace<K,V>
 		return getChild().indexOfKey(value);
 	}
 	@Override
-	public V putValue(K key, V value) {
-		setKey(key);
-		setValue(value);
-		XML.instance(getParentClass(), getChildClass(), getParent(), key, value);
-		return null;
-	}
+	public abstract V putValue(K key, V value); 
+//	{
+//		setKey(key);
+//		setValue(value);
+//		instance(getParentClass(), getChildClass(), getParent(), getMessage(), key, value);
+//		return null;
+//	}
 	@Override
 	public K putKey(V value, K key) {
 		return getChild().putValue(value, key);
@@ -414,14 +415,15 @@ public abstract class Hyperspace<K,V>
 		}
 
 		public Grid(Class<? extends Entry<K,V>> type, K key, V value) {
-			super(XML.instance(type, key, value));
+			super(instance(type, key, value));
 		}
 		public void put(K key, V value) {
 			if(this.source == null) {
-				this.source = XML.instance(Hyperspace.this.getParentClass(), key, value);
+				this.source = instance(Hyperspace.this.getParentClass(), key, value);
 				return;
 			}
-			XML.instance(getParentClass(), this.source, key, value);
+			instance(getParentClass(), this.source, key, value);
 		}
 	}
+	
 }

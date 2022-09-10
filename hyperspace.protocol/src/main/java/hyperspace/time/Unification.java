@@ -138,11 +138,11 @@ public abstract class Unification
 	}
 	/**
 	 * {@link Unification} class constructor.
-	 * @param childClass {@link Class} the child class
 	 * @param message {@link XML} the message
+	 * @param child the child
 	 */
-	public Unification(Class<? extends V> childClass, XML message) {
-		super(message, instance(childClass, message));
+	public Unification(XML message, V child) {
+		super(message, child);
 		// set root
 		setRoot(getParent());
 		// set stem
@@ -151,7 +151,8 @@ public abstract class Unification
 	/**
 	 * {@link Unification} class constructor.
 	 * @param parent the parent
-	 * @param message {@link Time} the message
+	 * @param message {@link XML} the message
+	 * @param child the child
 	 */
 	public Unification(K parent, XML message) {
 		super(parent, message);
@@ -161,12 +162,12 @@ public abstract class Unification
 	}
 	/**
 	 * {@link Unification} class constructor.
-	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
-	 * @param message {@link Time} the message
+	 * @param message {@link XML} the message
+	 * @param child the child
 	 */
-	public Unification(Class<? extends V> childClass, K parent, XML message) {
-		super(parent, message, instance(childClass, parent.getChild(), message));
+	public Unification(K parent, XML message, V child) {
+		super(parent, message, child);
 		// set root
 		setRoot(parent.getRoot());
 		setStem(parent.getStem());
@@ -175,7 +176,7 @@ public abstract class Unification
 	 * {@link Unification} class constructor.
 	 * @param root the root
 	 * @param stem the stem
-	 * @param message {@link Time} the message
+	 * @param message {@link XML} the message
 	 */
 	public Unification(K root, V stem, XML message) {
 		super(message);
@@ -188,10 +189,11 @@ public abstract class Unification
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param stem the stem
-	 * @param message {@link Time} the message
+	 * @param message {@link XML} the message
+	 * @param child the child
 	 */
-	public Unification(Class<? extends V> childClass, K root, V stem, XML message) {
-		super(message, instance(childClass, stem, root, message));
+	public Unification(K root, V stem, XML message, V child) {
+		super(message, child);
 		// set root
 		setRoot(root);
 		setStem(stem);

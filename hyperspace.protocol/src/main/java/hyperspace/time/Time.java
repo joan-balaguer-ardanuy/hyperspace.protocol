@@ -2,7 +2,6 @@ package hyperspace.time;
 
 import java.util.Enumeration;
 
-import hyperspace.EventArgs;
 import hyperspace.XML;
 
 public abstract class Time
@@ -15,15 +14,6 @@ public abstract class Time
 	 */
 	private static final long serialVersionUID = -1495539127840786666L;
 	
-	@Override
-	public String getCommand() {
-		return super.getCommand();
-	}
-	@Override
-	public void setCommand(String command) {
-		super.setCommand(command);
-		sendEvent(new EventArgs(this, getMessage()));
-	}
 	/**
 	 * {@link Time} class constructor.
 	 */
@@ -43,8 +33,8 @@ public abstract class Time
 	 * @param childClass {@link Class} the child class
 	 * @param message {@link XML} the message
 	 */
-	public Time(Class<? extends K> parentClass, Class<? extends V> childClass, XML message) {
-		super(parentClass, childClass, message);
+	public Time(Class<? extends K> parentClass, XML message, V child) {
+		super(parentClass, message, child);
 	}
 	/**
 	 * {@link Time} class constructor.
@@ -60,8 +50,8 @@ public abstract class Time
 	 * @param parent the parent
 	 * @param message {@link XML} the message
 	 */
-	public Time(Class<? extends V> childClass, K parent, XML message) {
-		super(childClass, parent, message);
+	public Time(K parent, XML message, V child) {
+		super(parent, message, child);
 	}
 	/**
 	 * {@link Time} class constructor.
@@ -79,8 +69,8 @@ public abstract class Time
 	 * @param stem the stem
 	 * @param message {@link XML} the message
 	 */
-	public Time(Class<? extends V> childClass, K root, V stem, XML message) {
-		super(childClass, root, stem, message);
+	public Time(K root, V stem, XML message, V child) {
+		super(root, stem, message, child);
 	}
 
 	@Override

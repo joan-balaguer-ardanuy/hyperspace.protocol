@@ -6,7 +6,7 @@ import jakarta.xml.bind.annotation.XmlElement;
 
 public abstract class AbstractListener
 	extends XML
-	implements Listener {
+		implements Listener {
 	
 	private static final long serialVersionUID = -6531537504810067678L;
 	

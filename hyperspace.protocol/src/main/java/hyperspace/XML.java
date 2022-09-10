@@ -78,30 +78,6 @@ public abstract class XML
 	public String toString() {
 		return toString(this);
 	}
-	
-	/**
-	 * Intances new object.
-	 * @param <X> the parameter type of the returned object
-	 * @param type the {@link Class} of the object.
-	 * @param object the arguments of the construction of the object
-	 * @return the new <X> instance
-	 */
-	public static <X> X instance(Class<X> type, Object... objects) {
-		try {
-			return type.getDeclaredConstructor(getClasses(objects)).newInstance(objects);
-		}
-		catch(Throwable t) {
-			throw new Error(t);
-		}
-	}
-	private static Class<?>[] getClasses(Object... objects) {
-		Class<?>[] classes = new Class<?>[objects.length];
-		for(int i = 0; i < objects.length; i++) {
-			classes[i] = objects[i].getClass();
-		}
-		return classes;
-	}
-	
 	/**
 	 * XML unmarshall method. Generates new {@link JAXBContext} for current class,
 	 * instances new {@link Unmarshaller} object and unmarshalls the {@link InputStream} argument.
@@ -179,5 +155,28 @@ public abstract class XML
 			// if something is wrong print stack trace
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Intances new object.
+	 * @param <X> the parameter type of the returned object
+	 * @param type the {@link Class} of the object.
+	 * @param object the arguments of the construction of the object
+	 * @return the new <X> instance
+	 */
+	protected static <X> X instance(Class<X> type, Object... objects) {
+		try {
+			return type.getDeclaredConstructor(getClasses(objects)).newInstance(objects);
+		}
+		catch(Throwable t) {
+			throw new Error(t);
+		}
+	}
+	private static Class<?>[] getClasses(Object... objects) {
+		Class<?>[] classes = new Class<?>[objects.length];
+		for(int i = 0; i < objects.length; i++) {
+			classes[i] = objects[i].getClass();
+		}
+		return classes;
 	}
 }
