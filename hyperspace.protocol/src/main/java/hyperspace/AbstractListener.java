@@ -5,15 +5,29 @@ import hyperspace.recurrent.Collection;
 import jakarta.xml.bind.annotation.XmlElement;
 
 public abstract class AbstractListener
-	extends XML
+//	extends XML
 		implements Listener {
 	
 	private static final long serialVersionUID = -6531537504810067678L;
-	
+
+	/**
+	 * The name.
+	 */
+	private String name;
+	/**
+	 * The command.
+	 */
+	private String command;
+	/**
+	 * The listeners
+	 */
 	private Collection<Listener> listeners;
-	
+	/**
+	 * The message
+	 */
 	private XML message;
 
+	@Override
 	@XmlElement
 	public XML getMessage() {
 		return message;
@@ -21,15 +35,22 @@ public abstract class AbstractListener
 	public void setMessage(XML message) {
 		this.message = message;
 	}
-	
+	@Override
+	@XmlElement
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	@Override
 	@XmlElement
 	public String getCommand() {
-		return super.getCommand();
+		return command;
 	}
 	@Override
 	public void setCommand(String command) {
-		super.setCommand(command);
+		this.command = command;
 		event(new EventArgs(this, getMessage()));
 	}
 
@@ -41,14 +62,13 @@ public abstract class AbstractListener
 	}
 	/**
 	 * {@link AbstractListener} class constructor.
-	 * @param message {@link String} the name
+	 * @param message {@link XML} the name
 	 */
-	public AbstractListener(String name) {
-		super(name);
-	}
 	public AbstractListener(XML message) {
-		super(message);
+		super();
 		this.message = message;
+		this.name = message.getName();
+		this.command = message.getCommand();
 	}
 	
 	@Override
@@ -92,5 +112,28 @@ public abstract class AbstractListener
 	@Override
 	public String toString() {
 		return XML.toString(this);
+	}
+
+	/**
+	 * Intances new object.
+	 * @param <X> the parameter type of the returned object
+	 * @param type the {@link Class} of the object.
+	 * @param object the arguments of the construction of the object
+	 * @return the new <X> instance
+	 */
+	public static <X> X instance(Class<X> type, Object... objects) {
+		try {
+			return type.getDeclaredConstructor(getClasses(objects)).newInstance(objects);
+		}
+		catch(Throwable t) {
+			throw new Error(t);
+		}
+	}
+	private static Class<?>[] getClasses(Object... objects) {
+		Class<?>[] classes = new Class<?>[objects.length];
+		for(int i = 0; i < objects.length; i++) {
+			classes[i] = objects[i].getClass();
+		}
+		return classes;
 	}
 }

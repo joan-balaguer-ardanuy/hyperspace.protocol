@@ -29,5 +29,4 @@ public class Listeners extends AbstractCollection<Listener> {
 			throw new Error(t);
 		}
 	}
-	
 }

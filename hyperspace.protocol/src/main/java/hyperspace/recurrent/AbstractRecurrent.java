@@ -1,14 +1,13 @@
 package hyperspace.recurrent;
 
+import java.io.Serializable;
 import java.util.Enumeration;
 
-import hyperspace.AbstractListener;
 import hyperspace.time.Recurrent;
 import jakarta.xml.bind.annotation.XmlTransient;
 
 public class AbstractRecurrent<E extends Recurrent<E>>
-	extends AbstractListener
-		implements Recurrent<E> {
+	implements Recurrent<E>, Serializable {
 	
 	private static final long serialVersionUID = -2189724676292955895L;
 	E root;
@@ -67,8 +66,11 @@ public class AbstractRecurrent<E extends Recurrent<E>>
 	@SuppressWarnings("unchecked")
 	@Override
 	public AbstractRecurrent<E> clone() {
-		// TODO Auto-generated method stub
-		return (AbstractRecurrent<E>) super.clone();
+		try {
+			return (AbstractRecurrent<E>) super.clone();
+		} catch (CloneNotSupportedException e) {
+			return null;
+		}
 	}
 	@Override
 	public boolean isEmpty() {
@@ -234,6 +236,14 @@ public class AbstractRecurrent<E extends Recurrent<E>>
 			else
 				hasNext = true;
 			return e;
+		}
+	}
+	protected static <X> X instance(Class<X> type, Object parent, Object element) {
+		try {
+			return type.getDeclaredConstructor(parent.getClass(), element.getClass()).newInstance(parent, element);
+		}
+		catch(Throwable t) {
+			throw new Error(t);
 		}
 	}
 }

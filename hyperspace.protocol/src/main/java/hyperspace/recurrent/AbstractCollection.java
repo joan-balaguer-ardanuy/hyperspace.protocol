@@ -3,10 +3,11 @@ package hyperspace.recurrent;
 import java.util.Iterator;
 import java.util.Objects;
 
+import hyperspace.XML;
 import jakarta.xml.bind.annotation.XmlTransient;
 
 
-public class AbstractCollection<E> 
+public abstract class AbstractCollection<E> 
 	extends AbstractRecurrent<Collection<E>> 
 		implements Collection<E> {
 
@@ -68,14 +69,14 @@ public class AbstractCollection<E>
 	}
 
 	@Override
-	public boolean add(E e)
-	{
+	public boolean add(E e) {
 		if(isEmpty()) {
 			setElement(e);
 			return true;
 		}
 		return instance(getParentClass(), getParent(), e) != null;
 	}
+	
 	@Override
 	public boolean remove(Object o) {
 		Iterator<E> it = iterator();

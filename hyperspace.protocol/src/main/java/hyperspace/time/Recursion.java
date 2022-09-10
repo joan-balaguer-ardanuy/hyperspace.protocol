@@ -100,9 +100,7 @@ public abstract class Recursion
 	}
 
 	@Override
-	public int compareTo(V o) {
-		return 0;
-	}
+	public abstract int compareTo(V o);
 
 	@Override
 	public abstract Recursive.Reproducer<K,V> comparator(K source);
