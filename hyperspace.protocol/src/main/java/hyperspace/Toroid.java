@@ -44,7 +44,6 @@ public abstract class Toroid
 	/**
 	 * {@link Toroid} class constructor.
 	 * @param key the key
-	 * @param message {@link XML} the message
 	 * @param value the value
 	 */
 	public Toroid(K key, XML message, V value) {

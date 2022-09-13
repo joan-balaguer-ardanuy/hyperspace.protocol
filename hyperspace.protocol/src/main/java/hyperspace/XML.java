@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 
-import hyperspace.recurrent.AbstractCollection;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
@@ -22,8 +21,7 @@ import jakarta.xml.bind.annotation.XmlElement;
  *
  */
 public class XML 
-	extends AbstractCollection<XML>
-		implements Message {
+	implements Message {
 
 	/**
 	 * 7585153185633646322L
@@ -56,50 +54,22 @@ public class XML
 		this.command = command;
 	}
 	
-	/**
-	 * {@link XML} default class constructor.
-	 */
-	public XML(Class<? extends XML> type) {
-		super(type);
+	public XML() {
+		super();
 	}
-	/**
-	 * @param parent
-	 * @param element
-	 */
-	public XML(XML parent, XML element) {
-		super(parent, element);
-		this.name = parent.getName();
-		this.command = parent.getCommand();
+	public XML(String name) {
+		super();
+		this.name = name;
+		this.command = Command.INSTANCE;
+	}
+	public XML(XML message) {
+		super();
+		this.name = message.getName();
+		this.command = message.getCommand();
 	}
 	
 	@Override
-	public boolean add(XML e) {
-		if(isEmpty()) {
-			setElement(e);
-			return true;
-		}
-		return instance(getParentClass(), getParent(), e) != null;
-	}
-
-	/**
-	 * Intances new object.
-	 * @param <X> the parameter type of the returned object
-	 * @param type {@link Class} the type of the object.
-	 * @param parent {@link Object} the parent instance
-	 * @param element {@link Object} the new element to be added
-	 * @return the new <X> instance
-	 */
-	protected static <X> X instance(Class<X> type, Object parent, Object element) {
-		try {
-			return type.getDeclaredConstructor(parent.getClass().getSuperclass(), element.getClass().getSuperclass()).newInstance(parent, element);
-		}
-		catch(Throwable t) {
-			throw new Error(t);
-		}
-	}
-
-	@Override
-	public  XML clone() {
+	public Message clone() {
 		return null;
 	}
 	
@@ -129,12 +99,13 @@ public class XML
 	 * @param outputStrem {@link OutputStream} the output stream to be marshalled.
 	 * @throws JAXBException when something is wrong
 	 */
-	public final void write(OutputStream outputStrem) throws JAXBException {
+	public final void write(Object object, OutputStream outputStrem) throws JAXBException {
 		try {
-			JAXBContext context = JAXBContext.newInstance(getClass());
+			JAXBContext context = JAXBContext.newInstance(object.getClass());
 			Marshaller marshaller = context.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			marshaller.marshal(this, outputStrem);
+			marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
+			marshaller.marshal(object, outputStrem);
 		} catch (JAXBException e) {
 			throw new JAXBException(e.getMessage(), e.getCause());
 		}

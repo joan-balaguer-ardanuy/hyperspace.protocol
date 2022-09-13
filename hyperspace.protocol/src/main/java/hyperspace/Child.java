@@ -36,7 +36,6 @@ public abstract class Child
 	/**
 	 * {@link Child} class constructor.
 	 * @param key the key
-	 * @param message {@link XML} the message
 	 */
 	public Child(K key, XML message) {
 		super(key, message);

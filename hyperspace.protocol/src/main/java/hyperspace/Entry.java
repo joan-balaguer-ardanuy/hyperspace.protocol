@@ -136,7 +136,6 @@ public interface Entry<K,V>
 
     @Override
     Entry.Comparator<K,V> comparator();
-    Entry.Comparator<K,V> comparator(K key, V value);
     
     interface Comparator<K,V> 
     	extends Recursive.Reproducer<Entry<K,V>,Entry<V,K>> {

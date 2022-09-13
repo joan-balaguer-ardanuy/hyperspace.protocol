@@ -102,6 +102,9 @@ public abstract class Unification
 	 * Your root.
 	 */
 	K root;
+	/**
+	 * Your stem.
+	 */
 	V stem;
 	
 	@Override
@@ -124,7 +127,7 @@ public abstract class Unification
 	}
 
 	/**
-	 * {@link Unification} class constructor.
+	 * {@link Unification} default class constructor.
 	 */
 	public Unification() {
 		super();
@@ -141,8 +144,8 @@ public abstract class Unification
 	 * @param message {@link XML} the message
 	 * @param child the child
 	 */
-	public Unification(XML message, V child) {
-		super(message, child);
+	public Unification(Class<? extends V> childClass, XML message) {
+		super(message, instance(childClass, message));
 		// set root
 		setRoot(getParent());
 		// set stem
@@ -151,11 +154,10 @@ public abstract class Unification
 	/**
 	 * {@link Unification} class constructor.
 	 * @param parent the parent
-	 * @param message {@link XML} the message
 	 * @param child the child
 	 */
-	public Unification(K parent, XML message) {
-		super(parent, message);
+	public Unification(K parent) {
+		super(parent, parent.getMessage());
 		// set root
 		setRoot(parent.getRoot());
 		setStem(parent.getStem());
@@ -163,11 +165,10 @@ public abstract class Unification
 	/**
 	 * {@link Unification} class constructor.
 	 * @param parent the parent
-	 * @param message {@link XML} the message
 	 * @param child the child
 	 */
-	public Unification(K parent, XML message, V child) {
-		super(parent, message, child);
+	public Unification(Class<? extends V> childClass, K parent) {
+		super(parent, parent.getMessage(), instance(childClass, parent.getChild()));
 		// set root
 		setRoot(parent.getRoot());
 		setStem(parent.getStem());
@@ -176,10 +177,9 @@ public abstract class Unification
 	 * {@link Unification} class constructor.
 	 * @param root the root
 	 * @param stem the stem
-	 * @param message {@link XML} the message
 	 */
-	public Unification(K root, V stem, XML message) {
-		super(message);
+	public Unification(K root, V stem) {
+		super(root.getMessage());
 		// set root
 		setRoot(root);
 		setStem(stem);
@@ -189,11 +189,10 @@ public abstract class Unification
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param stem the stem
-	 * @param message {@link XML} the message
 	 * @param child the child
 	 */
-	public Unification(K root, V stem, XML message, V child) {
-		super(message, child);
+	public Unification(Class<? extends V> childClass, K root, V stem) {
+		super(root.getMessage(), instance(childClass, stem, root));
 		// set root
 		setRoot(root);
 		setStem(stem);

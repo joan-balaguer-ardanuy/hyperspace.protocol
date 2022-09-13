@@ -167,7 +167,7 @@ public abstract class Recurrence
 	private static final long serialVersionUID = -7189559876960626778L;
 
 	/**
-	 * {@link Recurrence} class constructor.
+	 * {@link Recurrence} default class constructor.
 	 */
 	public Recurrence() {
 		super();
@@ -185,44 +185,40 @@ public abstract class Recurrence
 	 * @param childClass {@link Class} the child class
 	 * @param message {@link XML} the message
 	 */
-	public Recurrence(Class<? extends K> parentClass, XML message, V child) {
-		super(parentClass, message, child);
+	public Recurrence(Class<? extends K> parentClass, Class<? extends V> childClass, XML message) {
+		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
 	 * @param parent the parent
-	 * @param message {@link XML} the message
 	 */
-	public Recurrence(K parent, XML message) {
-		super(parent, message);
+	public Recurrence(K parent) {
+		super(parent);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
-	 * @param message {@link XML} the message
 	 */
-	public Recurrence(K parent, XML message, V child) {
-		super(parent, message, child);
+	public Recurrence(Class<? extends V> childClass, K parent) {
+		super(childClass, parent);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
 	 * @param root the root
 	 * @param stem the stem
-	 * @param message {@link XML} the message
 	 */
-	public Recurrence(K root, V stem, XML message) {
-		super(root, message);
+	public Recurrence(K root, V stem) {
+		super(root, stem);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param stem the stem
-	 * @param message {@link XML} the message
 	 */
-	public Recurrence(K root, V stem, XML message, V child) {
-		super(root, stem, message, child);
+	public Recurrence(Class<? extends V> childClass, K root, V stem) {
+		super(childClass, root, stem);
 	}
 
 	@Override

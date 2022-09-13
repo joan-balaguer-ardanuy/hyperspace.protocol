@@ -1,5 +1,7 @@
 package hyperspace.time;
 
+import hyperspace.Message;
+
 /**
  * The concurrent {@link Future} class.
  * 
@@ -13,7 +15,8 @@ public interface Concurrent<V>
 		Comparable<V>, 
 			java.util.concurrent.Future<V>, 
 				java.util.concurrent.ThreadFactory, 
-					java.util.concurrent.Executor {
+					java.util.concurrent.Executor,
+						Message {
 
     
 	// properties

@@ -41,7 +41,7 @@ public abstract class Recursion
 	private static final long serialVersionUID = -8201328197150913563L;
 	
 	/**
-	 * {@link Recursion} class constructor.
+	 * {@link Recursion} default class constructor.
 	 */
 	public Recursion() {
 		super();
@@ -59,51 +59,45 @@ public abstract class Recursion
 	 * @param childClass {@link Class} the child class
 	 * @param message {@link XML} the message
 	 */
-	public Recursion(Class<? extends K> parentClass, XML message, V child) {
-		super(parentClass, message, child);
+	public Recursion(Class<? extends K> parentClass, Class<? extends V> childClass, XML message) {
+		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Recursion} class constructor.
 	 * @param parent the parent
-	 * @param message {@link XML} the message
 	 */
-	public Recursion(K parent, XML message) {
-		super(parent, message);
+	public Recursion(K parent) {
+		super(parent);
 	}
 	/**
 	 * {@link Recursion} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
-	 * @param message {@link XML} the message
 	 */
-	public Recursion(K parent, XML message, V child) {
-		super(parent, message, child);
+	public Recursion(Class<? extends V> childClass, K parent) {
+		super(childClass, parent);
 	}
 	/**
 	 * {@link Recursion} class constructor.
 	 * @param root the root
 	 * @param stem the stem
-	 * @param message {@link XML} the message
 	 */
-	public Recursion(K root, V stem, XML message) {
-		super(root, stem, message);
+	public Recursion(K root, V stem) {
+		super(root, stem);
 	}
 	/**
 	 * {@link Recursion} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param stem the stem
-	 * @param message {@link XML} the message
 	 */
-	public Recursion(K root, V stem, XML message, V child) {
-		super(root, stem, message, child);
+	public Recursion(Class<? extends V> childClass, K root, V stem) {
+		super(childClass, root, stem);
 	}
 
 	@Override
 	public abstract int compareTo(V o);
 
-	@Override
-	public abstract Recursive.Reproducer<K,V> comparator(K source);
 	@Override
 	public abstract Recursive.Reproducer<K,V> comparator();
 	
@@ -122,6 +116,7 @@ public abstract class Recursion
 		 * The source.
 		 */
 		protected transient K source;
+		protected transient XML message;
 		
 		@Override
 		public K source() {
@@ -138,8 +133,9 @@ public abstract class Recursion
 		 * {@link Matrix} class constructor.
 		 * @param source the source
 		 */
-		public Matrix(K source) {
+		public Matrix(XML message, K source) {
 			this.source = source;
+			this.message = message;
 		}
 
 		@Override

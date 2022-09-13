@@ -46,7 +46,7 @@ public abstract class Inheritance
 	private static final long serialVersionUID = -1292694172982192537L;
 	
 	/**
-	 * {@link Inheritance} defaault class constructor.
+	 * {@link Inheritance} default class constructor.
 	 */
 	public Inheritance() {
 		super();
@@ -64,44 +64,40 @@ public abstract class Inheritance
 	 * @param childClass {@link Class} the child class
 	 * @param message {@link XML} the message
 	 */
-	public Inheritance(Class<? extends K> parentClass, XML message, V child) {
-		super(parentClass, message, child);
+	public Inheritance(Class<? extends K> parentClass, Class<? extends V> childClass, XML message) {
+		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
 	 * @param parent the parent
-	 * @param message {@link XML} the message
 	 */
-	public Inheritance(K parent, XML message) {
-		super(parent, message);
+	public Inheritance(K parent) {
+		super(parent);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
-	 * @param message {@link XML} the message
 	 */
-	public Inheritance(K parent, XML message, V child) {
-		super(parent, message, child);
+	public Inheritance(Class<? extends V> childClass, K parent) {
+		super(childClass, parent);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
 	 * @param root the root
 	 * @param stem the stem
-	 * @param message {@link XML} the message
 	 */
-	public Inheritance(K root, V stem, XML message) {
-		super(root, stem, message);
+	public Inheritance(K root, V stem) {
+		super(root, stem);
 	}
 	/**
 	 * {@link Inheritance} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
-	 * @param stme the stem
-	 * @param message {@link XML} the message
+	 * @param stem the stem
 	 */
-	public Inheritance(K root, V stem, XML message, V child) {
-		super(root, stem, message, child);
+	public Inheritance(Class<? extends V> childClass, K root, V stem) {
+		super(childClass, root, stem);
 	}
 
 	@Override

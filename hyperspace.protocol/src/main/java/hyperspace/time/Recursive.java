@@ -1262,12 +1262,6 @@ public interface Recursive<K,V>
 	Recursive.Reproducer<K,V> comparator();
 	
 	/**
-	 * Returns the inheritance comparator.
-	 * @return the inheritance comparator
-	 */
-	Recursive.Reproducer<K,V> comparator(K source);
-	
-	/**
 	 * {@link TimeListener} information transmitter.
 	 * @author joan
 	 * @param <K> is the key

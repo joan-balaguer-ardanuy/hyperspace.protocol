@@ -38,7 +38,7 @@ public abstract class Abstraction
 	}
 
 	/**
-	 * {@link Abstraction} class constructor.
+	 * {@link Abstraction} default class constructor.
 	 */
 	public Abstraction() {
 		super();
@@ -56,50 +56,47 @@ public abstract class Abstraction
 	 * @param childClass {@link Class} the child class
 	 * @param message {@link XML} the message
 	 */
-	public Abstraction(Class<? extends K> parentClass, XML message, V child) {
-		super(message, child);
+	public Abstraction(Class<? extends K> parentClass, Class<? extends V> childClass, XML message) {
+		super(childClass, message);
 		setParentClass(parentClass);
-		setChildClass(child.getParentClass());
+		setChildClass(childClass);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
 	 * @param parent parent parent
 	 * @param message {@link XML} the message
 	 */
-	public Abstraction(K parent, XML message) {
-		super(parent, message);
+	public Abstraction(K parent) {
+		super(parent);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
-	 * @param message {@link XML} the message
 	 */
-	public Abstraction(K parent, XML message, V child) {
-		super(parent, message, child);
+	public Abstraction(Class<? extends V> childClass, K parent) {
+		super(childClass, parent);
 		setParentClass(parent.getParentClass());
-		setChildClass(child.getParentClass());
+		setChildClass(childClass);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
 	 * @param root the root
 	 * @param stem the stem
-	 * @param message {@link XML} the message
 	 */
-	public Abstraction(K root, V stem, XML message) {
-		super(root, stem, message);
+	public Abstraction(K root, V stem) {
+		super(root, stem);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
-	 * @param stem the stme
-	 * @param message {@link XML} the message
+	 * @param stem the stem
 	 */
-	public Abstraction(K root, V stem, XML message, V child) {
-		super(root, stem, message, child);
+	public Abstraction(Class<? extends V> childClass, K root, V stem) {
+		super(childClass, root, stem);
 		setParentClass(root.getParentClass());
-		setChildClass(child.getParentClass());
+		setChildClass(childClass);
 	}
 
 	@Override

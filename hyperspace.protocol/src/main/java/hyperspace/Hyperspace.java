@@ -69,52 +69,45 @@ public abstract class Hyperspace<K,V>
 	 * @param message {@link XML} the message
 	 */
 	public Hyperspace(Class<? extends Entry<K,V>> parentClass, Class<? extends Entry<V,K>> childClass, XML message) {
-		super(parentClass, message, instance(childClass, message));
+		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
-	 * @param parent {@link Entry} the parent
-	 * @param message {@link XML} the message
+	 * @param parent the parent
 	 */
-	public Hyperspace(Entry<K,V> parent, XML message) {
-		super(parent, message);
+	public Hyperspace(Entry<K,V> parent) {
+		super(parent);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
 	 * @param childClass {@link Class} the child class
-	 * @param parent {@link Entry} the parent
-	 * @param message {@link XML} the message
-	 * @param key the key
-	 * @param value the value
+	 * @param parent the parent
 	 */
-	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> parent, XML message, K key, V value) {
-		super(parent, message, instance(childClass, parent.getChild(), message));
+	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> parent, K key, V value) {
+		super(childClass, parent);
 		setKey(key);
 		setValue(value);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
-	 * @param root {@link Entry} the root
-	 * @param stem {@link Entry} the stem
-	 * @param message {@link XML} the message
+	 * @param root the root
+	 * @param stem the stem
 	 */
-	public Hyperspace(Entry<K,V> root, Entry<V,K> stem, XML message) {
-		super(root, stem, message);
+	public Hyperspace(Entry<K,V> root,Entry<V,K> stem) {
+		super(root, stem);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
 	 * @param childClass {@link Class} the child class
-	 * @param root {@link Entry} the root
-	 * @param stem {@link Entry} the stem
-	 * @param message {@link XML} the message
-	 * @param key the key
-	 * @param value the value
+	 * @param root the root
+	 * @param stem the stem
 	 */
-	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, Entry<V,K> stem, XML message, K key, V value) {
-		super(root, stem, message, instance(childClass, stem, root, message));
+	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, Entry<V,K> stem, K key, V value) {
+		super(childClass, root, stem);
 		setKey(key);
 		setValue(value);
 	}
+	
 	@Override
 	public Entry<K,V> clone() {
 		return (Entry<K,V>) super.clone();
@@ -193,13 +186,20 @@ public abstract class Hyperspace<K,V>
 		return getChild().indexOfKey(value);
 	}
 	@Override
-	public abstract V putValue(K key, V value); 
-//	{
-//		setKey(key);
-//		setValue(value);
-//		instance(getParentClass(), getChildClass(), getParent(), getMessage(), key, value);
-//		return null;
-//	}
+	public V putValue(K key, V value) {
+		if(isEmpty()) {
+			instance(getParentClass(), getChildClass(), getParent(), key, value);
+			return null;
+		} else {
+			Enumeration<Entry<K,V>> en = enumerator();
+			for(Entry<K,V> entry = en.nextElement(); en.hasMoreElements(); entry = en.nextElement())  {
+				if(key == entry.getKey()) {
+					return entry.setValue(value);
+				}
+			}
+			return null;
+		}
+	}
 	@Override
 	public K putKey(V value, K key) {
 		return getChild().putValue(value, key);
@@ -386,15 +386,6 @@ public abstract class Hyperspace<K,V>
 	public Entry.Comparator<K,V> comparator() {
 		return comparator == null ? (comparator = new Grid()) : comparator;
 	}
-	@Override
-	public Reproducer<Entry<K, V>, Entry<V, K>> comparator(Entry<K, V> source) {
-		comparator = new Grid(source);
-		return null;
-	}
-	public Entry.Comparator<K,V> comparator(K key, V value) {
-		comparator = new Grid(getParentClass(), key, value);
-		return comparator;
-	}
 
 	/**
 	 * The Grid. A binary toping.
@@ -409,13 +400,10 @@ public abstract class Hyperspace<K,V>
 		public Grid() {
 			super();
 		}
-		
-		public Grid(Entry<K, V> key) {
-			super(key);
-		}
-
-		public Grid(Class<? extends Entry<K,V>> type, K key, V value) {
-			super(instance(type, key, value));
+		public Grid(Class<? extends Entry<K,V>> type, XML message, K key, V value) {
+			super(message, instance(type, message));
+			this.source.setKey(key);
+			this.source.setValue(value);
 		}
 		public void put(K key, V value) {
 			if(this.source == null) {

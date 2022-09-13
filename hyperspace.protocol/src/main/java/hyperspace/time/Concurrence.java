@@ -356,7 +356,7 @@ public abstract class Concurrence
 	}
 	
 	/**
-	 * {@link Concurrence} class constructor.
+	 * {@link Concurrence} default class constructor.
 	 */
 	public Concurrence() {
 		super();
@@ -370,48 +370,44 @@ public abstract class Concurrence
 	}
 	/**
 	 * {@link Concurrence} class constructor.
-	 * @param parentClass {@link Class} the parnet class
+	 * @param parentClass {@link Class} the parent class
 	 * @param childClass {@link Class} the child class
 	 * @param message {@link XML} the message
 	 */
-	public Concurrence(Class<? extends K> parentClass, XML message, V child) {
-		super(parentClass, message, child);
+	public Concurrence(Class<? extends K> parentClass, Class<? extends V> childClass, XML message) {
+		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
 	 * @param parent the parent
-	 * @param message {@link XML} the message
 	 */
-	public Concurrence(K parent, XML message) {
-		super(parent, message);
+	public Concurrence(K parent) {
+		super(parent);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
-	 * @param message {@link XML} the message
 	 */
-	public Concurrence(K parent, XML message, V child) {
-		super(parent, message, child);
+	public Concurrence(Class<? extends V> childClass, K parent) {
+		super(childClass, parent);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
 	 * @param root the root
 	 * @param stem the stem
-	 * @param message {@link XML} the message
 	 */
-	public Concurrence(K root, V stem, XML message) {
-		super(root, stem, message);
+	public Concurrence(K root, V stem) {
+		super(root, stem);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param stem the stem
-	 * @param message {@link XML} the message
 	 */
-	public Concurrence(K root, V stem, XML message, V child) {
-		super(root, stem, message, child);
+	public Concurrence(Class<? extends V> childClass, K root, V stem) {
+		super(childClass, root, stem);
 	}
 	
 	@Override

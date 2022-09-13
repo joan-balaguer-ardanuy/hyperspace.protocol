@@ -1,5 +1,6 @@
 package hyperspace.time;
 
+import hyperspace.Message;
 import hyperspace.recurrent.Enumerable;
 
 /**
@@ -12,7 +13,8 @@ import hyperspace.recurrent.Enumerable;
 public interface Recurrent<K> 
 	extends Past<K>, 
 		Enumerable<K>,
-			java.util.concurrent.Callable<K> {
+			java.util.concurrent.Callable<K>,
+				Message {
 
 	// properties
 	/**

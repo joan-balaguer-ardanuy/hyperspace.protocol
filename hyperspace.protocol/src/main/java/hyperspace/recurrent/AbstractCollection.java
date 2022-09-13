@@ -3,7 +3,6 @@ package hyperspace.recurrent;
 import java.util.Iterator;
 import java.util.Objects;
 
-import hyperspace.XML;
 import jakarta.xml.bind.annotation.XmlTransient;
 
 
@@ -30,7 +29,6 @@ public abstract class AbstractCollection<E>
 	
 	public AbstractCollection(Class<? extends AbstractCollection<E>> type) {
 		super(type);
-		setElement(null);
 	}
 	public AbstractCollection(AbstractCollection<E> parent, E element) {
 		super(parent);
@@ -42,10 +40,9 @@ public abstract class AbstractCollection<E>
 		return super.isEmpty() ? this.element == null : false;
 	}
 	@Override
-	public AbstractCollection<E> clone() {
+	public Collection<E> clone() {
 		try {
-			@SuppressWarnings("unchecked")
-			AbstractCollection<E> c = (AbstractCollection<E>) getParentClass().getDeclaredConstructor().newInstance();
+			Collection<E> c = (Collection<E>) getParentClass().getDeclaredConstructor().newInstance();
 			c.setElement(getElement());
 			return c;
 		} catch (Throwable e) {
@@ -71,8 +68,7 @@ public abstract class AbstractCollection<E>
 	@Override
 	public boolean add(E e) {
 		if(isEmpty()) {
-			setElement(e);
-			return true;
+			setElement(e);	
 		}
 		return instance(getParentClass(), getParent(), e) != null;
 	}
@@ -239,20 +235,20 @@ public abstract class AbstractCollection<E>
 		 }
 	}
 	@Override
-	@Deprecated
 	public int size() {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	@Deprecated
 	public Object[] toArray() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	@Deprecated
 	public <T> T[] toArray(T[] a) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

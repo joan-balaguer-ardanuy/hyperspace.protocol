@@ -27,14 +27,14 @@ import java.util.EventListener;
 public interface Listener extends Message, EventListener, Runnable {
 
 	/**
-	 * Returns the {@link XML2} message.
-	 * @return {@link XML2} the message
+	 * Returns the {@link XML} message.
+	 * @return {@link XML} the message
 	 */
 	XML getMessage();
 	
 	/**
-	 * Sets the {@link XML2} message.
-	 * @param message  {@link XML2} the message
+	 * Sets the {@link XML} message.
+	 * @param message  {@link XML} the message
 	 */
 	void setMessage(XML message);
 	

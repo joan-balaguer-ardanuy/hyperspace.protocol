@@ -3,11 +3,13 @@ package hyperspace.recurrent;
 import java.io.Serializable;
 import java.util.Enumeration;
 
+import hyperspace.XML;
 import hyperspace.time.Recurrent;
 import jakarta.xml.bind.annotation.XmlTransient;
 
 public class AbstractRecurrent<E extends Recurrent<E>>
-	implements Recurrent<E>, Serializable {
+	extends XML
+		implements Recurrent<E>, Serializable {
 	
 	private static final long serialVersionUID = -2189724676292955895L;
 	E root;
@@ -65,12 +67,8 @@ public class AbstractRecurrent<E extends Recurrent<E>>
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public AbstractRecurrent<E> clone() {
-		try {
-			return (AbstractRecurrent<E>) super.clone();
-		} catch (CloneNotSupportedException e) {
-			return null;
-		}
+	public Recurrent<E> clone() {
+		return (Recurrent<E>) super.clone();
 	}
 	@Override
 	public boolean isEmpty() {

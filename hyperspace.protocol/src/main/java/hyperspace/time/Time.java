@@ -15,7 +15,7 @@ public abstract class Time
 	private static final long serialVersionUID = -1495539127840786666L;
 	
 	/**
-	 * {@link Time} class constructor.
+	 * {@link Time} default class constructor.
 	 */
 	public Time() {
 		super();
@@ -33,44 +33,40 @@ public abstract class Time
 	 * @param childClass {@link Class} the child class
 	 * @param message {@link XML} the message
 	 */
-	public Time(Class<? extends K> parentClass, XML message, V child) {
-		super(parentClass, message, child);
+	public Time(Class<? extends K> parentClass, Class<? extends V> childClass, XML message) {
+		super(parentClass, childClass, message);
 	}
 	/**
 	 * {@link Time} class constructor.
 	 * @param parent the parent
-	 * @param message {@link XML} the message
 	 */
-	public Time(K parent, XML message) {
-		super(parent, message);
+	public Time(K parent) {
+		super(parent);
 	}
 	/**
 	 * {@link Time} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
-	 * @param message {@link XML} the message
 	 */
-	public Time(K parent, XML message, V child) {
-		super(parent, message, child);
+	public Time(Class<? extends V> childClass, K parent) {
+		super(childClass, parent);
 	}
 	/**
 	 * {@link Time} class constructor.
 	 * @param root the root
 	 * @param stem the stem
-	 * @param message {@link XML} the message
 	 */
-	public Time(K root, V stem, XML message) {
-		super(root, stem, message);
+	public Time(K root, V stem) {
+		super(root, stem);
 	}
 	/**
 	 * {@link Time} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param stem the stem
-	 * @param message {@link XML} the message
 	 */
-	public Time(K root, V stem, XML message, V child) {
-		super(root, stem, message, child);
+	public Time(Class<? extends V> childClass, K root, V stem) {
+		super(childClass, root, stem);
 	}
 
 	@Override
