@@ -2,7 +2,7 @@ package hyperspace;
 
 import hyperspace.recurrent.Collection;
 
-import jakarta.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElement;
 
 public abstract class AbstractListener
 	implements Listener {

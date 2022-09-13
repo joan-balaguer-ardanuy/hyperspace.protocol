@@ -5,7 +5,7 @@ import java.util.Random;
 import hyperspace.EventArgs;
 import hyperspace.Toroid;
 import hyperspace.XML;
-import jakarta.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * <tt>

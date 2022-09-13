@@ -3,7 +3,7 @@ package hyperspace.recurrent;
 import java.util.Iterator;
 import java.util.Objects;
 
-import jakarta.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlTransient;
 
 
 public abstract class AbstractCollection<E> 

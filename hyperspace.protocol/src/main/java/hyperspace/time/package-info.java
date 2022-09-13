@@ -10,6 +10,6 @@ xmlns={ @XmlNs(prefix="time", namespaceURI="http://hyperspace/time")} )
  */
 package hyperspace.time;
 
-import jakarta.xml.bind.annotation.XmlSchema;
-import jakarta.xml.bind.annotation.XmlNsForm;
-import jakarta.xml.bind.annotation.XmlNs;
+import javax.xml.bind.annotation.XmlSchema;
+import javax.xml.bind.annotation.XmlNsForm;
+import javax.xml.bind.annotation.XmlNs;

@@ -5,7 +5,7 @@ import java.util.Enumeration;
 
 import hyperspace.XML;
 import hyperspace.time.Recurrent;
-import jakarta.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlTransient;
 
 public class AbstractRecurrent<E extends Recurrent<E>>
 	extends XML

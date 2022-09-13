@@ -1,6 +1,6 @@
 package hyperspace;
 
-import jakarta.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * The parent {@link AbstractListener} class.

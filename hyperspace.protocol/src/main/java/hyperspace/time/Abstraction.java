@@ -1,7 +1,7 @@
 package hyperspace.time;
 
 import hyperspace.XML;
-import jakarta.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlTransient;
 
 public abstract class Abstraction
 	<K extends Recursive<K,V>,V extends Recursive<V,K>>
