@@ -69,7 +69,7 @@ public abstract class Hyperspace<K,V>
 	 * @param message {@link XML} the message
 	 */
 	public Hyperspace(Class<? extends Entry<K,V>> parentClass, Class<? extends Entry<V,K>> childClass, XML message) {
-		super(parentClass, childClass, message);
+		super(parentClass, message, instance(childClass, message));
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
@@ -84,7 +84,7 @@ public abstract class Hyperspace<K,V>
 	 * @param parent the parent
 	 */
 	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> parent, K key, V value) {
-		super(childClass, parent);
+		super(parent, instance(childClass, parent.getChild()));
 		setKey(key);
 		setValue(value);
 	}
@@ -93,8 +93,8 @@ public abstract class Hyperspace<K,V>
 	 * @param root the root
 	 * @param stem the stem
 	 */
-	public Hyperspace(Entry<K,V> root,Entry<V,K> stem) {
-		super(root, stem);
+	public Hyperspace(Entry<K,V> root, XML message) {
+		super(root, message);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
@@ -102,8 +102,8 @@ public abstract class Hyperspace<K,V>
 	 * @param root the root
 	 * @param stem the stem
 	 */
-	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, Entry<V,K> stem, K key, V value) {
-		super(childClass, root, stem);
+	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, XML message, K key, V value) {
+		super(root, message, instance(childClass, root.getStem(), message));
 		setKey(key);
 		setValue(value);
 	}
@@ -187,6 +187,9 @@ public abstract class Hyperspace<K,V>
 	}
 	@Override
 	public V putValue(K key, V value) {
+		setKey(key);
+		setValue(value);
+		
 		if(isEmpty()) {
 			instance(getParentClass(), getChildClass(), getParent(), key, value);
 			return null;

@@ -144,8 +144,8 @@ public abstract class Unification
 	 * @param message {@link XML} the message
 	 * @param child the child
 	 */
-	public Unification(Class<? extends V> childClass, XML message) {
-		super(message, instance(childClass, message));
+	public Unification(XML message, V child) {
+		super(message, child);
 		// set root
 		setRoot(getParent());
 		// set stem
@@ -157,7 +157,7 @@ public abstract class Unification
 	 * @param child the child
 	 */
 	public Unification(K parent) {
-		super(parent, parent.getMessage());
+		super(parent);
 		// set root
 		setRoot(parent.getRoot());
 		setStem(parent.getStem());
@@ -167,22 +167,22 @@ public abstract class Unification
 	 * @param parent the parent
 	 * @param child the child
 	 */
-	public Unification(Class<? extends V> childClass, K parent) {
-		super(parent, parent.getMessage(), instance(childClass, parent.getChild()));
+	public Unification(K parent, V child) {
+		super(parent, child);
 		// set root
 		setRoot(parent.getRoot());
-		setStem(parent.getStem());
+		setStem(child.getRoot());
 	}
 	/**
 	 * {@link Unification} class constructor.
 	 * @param root the root
 	 * @param stem the stem
 	 */
-	public Unification(K root, V stem) {
-		super(root.getMessage());
+	public Unification(K root, XML message) {
+		super(message);
 		// set root
 		setRoot(root);
-		setStem(stem);
+		setStem(root.getStem());
 	}
 	/**
 	 * {@link Unification} class constructor.
@@ -191,15 +191,15 @@ public abstract class Unification
 	 * @param stem the stem
 	 * @param child the child
 	 */
-	public Unification(Class<? extends V> childClass, K root, V stem) {
-		super(root.getMessage(), instance(childClass, stem, root));
+	public Unification(K root, XML message, V child) {
+		super(message, child);
 		// set root
 		setRoot(root);
-		setStem(stem);
+		setStem(root.getStem());
 	}
 	
 	@Override
-	protected void sendEvent(EventArgs e) {
+	protected void sendEvent(EventArgs<?,?> e) {
 		super.sendEvent(e);
 		if(root != this)
 			root.event(e);

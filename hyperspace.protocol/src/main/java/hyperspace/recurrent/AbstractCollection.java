@@ -27,10 +27,10 @@ public abstract class AbstractCollection<E>
 		return old;
 	}
 	
-	public AbstractCollection(Class<? extends AbstractCollection<E>> type) {
+	public AbstractCollection(Class<? extends Collection<E>> type) {
 		super(type);
 	}
-	public AbstractCollection(AbstractCollection<E> parent, E element) {
+	public AbstractCollection(Collection<E> parent, E element) {
 		super(parent);
 		setElement(element);
 	}

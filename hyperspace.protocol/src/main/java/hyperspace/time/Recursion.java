@@ -59,8 +59,8 @@ public abstract class Recursion
 	 * @param childClass {@link Class} the child class
 	 * @param message {@link XML} the message
 	 */
-	public Recursion(Class<? extends K> parentClass, Class<? extends V> childClass, XML message) {
-		super(parentClass, childClass, message);
+	public Recursion(Class<? extends K> parentClass, XML message, V child) {
+		super(parentClass, message, child);
 	}
 	/**
 	 * {@link Recursion} class constructor.
@@ -74,16 +74,16 @@ public abstract class Recursion
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Recursion(Class<? extends V> childClass, K parent) {
-		super(childClass, parent);
+	public Recursion(K parent, V child) {
+		super(parent, child);
 	}
 	/**
 	 * {@link Recursion} class constructor.
 	 * @param root the root
 	 * @param stem the stem
 	 */
-	public Recursion(K root, V stem) {
-		super(root, stem);
+	public Recursion(K root, XML message) {
+		super(root, message);
 	}
 	/**
 	 * {@link Recursion} class constructor.
@@ -91,8 +91,8 @@ public abstract class Recursion
 	 * @param root the root
 	 * @param stem the stem
 	 */
-	public Recursion(Class<? extends V> childClass, K root, V stem) {
-		super(childClass, root, stem);
+	public Recursion(K root, XML message, V child) {
+		super(root, message, child);
 	}
 
 	@Override

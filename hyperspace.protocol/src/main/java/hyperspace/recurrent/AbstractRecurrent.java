@@ -57,6 +57,11 @@ public class AbstractRecurrent<E extends Recurrent<E>>
 		root = parent = past = type.cast(this);
 		this.type = type;
 	}
+	public AbstractRecurrent(Class<? extends E> type, E root) {
+		parent = past = type.cast(this);
+		this.root = root;
+		this.type = type;
+	}
 	public AbstractRecurrent(E parent) {
 		setParentClass(parent.getParentClass());
 		setParent(parent);
@@ -73,6 +78,20 @@ public class AbstractRecurrent<E extends Recurrent<E>>
 	@Override
 	public boolean isEmpty() {
 		return this.parent == this;
+	}
+	public boolean recur(E e) {
+		e.setParent(getParent());
+		e.put(getParentClass().cast(this));
+		getParent().put(e);
+		setParent(e);
+		return true;
+	}
+	public boolean concur(E e) {
+		e.setParent(getParentClass().cast(this));
+		e.put(call());
+		call().setParent(e);
+		put(e);
+		return true;
 	}
 	@Override
 	public void clear() {

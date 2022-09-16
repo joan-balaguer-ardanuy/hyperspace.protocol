@@ -36,10 +36,10 @@ public abstract class AbstractMap<K,V>
 	/**
 	 * {@link AbstractMap} default class constructor.
 	 */
-	public AbstractMap(Class<? extends AbstractMap<K,V>> type) {
+	public AbstractMap(Class<? extends Map<K,V>> type) {
 		super(type);
 	}
-	public AbstractMap(AbstractMap<K,V> parent, java.util.Map.Entry<K, V> entry) {
+	public AbstractMap(Map<K,V> parent, java.util.Map.Entry<K, V> entry) {
 		super(parent, entry);
 	}
 	

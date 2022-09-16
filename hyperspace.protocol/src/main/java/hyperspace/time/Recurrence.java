@@ -185,8 +185,8 @@ public abstract class Recurrence
 	 * @param childClass {@link Class} the child class
 	 * @param message {@link XML} the message
 	 */
-	public Recurrence(Class<? extends K> parentClass, Class<? extends V> childClass, XML message) {
-		super(parentClass, childClass, message);
+	public Recurrence(Class<? extends K> parentClass, XML message, V child) {
+		super(parentClass, message, child);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
@@ -200,16 +200,16 @@ public abstract class Recurrence
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Recurrence(Class<? extends V> childClass, K parent) {
-		super(childClass, parent);
+	public Recurrence(K parent, V child) {
+		super(parent, child);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
 	 * @param root the root
 	 * @param stem the stem
 	 */
-	public Recurrence(K root, V stem) {
-		super(root, stem);
+	public Recurrence(K root, XML message) {
+		super(root, message);
 	}
 	/**
 	 * {@link Recurrence} class constructor.
@@ -217,8 +217,8 @@ public abstract class Recurrence
 	 * @param root the root
 	 * @param stem the stem
 	 */
-	public Recurrence(Class<? extends V> childClass, K root, V stem) {
-		super(childClass, root, stem);
+	public Recurrence(K root, XML message, V child) {
+		super(root, message, child);
 	}
 
 	@Override

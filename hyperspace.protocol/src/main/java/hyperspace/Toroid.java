@@ -3,6 +3,8 @@
  */
 package hyperspace;
 
+import javax.xml.bind.annotation.XmlElement;
+
 public abstract class Toroid
 	<K extends TimeListener<K,V>,V extends TimeListener<V,K>> 
 		extends Child<K,V>
@@ -38,17 +40,27 @@ public abstract class Toroid
 	 * {@link Toroid} class constructor.
 	 * @param key the key
 	 */
-	public Toroid(K key, XML message) {
-		super(key, message);
+	public Toroid(K key) {
+		super(key);
 	}
 	/**
 	 * {@link Toroid} class constructor.
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Toroid(K key, XML message, V value) {
-		super(key, message, value);
+	public Toroid(K key, V value) {
+		super(key, value);
 		getChild().getChild().setParent(key.getChild().getChild());
 		getChild().getChild().getChild().setParent(value);
+	}
+	@Override
+	@XmlElement
+	public String getCommand() {
+		return super.getCommand();
+	}
+	@Override
+	public void setCommand(String command) {
+		super.setCommand(command);
+		event(new EventArgs<K,V>(this, getMessage()));
 	}
 }

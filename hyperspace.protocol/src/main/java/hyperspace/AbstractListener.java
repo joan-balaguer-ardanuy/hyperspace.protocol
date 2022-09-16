@@ -50,7 +50,6 @@ public abstract class AbstractListener
 	@Override
 	public void setCommand(String command) {
 		this.command = command;
-		event(new EventArgs(this, getMessage()));
 	}
 
 	/**
@@ -88,7 +87,7 @@ public abstract class AbstractListener
 	 * Sends event to all event {@link Listener} added in the set.
 	 * @param e {@link EventArgs} the arguments of the event
 	 */
-	protected void sendEvent(EventArgs e) {
+	protected void sendEvent(EventArgs<?,?> e) {
 		if(listeners != null) {
 			for(Listener listener : listeners) {
 				listener.event(e);
@@ -96,7 +95,7 @@ public abstract class AbstractListener
 		}
 	}
 	@Override
-	public void event(EventArgs e) {
+	public void event(EventArgs<?,?> e) {
 		sendEvent(e);
 	}
 	@Override
@@ -120,7 +119,7 @@ public abstract class AbstractListener
 	 * @param object the arguments of the construction of the object
 	 * @return the new <X> instance
 	 */
-	public static <X> X instance(Class<X> type, Object... objects) {
+	protected static <X> X instance(Class<X> type, Object... objects) {
 		try {
 			return type.getDeclaredConstructor(getClasses(objects)).newInstance(objects);
 		}

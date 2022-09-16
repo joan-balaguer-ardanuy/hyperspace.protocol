@@ -54,5 +54,5 @@ public interface Listener extends Message, EventListener, Runnable {
 	 * The event.
 	 * @param e {@link EventArgs} the event arguments
 	 */
-	void event(EventArgs e);
+	void event(EventArgs<?,?> e);
 }

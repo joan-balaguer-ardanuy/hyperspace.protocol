@@ -9,7 +9,7 @@ import java.util.EventObject;
  * @author joan
  *
  */
-public class EventArgs extends EventObject implements Listener {
+public class EventArgs<K,V> extends EventObject implements TimeListener<K,V> {
 
 	/**
 	 * 6347247597829991161L
@@ -51,14 +51,15 @@ public class EventArgs extends EventObject implements Listener {
 	 * @param source {@link Listener} the source of the event
 	 * @param message {@link Message} the message
 	 */
-	public EventArgs(Listener source, XML message) {
+	public EventArgs(TimeListener<K,V> source, XML message) {
 		super(source);
 		this.message = message;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public Listener getSource() {
-		return (Listener) super.getSource();
+	public TimeListener<K,V> getSource() {
+		return (TimeListener<K,V>) super.getSource();
 	}
 	@Override
 	public void run() {
@@ -73,7 +74,23 @@ public class EventArgs extends EventObject implements Listener {
 		getSource().removeEventListener(listener);
 	}
 	@Override
-	public void event(EventArgs e) {
+	public void event(EventArgs<?,?> e) {
 		getSource().event(e);
+	}
+	@Override
+	public K getParent() {
+		return getSource().getParent();
+	}
+	@Override
+	public void setParent(K key) {
+		getSource().setParent(key);
+	}
+	@Override
+	public V getChild() {
+		return getSource().getChild();
+	}
+	@Override
+	public void setChild(V value) {
+		getSource().setChild(value);
 	}
 }
