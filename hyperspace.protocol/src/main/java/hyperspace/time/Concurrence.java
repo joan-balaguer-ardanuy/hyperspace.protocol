@@ -381,23 +381,23 @@ public abstract class Concurrence
 	 * {@link Concurrence} class constructor.
 	 * @param parent the parent
 	 */
-	public Concurrence(K parent) {
-		super(parent);
+	public Concurrence(K parent, XML message) {
+		super(parent, message);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Concurrence(K parent, V child) {
-		super(parent, child);
+	public Concurrence(K parent, XML message,  V child) {
+		super(parent, message, child);
 	}
 	/**
 	 * {@link Concurrence} class constructor.
 	 * @param root the root
 	 * @param stem the stem
 	 */
-	public Concurrence(K root, XML message) {
+	public Concurrence(K root, V stem, XML message) {
 		super(root, message);
 	}
 	/**
@@ -406,7 +406,7 @@ public abstract class Concurrence
 	 * @param root the root
 	 * @param child the stem
 	 */
-	public Concurrence(K root, XML message, V child) {
+	public Concurrence(K root, V stem, XML message, V child) {
 		super(root, message, child);
 	}
 	

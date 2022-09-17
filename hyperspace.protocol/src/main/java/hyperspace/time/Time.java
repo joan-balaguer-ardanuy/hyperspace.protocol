@@ -40,24 +40,24 @@ public abstract class Time
 	 * {@link Time} class constructor.
 	 * @param parent the parent
 	 */
-	public Time(K parent) {
-		super(parent);
+	public Time(K parent, XML message) {
+		super(parent, message);
 	}
 	/**
 	 * {@link Time} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Time(K parent, V child) {
-		super(parent, child);
+	public Time(K parent, XML message, V child) {
+		super(parent, message, child);
 	}
 	/**
 	 * {@link Time} class constructor.
 	 * @param root the root
 	 * @param stem the stem
 	 */
-	public Time(K root, XML message) {
-		super(root, message);
+	public Time(K root, V stem, XML message) {
+		super(root, stem, message);
 	}
 	/**
 	 * {@link Time} class constructor.
@@ -65,8 +65,8 @@ public abstract class Time
 	 * @param root the root
 	 * @param child the stem
 	 */
-	public Time(K root, XML message, V child) {
-		super(root, message, child);
+	public Time(K root, V stem, XML message, V child) {
+		super(root, stem, message, child);
 	}
 
 	@Override

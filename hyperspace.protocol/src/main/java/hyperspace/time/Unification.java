@@ -156,8 +156,8 @@ public abstract class Unification
 	 * @param parent the parent
 	 * @param child the child
 	 */
-	public Unification(K parent) {
-		super(parent);
+	public Unification(K parent, XML message) {
+		super(parent, message);
 		// set root
 		setRoot(parent.getRoot());
 		setStem(parent.getStem());
@@ -167,8 +167,8 @@ public abstract class Unification
 	 * @param parent the parent
 	 * @param child the child
 	 */
-	public Unification(K parent, V child) {
-		super(parent, child);
+	public Unification(K parent, XML message, V child) {
+		super(parent, message, child);
 		// set root
 		setRoot(parent.getRoot());
 		setStem(child.getRoot());
@@ -178,11 +178,11 @@ public abstract class Unification
 	 * @param root the root
 	 * @param stem the stem
 	 */
-	public Unification(K root, XML message) {
+	public Unification(K root, V stem, XML message) {
 		super(message);
 		// set root
 		setRoot(root);
-		setStem(root.getStem());
+		setStem(stem);
 	}
 	/**
 	 * {@link Unification} class constructor.
@@ -191,11 +191,11 @@ public abstract class Unification
 	 * @param stem the stem
 	 * @param child the child
 	 */
-	public Unification(K root, XML message, V child) {
+	public Unification(K root, V stem, XML message, V child) {
 		super(message, child);
 		// set root
 		setRoot(root);
-		setStem(root.getStem());
+		setStem(stem);
 	}
 	
 	@Override

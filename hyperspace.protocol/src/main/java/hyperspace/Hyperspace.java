@@ -75,16 +75,16 @@ public abstract class Hyperspace<K,V>
 	 * {@link Hyperspace} class constructor.
 	 * @param parent the parent
 	 */
-	public Hyperspace(Entry<K,V> parent) {
-		super(parent);
+	public Hyperspace(Entry<K,V> parent, XML message) {
+		super(parent, message);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> parent, K key, V value) {
-		super(parent, instance(childClass, parent.getChild()));
+	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> parent, XML message, K key, V value) {
+		super(parent, parent.getMessage(), instance(childClass, parent.getChild(), message));
 		setKey(key);
 		setValue(value);
 	}
@@ -93,8 +93,8 @@ public abstract class Hyperspace<K,V>
 	 * @param root the root
 	 * @param stem the stem
 	 */
-	public Hyperspace(Entry<K,V> root, XML message) {
-		super(root, message);
+	public Hyperspace(Entry<K,V> root, Entry<V,K> stem, XML message) {
+		super(root, stem, message);
 	}
 	/**
 	 * {@link Hyperspace} class constructor.
@@ -102,8 +102,8 @@ public abstract class Hyperspace<K,V>
 	 * @param root the root
 	 * @param stem the stem
 	 */
-	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, XML message, K key, V value) {
-		super(root, message, instance(childClass, root.getStem(), message));
+	public Hyperspace(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, Entry<V,K> stem, XML message, K key, V value) {
+		super(root, message, instance(childClass, stem, root, message));
 		setKey(key);
 		setValue(value);
 	}
@@ -191,7 +191,7 @@ public abstract class Hyperspace<K,V>
 		setValue(value);
 		
 		if(isEmpty()) {
-			instance(getParentClass(), getChildClass(), getParent(), key, value);
+			instance(getParentClass(), getChildClass(), getParent(), getMessage(), key, value);
 			return null;
 		} else {
 			Enumeration<Entry<K,V>> en = enumerator();
@@ -200,6 +200,7 @@ public abstract class Hyperspace<K,V>
 					return entry.setValue(value);
 				}
 			}
+			instance(getParentClass(), getChildClass(), getParent(), getMessage(), key, value);
 			return null;
 		}
 	}

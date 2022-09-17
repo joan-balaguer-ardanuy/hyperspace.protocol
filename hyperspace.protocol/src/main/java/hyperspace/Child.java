@@ -37,8 +37,8 @@ public abstract class Child
 	 * {@link Child} class constructor.
 	 * @param key the key
 	 */
-	public Child(K key) {
-		super(key);
+	public Child(K key, XML message) {
+		super(key, message);
 	}
 	/**
 	 * {@link Child} class constructor.
@@ -47,8 +47,8 @@ public abstract class Child
 	 * @param value the value
 	 */
 	@SuppressWarnings("unchecked")
-	public Child(K key, V value) {
-		super(key, value);
+	public Child(K key, XML message, V value) {
+		super(key, message, value);
 		key.getChild().setChild((K) this);
 	}
 }

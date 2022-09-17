@@ -71,8 +71,8 @@ public abstract class Parent
 	 * @param key the key
 	 * @param message {@link XML} the message
 	 */
-	public Parent(K key) {
-		super(key.getMessage());
+	public Parent(K key, XML message) {
+		super(message);
 		setParent(key);
 		setChild(key.getChild());
 	}
@@ -81,8 +81,8 @@ public abstract class Parent
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Parent(K key, V value) {
-		super(key.getMessage());
+	public Parent(K key, XML message, V value) {
+		super(message);
 		setParent(key);
 		setChild(value);
 	}

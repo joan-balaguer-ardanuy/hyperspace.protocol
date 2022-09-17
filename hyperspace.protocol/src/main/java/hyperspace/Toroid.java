@@ -40,16 +40,16 @@ public abstract class Toroid
 	 * {@link Toroid} class constructor.
 	 * @param key the key
 	 */
-	public Toroid(K key) {
-		super(key);
+	public Toroid(K key, XML message) {
+		super(key, message);
 	}
 	/**
 	 * {@link Toroid} class constructor.
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Toroid(K key, V value) {
-		super(key, value);
+	public Toroid(K key, XML message, V value) {
+		super(key, message, value);
 		getChild().getChild().setParent(key.getChild().getChild());
 		getChild().getChild().getChild().setParent(value);
 	}
