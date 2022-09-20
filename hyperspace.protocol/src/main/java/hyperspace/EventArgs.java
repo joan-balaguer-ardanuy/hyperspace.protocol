@@ -31,19 +31,19 @@ public class EventArgs<K,V> extends EventObject implements TimeListener<K,V> {
 	}
 	@Override
 	public String getCommand() {
-		return message.getCommand();
+		return getSource().getCommand();
 	}
 	@Override
 	public void setCommand(String command) {
-		message.setCommand(command);
+		getSource().setCommand(command);
 	}
 	@Override
 	public String getName() {
-		return message.getName();
+		return getSource().getName();
 	}
 	@Override
 	public void setName(String name) {
-		message.setName(name);
+		getSource().setName(name);
 	}
 	
 	/**

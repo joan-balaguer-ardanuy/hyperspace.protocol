@@ -1,6 +1,6 @@
 package hyperspace;
 
-import hyperspace.recurrent.Collection;
+import hyperspace.recurrent.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 
@@ -20,7 +20,7 @@ public abstract class AbstractListener
 	/**
 	 * The listeners
 	 */
-	private Collection<Listener> listeners;
+	private Set<Listener> listeners;
 	/**
 	 * The message
 	 */

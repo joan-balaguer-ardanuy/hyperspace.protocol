@@ -1,9 +1,9 @@
 package hyperspace;
 
-import hyperspace.recurrent.AbstractCollection;
+import hyperspace.recurrent.AbstractSet;
 import hyperspace.recurrent.Collection;
 
-public class Listeners extends AbstractCollection<Listener> {
+public class Listeners extends AbstractSet<Listener> {
 
 	private static final long serialVersionUID = -3506882592585282661L;
 	
@@ -18,8 +18,10 @@ public class Listeners extends AbstractCollection<Listener> {
 		if(isEmpty()) {
 			setElement(e);
 			return true;
-		}
-		return instance(getParentClass(), getParent(), e) != null;
+		} else if(!contains(e)) {
+			instance(getParentClass(), getParent(), e);
+			return true;
+		} else return false; 
 	}
 	private static <X> X instance(Class<X> type, Collection<Listener> parent, Listener element) {
 		try {
