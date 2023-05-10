@@ -1,6 +1,6 @@
 package hyperspace;
 
-import javax.xml.bind.annotation.XmlTransient;
+import hyperspace.recurrent.Enumerator;
 
 /**
  * The parent {@link AbstractListener} class.
@@ -27,22 +27,26 @@ public abstract class Parent
 	 * The value.
 	 */
 	private V child;
-	
-	@XmlTransient
+
+	@Override
 	public K getParent() {
 		return parent;
 	}
 	@Override
-	public void setParent(K key) {
+	public K setParent(K key) {
+		K old = this.parent;
 		this.parent = key;
+		return old;
 	}
-	@XmlTransient
+	@Override
 	public V getChild() {
 		return child;
 	}
 	@Override
-	public void setChild(V value) {
+	public V setChild(V value) {
+		V old = this.child;
 		this.child = value;
+		return old;
 	}
 
 	public Parent() {
@@ -50,43 +54,103 @@ public abstract class Parent
 	}
 	/**
 	 * {@link Parent} class constructor.
-	 * @param xml {@link XML} the message
+	 * @param parity {@link Parity} the parity
 	 */
-	public Parent(XML message) {
-		super(message);
+	public Parent(Parity parity) {
+		super(parity);
 	}
 	/**
 	 * {@link Parent} class constructor.
-	 * @param message {@link XML} the message
-	 * @param value the value
+	 * @param parity {@link Parity} the parity
+	 * @param child the child
 	 */
 	@SuppressWarnings("unchecked")
-	public Parent(XML message, V value) {
-		super(message);
+	public Parent(Parity parity, V child) {
+		super(parity);
 		setParent((K) this);
-		setChild(value);
+		setChild(child);
 	}
 	/**
 	 * {@link Parent} class constructor.
-	 * @param key the key
-	 * @param message {@link XML} the message
+	 * @param parent the parent
 	 */
-	public Parent(K key, XML message) {
-		super(message);
-		setParent(key);
-		setChild(key.getChild());
+	public Parent(K parent) {
+		super(parent.getParity());
+		setParent(parent);
+		setChild(parent.getChild());
 	}
 	/**
 	 * {@link Parent} class constructor.
-	 * @param key the key
-	 * @param value the value
+	 * @param parent the parent
+	 * @param child the child
 	 */
-	public Parent(K key, XML message, V value) {
-		super(message);
-		setParent(key);
-		setChild(value);
+	public Parent(K parent, V child) {
+		super(parent.getParity());
+		setParent(parent);
+		setChild(child);
 	}
-
+	
 	@Override
 	public abstract TimeListener<K,V> clone();
+
+	@Override
+	public boolean isEmpty() {
+		return getParent() == this;
+	}
+	
+	@Override
+	public Enumerator<K> enumerator() {
+		return new ParentEnumerator(getParent());
+	}
+
+	protected final class ParentEnumerator implements Enumerator<K> {
+
+		/**
+		 * The current time-listener.
+		 */
+		K current;
+
+		/**
+		 * The next time-listener.
+		 */
+		K next;
+
+		/**
+		 * If this recursor has next time-listener.
+		 */
+		boolean hasNext;
+
+		public ParentEnumerator(K parent) {
+			next = current = parent;
+			hasNext = true;
+		}
+
+		@Override
+		public boolean hasMoreElements() {
+			return hasNext;
+		}
+
+		@Override
+		public K nextElement() {
+			K c = next;
+			current = c;
+			next = c.getParent();
+			if (c == Parent.this)
+				hasNext = false;
+			else
+				hasNext = true;
+			return c;
+		}
+
+		@Override
+		public void remove() {
+			K k = next;
+			current.release();
+			if (!k.isEmpty()) {
+				current = k;
+				next = k.getParent();
+			} else
+				hasNext = false;
+		}
+	}
 }

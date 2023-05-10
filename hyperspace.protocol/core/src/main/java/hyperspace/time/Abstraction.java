@@ -1,41 +1,16 @@
 package hyperspace.time;
 
-import hyperspace.XML;
-import javax.xml.bind.annotation.XmlTransient;
+import hyperspace.Parity;
 
 public abstract class Abstraction
-	<K extends Recursive<K,V>,V extends Recursive<V,K>>
+	<K extends Recursion<K,V>,V extends Recursion<V,K>>
 		extends Unification<K,V>
-			implements Recursive<K,V> {
+			implements Recursion<K,V> {
 
 	/**
 	 * 6736845275705891958L
 	 */
 	private static final long serialVersionUID = 6736845275705891958L;
-
-	/**
-	 * The type.
-	 */
-	Class<? extends K> type;
-
-	@Override
-	@XmlTransient
-	public Class<? extends K> getParentClass() {
-		return type;
-	}
-	@Override
-	public void setParentClass(Class<? extends K> type) {
-		this.type = type;
-	}
-	@Override
-	@XmlTransient
-	public Class<? extends V> getChildClass() {
-		return getChild().getParentClass();
-	}
-	@Override
-	public void setChildClass(Class<? extends V> antitype) {
-		getChild().setParentClass(antitype);
-	}
 
 	/**
 	 * {@link Abstraction} default class constructor.
@@ -45,66 +20,58 @@ public abstract class Abstraction
 	}
 	/**
 	 * {@link Abstraction} class constructor.
-	 * @param message {@link XML} the message
+	 * @param parity {@link Parity} the parity
 	 */
-	public Abstraction(XML message) {
-		super(message);
+	public Abstraction(Parity parity) {
+		super(parity);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
-	 * @param parentClass {@link Class} the parent class
 	 * @param childClass {@link Class} the child class
-	 * @param message {@link XML} the message
+	 * @param parity {@link XML} the message
 	 */
-	public Abstraction(Class<? extends K> parentClass, XML message, V child) {
-		super(message);
-		setParentClass(parentClass);
-		setChildClass(child.getParentClass());
+	public Abstraction(Class<? extends V> childClass, Parity parity) {
+		super(childClass, parity);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
-	 * @param parent parent parent
-	 * @param message {@link XML} the message
+	 * @param parent the parent
 	 */
-	public Abstraction(K parent, XML message) {
-		super(parent, message);
+	public Abstraction(K parent) {
+		super(parent);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Abstraction(K parent, XML message, V child) {
-		super(parent, message,  child);
-		setParentClass(parent.getParentClass());
-		setChildClass(child.getParentClass());
+	public Abstraction(Class<? extends V> childClass, K parent) {
+		super(childClass, parent);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
 	 * @param root the root
-	 * @param stem the stem
+	 * @param parity {@link Parity} parity
 	 */
-	public Abstraction(K root, V stem, XML message) {
-		super(root, message);
+	public Abstraction(K root, Parity parity) {
+		super(root, parity);
 	}
 	/**
 	 * {@link Abstraction} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
-	 * @param stem the stem
+	 * @param parity {@link Parity} parity
 	 */
-	public Abstraction(K root, V stem, XML message, V child) {
-		super(root, message, child);
-		setParentClass(root.getParentClass());
-		setChildClass(child.getParentClass());
+	public Abstraction(Class<? extends V> childClass, K root, Parity parity) {
+		super(childClass, root, parity);
 	}
 
 	@Override
 	public void recurChild(K key, V value) {
 		key.setParent(getParent());
 		value.setParent(getChild().getParent());
-		value.setChild(getParent().getChild().getChild());
-		getParent().getChild().setChild(key);
+		value.setChild(getParent().call());
+		getParent().put(key);
 		setParent(key);
 		getChild().setParent(value);
 	}
@@ -128,43 +95,35 @@ public abstract class Abstraction
 	@Override
 	public void permuteChild(K key, V value) {
 		if(key == getParent()) {
-			K current = value.getChild(); 
-			value.setChild(getChild().getChild());
 			call().setParent(key);
 			get().setParent(value);
 			setParent(key.getParent());
 			getChild().setParent(value.getParent());
-			getParent().put(current);
+			getParent().put(value.setChild(call()));
 			put(key);
-			key.setParent(current);
+			key.setParent(getParent().call());
 			value.setParent(getChild());
 		}
 		else if(key == getChild().getChild()) {
-			K current = key.getParent(); 
 			key.setParent(getParent());
 			value.setParent(getChild().getParent());
-			getParent().put(key);
 			put(value.getChild());
-			call().setParent(current);
+			call().setParent(getParent().put(key));
 			get().setParent(getChild());
-			value.setChild(current);
+			value.setChild(getParent().call());
 			setParent(key);
 			getChild().setParent(value);
 		}
 		else {
-			K oldParent = key.getParent();
-			V oldParentChild = value.getParent();
-			K oldChild = value.getChild();
-			key.setParent(getParent()); 
-			value.setParent(getChild().getParent());
-			value.setChild(call());
-			oldParentChild.setChild(getParent().call());
+			V childParent = value.setParent(getChild().getParent());
+			K childChild = value.setChild(call());
+			childParent.setChild(getParent().call());
 			getParent().put(key);
-			setParent(oldParent);
-			getChild().setParent(oldParentChild);
+			setParent(key.setParent(getParent()));
+			getChild().setParent(childParent);
 			call().setParent(key);
 			get().setParent(value);
-			put(oldChild);
+			put(childChild);
 			call().setParent(getParent().call());
 			get().setParent(getChild());
 		}

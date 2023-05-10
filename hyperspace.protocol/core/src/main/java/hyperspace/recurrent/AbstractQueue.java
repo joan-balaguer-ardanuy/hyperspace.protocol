@@ -6,8 +6,8 @@ public abstract class AbstractQueue<E>
 
 	private static final long serialVersionUID = -9119766514516058287L;
 	
-	public AbstractQueue(Class<? extends AbstractQueue<E>> type) {
-		super(type);
+	public AbstractQueue() {
+		super();
 	}
 	public AbstractQueue(AbstractQueue<E> parent, E element) {
 		super(parent, element);
@@ -20,21 +20,21 @@ public abstract class AbstractQueue<E>
 	@Override
 	public E remove() {
 		Collection<E> parent = getParent();
-		parent.clear();
-		return parent.getElement();
+		parent.release();
+		return parent.getEntry();
 	}
 	@Override
 	public E poll() {
 		Collection<E> parent = getParent();
-		parent.clear();
-		return parent.getElement() == null ? null : parent.getElement();
+		parent.release();
+		return parent.getEntry();
 	}
 	@Override
 	public E element() {
-		return getParent().getElement();
+		return getParent().getEntry();
 	}
 	@Override
 	public E peek() {
-		return getParent().getElement();
+		return getParent().getEntry();
 	}
 }

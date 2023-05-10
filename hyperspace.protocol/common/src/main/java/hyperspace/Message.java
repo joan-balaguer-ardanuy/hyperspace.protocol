@@ -1,19 +1,14 @@
 package hyperspace;
 
-public interface Message 
-	extends Cloneable, java.io.Serializable {
+import java.io.Serializable;
+
+public interface Message extends Cloneable, Serializable {
 
 	/**
 	 * Returns the name of this instance.
 	 * @return the name of this instance.
 	 */
 	String getName();
-	
-	/**
-	 * Sets the name of this instance.
-	 * @param name {@link String} the name of this instance.
-	 */
-	void setName(String name);
 	
 	/**
 	 * Returns the command.
@@ -26,4 +21,16 @@ public interface Message
 	 * @param command {@link String} the command
 	 */
 	void setCommand(String command);
+	
+	/**
+	 * Returns the {@link Parity}.
+	 * @return {@link Parity}
+	 */
+	Parity getParity();
+	
+	/**
+	 * Sets the {@link Parity}.
+	 * @param parity {@link Parity}
+	 */
+	void setParity(Parity parity);
 }

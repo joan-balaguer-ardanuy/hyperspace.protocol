@@ -2,56 +2,29 @@ package hyperspace;
 
 import hyperspace.recurrent.Set;
 
-import javax.xml.bind.annotation.XmlElement;
+import java.util.Iterator;
 
 public abstract class AbstractListener
-	implements Listener {
+	extends XML
+		implements Listener {
 	
 	private static final long serialVersionUID = -6531537504810067678L;
-
-	/**
-	 * The name.
-	 */
-	private String name;
-	/**
-	 * The command.
-	 */
-	private String command;
+	
 	/**
 	 * The listeners
 	 */
 	private Set<Listener> listeners;
-	/**
-	 * The message
-	 */
-	private XML message;
-
+	
 	@Override
-	@XmlElement
-	public XML getMessage() {
-		return message;
-	}
-	public void setMessage(XML message) {
-		this.message = message;
-	}
-	@Override
-	@XmlElement
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	@Override
-	@XmlElement
 	public String getCommand() {
-		return command;
+		return super.getCommand();
 	}
 	@Override
 	public void setCommand(String command) {
-		this.command = command;
+		super.setCommand(command);
+		sendEvent(new EventArgs(this));
 	}
-
+	
 	/**
 	 * {@link AbstractListener} default class constructor
 	 */
@@ -60,13 +33,10 @@ public abstract class AbstractListener
 	}
 	/**
 	 * {@link AbstractListener} class constructor.
-	 * @param message {@link XML} the name
+	 * @param message {@link XML2} the name
 	 */
-	public AbstractListener(XML message) {
-		super();
-		this.message = message;
-		this.name = message.getName();
-		this.command = message.getCommand();
+	public AbstractListener(Parity parity) {
+		super(parity);
 	}
 	
 	@Override
@@ -87,51 +57,40 @@ public abstract class AbstractListener
 	 * Sends event to all event {@link Listener} added in the set.
 	 * @param e {@link EventArgs} the arguments of the event
 	 */
-	protected void sendEvent(EventArgs<?,?> e) {
+	protected void sendEvent(EventArgs e) {
 		if(listeners != null) {
-			for(Listener listener : listeners) {
-				listener.event(e);
+			Iterator<Listener> iterator = listeners.iterator();
+			while(iterator.hasNext()) {
+				iterator.next().event(e);
 			}
 		}
 	}
 	@Override
-	public void event(EventArgs<?,?> e) {
+	public void event(EventArgs e) {
 		sendEvent(e);
 	}
 	@Override
 	public void run() {
-		setCommand(Command.TRANSFER);
-	}
-	@Override
-	public Listener clone() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public String toString() {
-		return XML.toString(this);
-	}
-
-	/**
-	 * Intances new object.
-	 * @param <X> the parameter type of the returned object
-	 * @param type the {@link Class} of the object.
-	 * @param object the arguments of the construction of the object
-	 * @return the new <X> instance
-	 */
-	protected static <X> X instance(Class<X> type, Object... objects) {
-		try {
-			return type.getDeclaredConstructor(getClasses(objects)).newInstance(objects);
+		switch (getCommand()) {
+		case Command.LISTEN:
+			setCommand(Command.TRANSFER);
+			break;
+		default:
+			setCommand(Command.LISTEN);
+			break;
 		}
-		catch(Throwable t) {
+	}
+	@Override
+	public void execute(Runnable command) {
+		try {
+			newThread(command).start();
+		}
+		catch (Throwable t) {
 			throw new Error(t);
 		}
 	}
-	private static Class<?>[] getClasses(Object... objects) {
-		Class<?>[] classes = new Class<?>[objects.length];
-		for(int i = 0; i < objects.length; i++) {
-			classes[i] = objects[i].getClass();
-		}
-		return classes;
+	@Override
+	public Thread newThread(Runnable r) {
+		return new Thread(r);
 	}
 }

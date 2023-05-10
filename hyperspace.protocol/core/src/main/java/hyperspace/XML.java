@@ -1,6 +1,3 @@
-/**
- * 
- */
 package hyperspace;
 
 import java.io.BufferedWriter;
@@ -14,38 +11,26 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlElement;
 
-/**
- * @author joan
- *
- */
-public class XML 
-	implements Message {
+public abstract class XML implements Message {
 
-	/**
-	 * 7585153185633646322L
-	 */
-	private static final long serialVersionUID = 7585153185633646322L;
+	private static final long serialVersionUID = -4223002030112388964L;
 
-	/**
-	 * The name.
-	 */
-	private String name;
 	/**
 	 * The command.
 	 */
 	private String command;
 	
-	@XmlElement
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+	/**
+	 * The parity
+	 */
+	private Parity parity;
+
+
 	@Override
-	@XmlElement
+	public abstract String getName();
+	
+	@Override
 	public String getCommand() {
 		return command;
 	}
@@ -53,26 +38,43 @@ public class XML
 	public void setCommand(String command) {
 		this.command = command;
 	}
+	public Parity getParity() {
+		return parity;
+	}
+	public void setParity(Parity parity) {
+		this.parity = parity;
+	}
 	
 	public XML() {
-		super();
+		// TODO Auto-generated constructor stub
 	}
-	public XML(String name) {
-		super();
-		this.name = name;
+	public XML(Parity parity) {
 		this.command = Command.INSTANCE;
+		this.parity = parity;
 	}
-	public XML(XML message) {
-		super();
-		this.name = message.getName();
-		this.command = message.getCommand();
+	/**
+	 * Intances new object.
+	 * @param <X> the parameter type of the returned object
+	 * @param type the {@link Class} of the object.
+	 * @param object the arguments of the construction of the object
+	 * @return the new <X> instance
+	 */
+	protected static <X> X instance(Class<X> type, Object... objects) {
+		try {
+			return type.getDeclaredConstructor(getClasses(objects)).newInstance(objects);
+		}
+		catch(Throwable t) {
+			throw new Error(t);
+		}
 	}
 	
-	@Override
-	public Message clone() {
-		return null;
+	private static Class<?>[] getClasses(Object... objects) {
+		Class<?>[] classes = new Class<?>[objects.length];
+		for(int i = 0; i < objects.length; i++) {
+			classes[i] = objects[i].getClass();
+		}
+		return classes;
 	}
-	
 	@Override
 	public String toString() {
 		return toString(this);

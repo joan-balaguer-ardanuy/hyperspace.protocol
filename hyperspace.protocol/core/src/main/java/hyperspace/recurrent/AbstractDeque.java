@@ -2,19 +2,18 @@ package hyperspace.recurrent;
 
 import java.util.Iterator;
 
-public abstract class AbstractDeque<E> 
+public class AbstractDeque<E> 
 	extends AbstractQueue<E> 
 		implements Deque<E> {
 
 	private static final long serialVersionUID = 4488580658335223540L;
 	
-	public AbstractDeque(Class<? extends AbstractDeque<E>> type) {
-		super(type);
+	public AbstractDeque() {
+		super();
 	}
 	public AbstractDeque(AbstractDeque<E> parent, E element) {
 		super(parent, element);
 	}
-
 
 	@Override
 	public void addFirst(E e) {
@@ -22,7 +21,49 @@ public abstract class AbstractDeque<E>
 	}
 	@Override
 	public void addLast(E e) {
-		instance(getParentClass(), this, e);	
+		instance(getClass(), this, e);	
+	}
+	@Override
+	public E removeFirst() {
+		Collection<E> parent = getParent();
+		parent.release();
+		return parent.getEntry();
+	}
+	@Override
+	public E removeLast() {
+		Collection<E> child = call();
+		child.release();
+		return child.getEntry();
+	}
+	@Override
+	public E getFirst() {
+		return getParent().getEntry();
+	}
+	@Override
+	public E getLast() {
+		return getEntry();
+	}
+	@Override
+	public boolean removeFirstOccurrence(Object o) {
+		Iterator<E> it = iterator();
+		while(it.hasNext()) {
+			if(it.next() == o) {
+				it.remove();
+				return true;
+			}
+		}
+		return false;
+	}
+	@Override
+	public boolean removeLastOccurrence(Object o) {
+		Iterator<E> it = descendingIterator();
+		while(it.hasNext()) {
+			if(it.next() == o) {
+				it.remove();
+				return true;
+			}
+		}
+		return false;
 	}
 	@Override
 	public boolean offerFirst(E e) {
@@ -35,74 +76,24 @@ public abstract class AbstractDeque<E>
 		return true;
 	}
 	@Override
-	public E removeFirst() {
-		E element = pollFirst();
-		if(getParent() == this) {
-			if(getElement() == null) {
-				throw new Error("deque is empty");
-			}
-		}
-		return element;
-	}
-	@Override
-	public E removeLast() {
-		E element = pollLast();
-		if(getParent() == this) {
-			if(getElement() == null) {
-				throw new Error("deque is empty");
-			}
-		}
-		return element;
-	}
-	@Override
 	public E pollFirst() {
-		Collection<E> parent = getParent();
-		parent.clear();
-		return parent.getElement();
+		return removeFirst();
 	}
 	@Override
 	public E pollLast() {
-		Collection<E> child = call();
-		child.clear();
-		return child.getElement();
-	}
-	@Override
-	public E getFirst() {
-		return getParent().getElement();
-	}
-	@Override
-	public E getLast() {
-		return getElement();
+		return removeLast();
 	}
 	@Override
 	public E peekFirst() {
-		return getParent().getElement();
+		return getFirst();
 	}
 	@Override
 	public E peekLast() {
-		return call().getElement();
+		return getLast();
 	}
 	@Override
-	public boolean removeFirstOccurrence(Object o) {
-		Iterator<E> it = new RecurrentIterator(getParent());
-		for(E element = it.next(); it.hasNext(); element = it.next()) {
-			if(element == o) {
-				it.remove();
-				return true;
-			}
-		}
-		return false;
-	}
-	@Override
-	public boolean removeLastOccurrence(Object o) {
-		Iterator<E> it = new ConcurrentIterator(call());
-		for(E element = it.next(); it.hasNext(); element = it.next()) {
-			if(element == o) {
-				it.remove();
-				return true;
-			}
-		}
-		return false;
+	public Iterator<E> descendingIterator() {
+		return new ConcurrentIterator(call());
 	}
 	@Override
 	public void push(E e) {
@@ -110,10 +101,6 @@ public abstract class AbstractDeque<E>
 	}
 	@Override
 	public E pop() {
-		return pollFirst();
-	}
-	@Override
-	public Iterator<E> descendingIterator() {
-		return new ConcurrentIterator(call());
+		return removeFirst();
 	}
 }

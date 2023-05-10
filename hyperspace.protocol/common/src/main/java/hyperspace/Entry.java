@@ -7,7 +7,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import hyperspace.time.Recursive;
+import hyperspace.time.Recursion;
 
 /**
  * Recursive entry.
@@ -74,8 +74,7 @@ import hyperspace.time.Recursive;
  *
  */
 public interface Entry<K,V>
-	extends Recursive<Entry<K,V>,Entry<V,K>>, 
-		java.util.Map.Entry<K,V> {
+	extends Recursion<Entry<K,V>,Entry<V,K>>, java.util.Map.Entry<K,V> {
 
 	K getKey();
     K setKey(K key);
@@ -83,8 +82,8 @@ public interface Entry<K,V>
     V getValue();
     V setValue(V value);
     
-    V getValue(K key);
-    K getKey(V value);
+    V getValue(Object key);
+    K getKey(Object value);
 
     V getValueOrDefault(K key, V defaultValue);
     K getKeyOrDefault(V value, K defaultKey);
@@ -95,11 +94,11 @@ public interface Entry<K,V>
     int indexOfKey(K key);
     int indexOfValue(V value);
     
-    V putValue(K key, V value);
-    K putKey(V value, K key);
+    Entry<K,V> putValue(K key, V value);
+    Entry<V,K> putKey(V value, K key);
 
-    V putValueIfAbsent(K key, V value);
-    K putKeyIfAbsent(V value, K key);
+    Entry<K,V> putValueIfAbsent(K key, V value);
+    Entry<V,K> putKeyIfAbsent(V value, K key);
     
     V replaceValue(K key, V value);
     K replaceKey(V value, K key);
@@ -136,10 +135,10 @@ public interface Entry<K,V>
 
     @Override
     Entry.Comparator<K,V> comparator();
+    Entry.Comparator<K,V> comparator(Entry<V,K> source);
+    Entry.Comparator<K,V> comparator(V value, K key);
     
     interface Comparator<K,V> 
-    	extends Recursive.Reproducer<Entry<K,V>,Entry<V,K>> {
-    	
-    	void put(K key, V value);
+    	extends Recursion.Reproducer<Entry<K,V>,Entry<V,K>> {
     }
 }

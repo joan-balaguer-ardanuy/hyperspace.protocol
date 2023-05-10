@@ -9,26 +9,13 @@ import java.util.EventObject;
  * @author joan
  *
  */
-public class EventArgs<K,V> extends EventObject implements TimeListener<K,V> {
+public class EventArgs extends EventObject implements Listener {
 
 	/**
 	 * 6347247597829991161L
 	 */
 	private static final long serialVersionUID = 6347247597829991161L;
-
-	/**
-	 * The message.
-	 */
-	XML message;
 	
-	@Override
-	public XML getMessage() {
-		return message;
-	}
-	@Override
-	public void setMessage(XML message) {
-		this.message = message;
-	}
 	@Override
 	public String getCommand() {
 		return getSource().getCommand();
@@ -38,12 +25,16 @@ public class EventArgs<K,V> extends EventObject implements TimeListener<K,V> {
 		getSource().setCommand(command);
 	}
 	@Override
-	public String getName() {
-		return getSource().getName();
+	public Parity getParity() {
+		return getSource().getParity();
 	}
 	@Override
-	public void setName(String name) {
-		getSource().setName(name);
+	public void setParity(Parity parity) {
+		getSource().setParity(parity);
+	}
+	@Override
+	public String getName() {
+		return getSource().getName();
 	}
 	
 	/**
@@ -51,15 +42,13 @@ public class EventArgs<K,V> extends EventObject implements TimeListener<K,V> {
 	 * @param source {@link Listener} the source of the event
 	 * @param message {@link Message} the message
 	 */
-	public EventArgs(TimeListener<K,V> source, XML message) {
+	public EventArgs(Listener source) {
 		super(source);
-		this.message = message;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public TimeListener<K,V> getSource() {
-		return (TimeListener<K,V>) super.getSource();
+	public Listener getSource() {
+		return (Listener) super.getSource();
 	}
 	@Override
 	public void run() {
@@ -74,23 +63,15 @@ public class EventArgs<K,V> extends EventObject implements TimeListener<K,V> {
 		getSource().removeEventListener(listener);
 	}
 	@Override
-	public void event(EventArgs<?,?> e) {
+	public void event(EventArgs e) {
 		getSource().event(e);
 	}
 	@Override
-	public K getParent() {
-		return getSource().getParent();
+	public Thread newThread(Runnable r) {
+		return getSource().newThread(r);
 	}
 	@Override
-	public void setParent(K key) {
-		getSource().setParent(key);
-	}
-	@Override
-	public V getChild() {
-		return getSource().getChild();
-	}
-	@Override
-	public void setChild(V value) {
-		getSource().setChild(value);
+	public void execute(Runnable command) {
+		getSource().execute(command);
 	}
 }

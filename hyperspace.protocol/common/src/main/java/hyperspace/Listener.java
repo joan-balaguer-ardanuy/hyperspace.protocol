@@ -24,19 +24,12 @@ import java.util.EventListener;
  * @author {@link TimeListener}
  *
  */
-public interface Listener extends Message, EventListener, Runnable {
-
-	/**
-	 * Returns the {@link XML} message.
-	 * @return {@link XML} the message
-	 */
-	XML getMessage();
-	
-	/**
-	 * Sets the {@link XML} message.
-	 * @param message  {@link XML} the message
-	 */
-	void setMessage(XML message);
+public interface Listener 
+	extends Message, 
+		EventListener, 
+			Runnable, 
+				java.util.concurrent.ThreadFactory, 
+					java.util.concurrent.Executor {
 	
 	/**
 	 * Adds new {@link Listener} for current instance.
@@ -54,5 +47,5 @@ public interface Listener extends Message, EventListener, Runnable {
 	 * The event.
 	 * @param e {@link EventArgs} the event arguments
 	 */
-	void event(EventArgs<?,?> e);
+	void event(EventArgs e);
 }

@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import hyperspace.Command;
-import hyperspace.XML;
+import hyperspace.Parity;
 
 /**
  * 
@@ -328,136 +328,151 @@ import hyperspace.XML;
  * @param <K>
  * @param <V>
  */
-public abstract class Concurrence
-	<K extends Recursive<K,V>,V extends Recursive<V,K>> 
-		extends Recursion<K,V> 
-			implements Recursive<K,V>  {
+public abstract class Concurrent
+	<K extends Recursion<K,V>,V extends Recursion<V,K>> 
+		extends Recursive<K,V> 
+			implements Recursion<K,V>  {
 
 	/**
 	 * -8918966892741751641L
 	 */
 	private static final long serialVersionUID = -8918966892741751641L;
-
-	@Override
-	public K call() {
-		return getChild().getChild();
-	}
-	@Override
-	public void put(K key) {
-		getChild().setChild(key);
-	}
-	@Override
-	public V get() {
-		return getChild().call();
-	}
-	@Override
-	public void set(V value) {
-		getChild().put(value);
-	}
 	
 	/**
-	 * {@link Concurrence} default class constructor.
+	 * {@link Concurrent} default class constructor.
 	 */
-	public Concurrence() {
+	public Concurrent() {
 		super();
 	}
 	/**
-	 * {@link Concurrence} class constructor.
-	 * @param message {@link XML} the message
+	 * {@link Concurrent} class constructor.
+	 * @param parity {@link Parity} the Next
 	 */
-	public Concurrence(XML message) {
-		super(message);
+	public Concurrent(Parity parity) {
+		super(parity);
 	}
 	/**
-	 * {@link Concurrence} class constructor.
-	 * @param parentClass {@link Class} the parent class
+	 * {@link Concurrent} class constructor.
 	 * @param childClass {@link Class} the child class
-	 * @param message {@link XML} the message
+	 * @param parity {@link Parity} the parity
 	 */
-	public Concurrence(Class<? extends K> parentClass, XML message, V child) {
-		super(parentClass, message, child);
+	public Concurrent(Class<? extends V> childClass, Parity parity) {
+		super(childClass, parity);
 	}
 	/**
-	 * {@link Concurrence} class constructor.
+	 * {@link Concurrent} class constructor.
 	 * @param parent the parent
 	 */
-	public Concurrence(K parent, XML message) {
-		super(parent, message);
+	public Concurrent(K parent) {
+		super(parent);
 	}
 	/**
-	 * {@link Concurrence} class constructor.
+	 * {@link Concurrent} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Concurrence(K parent, XML message,  V child) {
-		super(parent, message, child);
+	public Concurrent(Class<? extends V> childClass, K parent) {
+		super(childClass, parent);
 	}
 	/**
-	 * {@link Concurrence} class constructor.
+	 * {@link Concurrent} class constructor.
 	 * @param root the root
-	 * @param stem the stem
+	 * @param parity {@link Parity} the parity
 	 */
-	public Concurrence(K root, V stem, XML message) {
-		super(root, message);
+	public Concurrent(K root, Parity parity) {
+		super(root, parity);
 	}
 	/**
-	 * {@link Concurrence} class constructor.
+	 * {@link Concurrent} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
-	 * @param child the stem
+	 * @param parity {@link Parity} the parity
 	 */
-	public Concurrence(K root, V stem, XML message, V child) {
-		super(root, message, child);
-	}
-	
-	@Override
-	public boolean cancel(boolean mayInterruptIfRunning) {
-		try {
-			if(mayInterruptIfRunning && Thread.currentThread().isAlive())
-				setCommand(Command.TRANSFER);
-			return true;
-		}
-		catch(Throwable t) {
-			return false;
-		}
-	}
-	@Override
-	public boolean isCancelled() {
-		return false;
-	}
-	@Override
-	public boolean isDone() {
-		return false;
-	}
-	@Override
-	public V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-		return get();
+	public Concurrent(Class<? extends V> childClass, K root, Parity parity) {
+		super(childClass, root, parity);
 	}
 
+	/**
+	 * {@inheritDoc}
+     *
+     * @implSpec
+     * this implementation delegates the method to the child
+	 */
+	@Override
+	public boolean hasChild(V value) {
+		return getChild().hasParent(value);
+	}
+	/**
+	 * {@inheritDoc}
+     *
+     * @implSpec
+     * this implementation delegates the method to the child
+	 */
+	@Override
+	public boolean releaseChild(V child) {
+		return getChild().releaseParent(child);
+	}
+	/**
+	 * {@inheritDoc}
+     *
+     * @implSpec
+     * this implementation delegates the method to the child
+	 */
+	@Override
+	public boolean addChild(V child) {
+		return getChild().addParent(child);
+	}
+	/**
+	 * {@inheritDoc}
+     *
+     * @implSpec
+     * this implementation delegates the method to the child
+	 */
+	@Override
+	public boolean hasAllChildren(V child) {
+		return getChild().hasAllParents(child);
+	}
+	/**
+	 * {@inheritDoc}
+     *
+     * @implSpec
+     * this implementation delegates the method to the child
+	 */
+	@Override
+	public boolean addAllChildren(V child) {
+		return getChild().addAllParents(child);
+	}
+	/**
+	 * {@inheritDoc}
+     *
+     * @implSpec
+     * this implementation delegates the method to the child
+	 */
+	@Override
+	public boolean releaseAllChildren(V child) {
+		return getChild().releaseAllParents(child);
+	}
+	/**
+	 * {@inheritDoc}
+     *
+     * @implSpec
+     * this implementation delegates the method to the child
+	 */
+	@Override
+	public boolean retainAllChildren(V child) {
+		return getChild().retainAllParents(child);
+	}
 	@Override
 	public void run() {
-		switch (getCommand()) {
-		case Command.LISTEN:
-			setCommand(Command.TRANSFER);
-			break;
-		default:
-			setCommand(Command.LISTEN);
-			break;
+		if((isRoot() && !isEmpty()) || !isFinal()) {
+			Thread t = newThread(getChild());
+			t.start();
+			try {
+				t.join();
+			} catch (InterruptedException e ) {
+				
+			}
 		}
-		// execute the future
-		execute(getChild());
-	}
-	@Override
-	public void execute(Runnable command) {
-		try {
-			newThread(command).start();
-		}
-		catch (Throwable t) {
-			throw new Error(t);
-		}
-	}
-	@Override
-	public Thread newThread(Runnable r) {
-		return new Thread(r);
+		super.run(); 
 	}
 }
