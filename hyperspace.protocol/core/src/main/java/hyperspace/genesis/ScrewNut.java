@@ -5,14 +5,14 @@ package hyperspace.genesis;
 
 import hyperspace.Entry;
 import hyperspace.Parity;
-import hyperspace.XML2;
+import hyperspace.ScrewDriver;
 
 /**
  * @author joan
  *
  */
-public abstract class Hyperchain<K,V> 
-	extends XML2<K,V> 
+public abstract class ScrewNut<K,V> 
+	extends ScrewDriver<K,V> 
 		implements Chain<K,V> {
 
 	/**
@@ -21,60 +21,58 @@ public abstract class Hyperchain<K,V>
 	private static final long serialVersionUID = 2606906200987294519L;
 	
 	/**
-	 * {@link Hyperchain} default class constructor.
+	 * {@link ScrewNut} default class constructor.
 	 */
-	public Hyperchain() {
+	public ScrewNut() {
 		super();
 	}
 	/**
-	 * {@link Hyperchain} class constructor.
+	 * {@link ScrewNut} class constructor.
 	 * @param parity {@link Parity} the parity
 	 */
-	public Hyperchain(Parity parity) {
+	public ScrewNut(Parity parity) {
 		super(parity);
 	}
 	/**
-	 * {@link Hyperchain} class constructor.
+	 * {@link ScrewNut} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parity {@link Parity} the parity
-	 * @param key the key
-	 * @param value the value
 	 */
-	public Hyperchain(Class<? extends Hypercube<V,K>> childClass, Parity parity, K key, V value) {
-		super(childClass, parity, key, value);
+	public ScrewNut(Class<? extends Screw<V,K>> childClass, Parity parity) {
+		super(childClass, parity);
 	}
 	/**
-	 * {@link Hyperchain} class constructor.
+	 * {@link ScrewNut} class constructor.
 	 * @param parent the parent
 	 */
-	public Hyperchain(Hyperchain<K,V> parent) {
+	public ScrewNut(ScrewNut<K,V> parent) {
 		super(parent);
 	}
 	/**
-	 * {@link Hyperchain} class constructor.
+	 * {@link ScrewNut} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hyperchain(Class<? extends Hypercube<V,K>> childClass, Hyperchain<K,V> parent, K key, V value) {
+	public ScrewNut(Class<? extends Screw<V,K>> childClass, ScrewNut<K,V> parent, K key, V value) {
 		super(childClass, parent, key, value);
 	}
 	/**
-	 * {@link Hyperchain} class constructor.
+	 * {@link ScrewNut} class constructor.
 	 * @param root the root
 	 * @param parity {@link Parity} the parity
 	 */
-	public Hyperchain(Hyperchain<K,V> root, Parity parity) {
+	public ScrewNut(ScrewNut<K,V> root, Parity parity) {
 		super(root, parity);
 	}
 	/**
-	 * {@link Hyperchain} class constructor.
+	 * {@link ScrewNut} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param stem the stem
 	 */
-	public Hyperchain(Class<? extends Hypercube<V,K>> childClass, Hyperchain<K,V> root, Parity parity, K key, V value) {
+	public ScrewNut(Class<? extends Screw<V,K>> childClass, ScrewNut<K,V> root, Parity parity, K key, V value) {
 		super(childClass, root, key, value);
 	}
 

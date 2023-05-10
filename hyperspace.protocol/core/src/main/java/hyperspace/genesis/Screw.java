@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import hyperspace.XML2;
+import hyperspace.ScrewDriver;
 import hyperspace.recurrent.Enumerator;
 import hyperspace.Parity;
 
@@ -18,8 +18,8 @@ import hyperspace.Parity;
  * @author joan
  *
  */
-public abstract class Hypercube<K,V> 
-	extends XML2<K,V>
+public abstract class Screw<K,V> 
+	extends ScrewDriver<K,V>
 		implements DNA<K,V> {
 
 	/**
@@ -28,60 +28,60 @@ public abstract class Hypercube<K,V>
 	private static final long serialVersionUID = -1289997593164869118L;
 
 	/**
-	 * {@link Hypercube} default class constructor.
+	 * {@link Screw} default class constructor.
 	 */
-	public Hypercube() {
+	public Screw() {
 		super();
 	}
 	/**
-	 * {@link Hypercube} class constructor.
+	 * {@link Screw} class constructor.
 	 * @param parity {@link Parity} the parity
 	 */
-	public Hypercube(Parity parity) {
+	public Screw(Parity parity) {
 		super(parity);
 	}
 	/**
-	 * {@link Hypercube} class constructor.
+	 * {@link Screw} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parity {@link Parity} the parity
 	 */
-	public Hypercube(Class<? extends Hyperchain<V,K>> childClass, Parity parity, K key, V value) {
-		super(childClass, parity, key, value);
+	public Screw(Class<? extends ScrewNut<V,K>> childClass, Parity parity) {
+		super(childClass, parity);
 	}
 	/**
-	 * {@link Hypercube} class constructor.
-	 * @param parent {@link Hypercube} the parent
+	 * {@link Screw} class constructor.
+	 * @param parent {@link Screw} the parent
 	 */
-	public Hypercube(Hypercube<K,V> parent) {
+	public Screw(Screw<K,V> parent) {
 		super(parent);
 	}
 	/**
-	 * {@link Hypercube} class constructor.
+	 * {@link Screw} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hypercube(Class<? extends Hyperchain<V,K>> childClass, Hypercube<K,V> parent, K key, V value) {
+	public Screw(Class<? extends ScrewNut<V,K>> childClass, Screw<K,V> parent, K key, V value) {
 		super(childClass, parent, key, value);
 	}
 	/**
-	 * {@link Hypercube} class constructor.
-	 * @param root {@link Hypercube} the root
+	 * {@link Screw} class constructor.
+	 * @param root {@link Screw} the root
 	 * @param parity {@link Parity} the message
 	 */
-	public Hypercube(Hypercube<K,V> root, Parity parity) {
+	public Screw(Screw<K,V> root, Parity parity) {
 		super(root, parity);
 	}
 	/**
-	 * {@link Hypercube} class constructor.
+	 * {@link Screw} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param parity {@link Parity} the parity
 	 * @param key the key
 	 * @param value the value
 	 */
-	public Hypercube(Class<? extends Hyperchain<V,K>> childClass, Hypercube<K,V> root, Parity parity, K key, V value) {
+	public Screw(Class<? extends ScrewNut<V,K>> childClass, Screw<K,V> root, Parity parity, K key, V value) {
 		super(childClass, root, parity, key, value);
 	}
 
@@ -172,16 +172,16 @@ public abstract class Hypercube<K,V>
 
 			@Override
 			public int size() {
-				return Hypercube.this.size();
+				return Screw.this.size();
 			}
 			public boolean isEmpty() {
-                return Hypercube.this.isEmpty();
+                return Screw.this.isEmpty();
             }
             public void clear() {
-            	Hypercube.this.clear();
+            	Screw.this.clear();
             }
             public boolean contains(Object k) {
-                return Hypercube.this.containsKey(k);
+                return Screw.this.containsKey(k);
             }
 			
 		} : keySet;
@@ -208,19 +208,19 @@ public abstract class Hypercube<K,V>
             }
 
             public int size() {
-                return Hypercube.this.size();
+                return Screw.this.size();
             }
 
             public boolean isEmpty() {
-                return Hypercube.this.isEmpty();
+                return Screw.this.isEmpty();
             }
 
             public void clear() {
-            	Hypercube.this.clear();
+            	Screw.this.clear();
             }
 
             public boolean contains(Object v) {
-                return Hypercube.this.containsValue(v);
+                return Screw.this.containsValue(v);
             }
 		}: values;
 	}
@@ -250,16 +250,16 @@ public abstract class Hypercube<K,V>
 
 			@Override
 			public int size() {
-				return Hypercube.this.size();
+				return Screw.this.size();
 			}
 			public boolean isEmpty() {
-                return Hypercube.this.isEmpty();
+                return Screw.this.isEmpty();
             }
             public void clear() {
-            	Hypercube.this.clear();
+            	Screw.this.clear();
             }
             public boolean contains(Object k) {
-                return Hypercube.this.containsKey(k);
+                return Screw.this.containsKey(k);
             }
 			
 		}: entrySet;
@@ -297,7 +297,7 @@ public abstract class Hypercube<K,V>
 			hyperspace.Entry<K,V> c = next;
 			current = c;
 			next = c.getParent();
-			if (c == Hypercube.this)
+			if (c == Screw.this)
 				hasNext = false;
 			else
 				hasNext = true;
@@ -347,7 +347,7 @@ public abstract class Hypercube<K,V>
 			hyperspace.Entry<K,V> c = next;
 			current = c;
 			next = c.getParent();
-			if (c == Hypercube.this)
+			if (c == Screw.this)
 				hasNext = false;
 			else
 				hasNext = true;

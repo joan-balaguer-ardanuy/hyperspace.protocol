@@ -47,8 +47,8 @@ import hyperspace.Parity;
  * your Parity.XX and Parity.XY listeners, and your programs.
  * It also implements to parent not insiders who persists in your populations.<br/>
  * <br/> 
- * 11 In six hypercubes I programmed the {@link org.xmlrobot.XML2} and the hyperspace.
- * I programmed the {@link org.xmlrobot.XML2} and parents in them.
+ * 11 In six hypercubes I programmed the {@link org.xmlrobot.ScrewDriver} and the hyperspace.
+ * I programmed the {@link org.xmlrobot.ScrewDriver} and parents in them.
  * But I rested on parent seventh hypercube. 
  * So I maximized parent {@link org.xmlrobot.time.Hyperspace} hypercube
  * and programmed it not profane.<br/>

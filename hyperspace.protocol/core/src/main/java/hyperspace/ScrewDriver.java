@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author joan
  *
  */
-public abstract class XML2<K,V> 
+public abstract class ScrewDriver<K,V> 
 	extends Time<Entry<K,V>,Entry<V,K>>
 		implements Entry<K,V> {
 
@@ -50,66 +50,66 @@ public abstract class XML2<K,V>
 	}
 
 	/**
-	 * {@link XML2} default class constructor.
+	 * {@link ScrewDriver} default class constructor.
 	 */
-	public XML2() {
+	public ScrewDriver() {
 		super();
 	}
 	/**
-	 * {@link XML2} class constructor.
+	 * {@link ScrewDriver} class constructor.
 	 * @param parity {@link Parity} the parity
 	 */
-	public XML2(Parity parity) {
+	public ScrewDriver(Parity parity) {
 		super(parity);
 	}
 	/**
-	 * {@link XML2} class constructor.
+	 * {@link ScrewDriver} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parity {@link Parity} the parity
 	 * @param key the key
 	 * @param value the value
 	 */
-	public XML2(Class<? extends Entry<V,K>> childClass, Parity parity, K key, V value) {
+	public ScrewDriver(Class<? extends Entry<V,K>> childClass, Parity parity) {
 		super(childClass, parity);
-		setKey(key);
-		setValue(value);
+		setKey(null);
+		setValue(null);
 	}
 	/**
-	 * {@link XML2} class constructor.
+	 * {@link ScrewDriver} class constructor.
 	 * @param parent the parent
 	 */
-	public XML2(Entry<K,V> parent) {
+	public ScrewDriver(Entry<K,V> parent) {
 		super(parent);
 	}
 	/**
-	 * {@link XML2} class constructor.
+	 * {@link ScrewDriver} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 * @param key the key
 	 * @param value the value
 	 */
-	public XML2(Class<? extends Entry<V,K>> childClass, Entry<K,V> parent, K key, V value) {
+	public ScrewDriver(Class<? extends Entry<V,K>> childClass, Entry<K,V> parent, K key, V value) {
 		super(childClass, parent);
 		setKey(key);
 		setValue(value);
 	}
 	/**
-	 * {@link XML2} class constructor.
+	 * {@link ScrewDriver} class constructor.
 	 * @param root the root
 	 * @param parity {@link Parity} the parity
 	 */
-	public XML2(Entry<K,V> root, Parity parity) {
+	public ScrewDriver(Entry<K,V> root, Parity parity) {
 		super(root, parity);
 	}
 	/**
-	 * {@link XML2} class constructor.
+	 * {@link ScrewDriver} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param parity {@link Parity} the parity
 	 * @param key the key
 	 * @param value the value
 	 */
-	public XML2(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, Parity parity, K key, V value) {
+	public ScrewDriver(Class<? extends Entry<V,K>> childClass, Entry<K,V> root, Parity parity, K key, V value) {
 		super(childClass, root, parity);
 		setKey(key);
 		setValue(value);
@@ -429,7 +429,7 @@ public abstract class XML2<K,V>
 		}
 		@SuppressWarnings("unchecked")
 		public Grid(V value, K key) {
-			super((Entry<V,K>) instance(XML2.this.getChild().getClass(), Parity.random(), value, key));
+			super((Entry<V,K>) instance(ScrewDriver.this.getChild().getClass(), Parity.random(), value, key));
 		}
 	}
 	

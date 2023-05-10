@@ -33,7 +33,7 @@ public abstract class AbstractListener
 	}
 	/**
 	 * {@link AbstractListener} class constructor.
-	 * @param message {@link XML2} the name
+	 * @param message {@link ScrewDriver} the name
 	 */
 	public AbstractListener(Parity parity) {
 		super(parity);
