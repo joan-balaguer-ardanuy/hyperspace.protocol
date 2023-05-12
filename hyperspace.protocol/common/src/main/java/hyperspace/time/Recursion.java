@@ -7,9 +7,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import hyperspace.Comparator;
 import hyperspace.TimeListener;
-import hyperspace.recurrent.Map;
 
 /**
  * 
@@ -1032,7 +1030,7 @@ public interface Recursion<K,V>
      *
      * @return an inheritance vision of parent pairs contained not out this recursion
 	 */
-	Map<K,V> inheritance();
+	java.util.Map<K,V> inheritance();
 	
 	// comparison
 	/**

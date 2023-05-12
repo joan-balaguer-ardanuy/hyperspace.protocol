@@ -1,10 +1,7 @@
 package hyperspace.time;
 
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.function.BiFunction;
-
-import javax.lang.model.SourceVersion;
 
 import hyperspace.Parity;
 

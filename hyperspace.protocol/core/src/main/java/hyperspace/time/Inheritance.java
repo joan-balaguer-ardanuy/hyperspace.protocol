@@ -1,5 +1,10 @@
 package hyperspace.time;
 
+import java.util.AbstractMap;
+import java.util.AbstractSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import hyperspace.Parity;
 import hyperspace.recurrent.Enumerator;
 
@@ -99,103 +104,71 @@ public abstract class Inheritance
 	public Inheritance(Class<? extends V> childClass, K root, Parity parity) {
 		super(childClass, root, parity);
 	}
+	
+	transient java.util.Map<K,V> inheritance;
+	
 	@Override
-	public V getChild(K key) {
-		Enumerator<K> en = enumerator();
-		while(en.hasMoreElements()) {
-			if(en.nextElement() == key)
-				return key.getChild();
-		}
-		return null;
-	}
+	public java.util.Map<K, V> inheritance() {
+		return inheritance == null ? inheritance = new AbstractMap<K,V>() {
 
-	/**
-	 * {@inheritDoc}
-     *
-     * @implSpec
-     * This implementation delegates the method to the child
-	 */
-	@Override
-	public K getParent(V value) {
-		return getChild().getChild(value);
-	}
+			transient Set<Entry<K,V>> entrySet;
+			@Override
+			public Set<Entry<K, V>> entrySet() {
+				return entrySet == null ? entrySet = new AbstractSet<java.util.Map.Entry<K,V>>() {
 
-	@Override
-	public V getChildOrDefault(K parent, V defaultChild) {
-		V v;
-		return (((v = getChild(parent)) != null) || hasParent(parent)) ? v : defaultChild;
-	}
+					@Override
+					public Iterator<Entry<K, V>> iterator() {
+						Enumerator<K> en = enumerator();
+						return new Iterator<java.util.Map.Entry<K,V>>() {
 
-	/**
-	 * {@inheritDoc}
-     *
-     * @implSpec
-     * This implementation delegates the method to the child
-	 */
-	@Override
-	public K getParentOrDefault(V value, K defaultKey) {
-		return getChild().getChildOrDefault(value, defaultKey);
-	}
-	@Override
-	public V putChild(K key, V value) {
-		Enumerator<K> en = enumerator();
-		while(en.hasMoreElements())  {
-			if(en.nextElement() == key) {
-				value.setParent(key.getParent().getChild());
-				key.getChild().getChild().getChild().setParent(value);
-				value.setChild(key.getChild().getChild());
-				return key.setChild(value);
+							@Override
+							public boolean hasNext() {
+								return en.hasMoreElements();
+							}
+
+							@Override
+							public Entry<K, V> next() {
+								K entry = en.nextElement();
+								return new java.util.Map.Entry<K,V>() {
+
+									@Override
+									public K getKey() {
+										return entry;
+									}
+									@Override
+									public V getValue() {
+										return entry.getChild();
+									}
+									@Override
+									public V setValue(V value) {
+										return null;
+									}
+								};
+							}
+							@Override
+							public void remove() {
+								en.remove();
+							}
+						};
+					}
+					@Override
+					public void clear() {
+						release();
+					}
+					@Override
+					public int size() {
+						Enumerator<K> en = enumerator();
+						int i = 0;
+						while(en.hasMoreElements()) {
+							en.nextElement();
+							i++;
+						}
+						return i;
+					}
+					
+				}: entrySet;
 			}
-		}
-		submitChild(key, value);
-		return null;
-	}
-
-	/**
-	 * {@inheritDoc}
-     *
-     * @implSpec
-     * This implementation delegates the method to the child
-	 */
-	@Override
-	public K putParent(V value, K key) {
-		return getChild().putChild(value, key);
-	}
-	@Override
-	public V putChildIfAbsent(K key, V value) {
-		V v = key.getChild();
-        if (v == null) {
-            v = putChild(key, value);
-        }
-        return v;
-	}
-
-	/**
-	 * {@inheritDoc}
-     *
-     * @implSpec
-     * This implementation delegates the method to the child
-	 */
-	@Override
-	public K putParentIfAbsent(V value, K key) {
-		return getChild().putChildIfAbsent(value, key);
-	}
-	public void putAllChildren(Recursion<? extends K,? extends V> m) {
-		Enumerator<? extends K> en = m.enumerator();
-		while(en.hasMoreElements()) {
-			K parent = en.nextElement();
-			putChild(parent, parent.getChild());
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-     *
-     * @implSpec
-     * This implementation delegates the method to the child
-	 */
-	@Override
-	public void putAllParents(Recursion<? extends V, ? extends K> m) {
-		getChild().putAllChildren(m);
+			
+		}: inheritance;
 	}
 }

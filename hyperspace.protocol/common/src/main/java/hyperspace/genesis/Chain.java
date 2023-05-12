@@ -98,7 +98,7 @@ public interface Chain<K,V> extends Entry<K,V>, java.util.Set<Entry<K,V>> {
      * @param o element whose presence in this set is to be tested
      * @return {@code true} if this set contains the specified element
      */
-    boolean contains(Entry<K,V> o);
+    boolean contains(Object o);
 
     // Modification Operations
     /**
@@ -138,7 +138,7 @@ public interface Chain<K,V> extends Entry<K,V>, java.util.Set<Entry<K,V>> {
      * @param o object to be removed from this set, if present
      * @return {@code true} if this set contained the specified element
      */
-    boolean remove(Entry<K,V> o);
+    boolean remove(Object o);
 
     // Bulk Operations
     /**
@@ -150,7 +150,7 @@ public interface Chain<K,V> extends Entry<K,V>, java.util.Set<Entry<K,V>> {
      * @return {@code true} if this set contains all of the elements of the
      *         specified collection
      */
-    boolean containsAll(Entry<K,V> c);
+    boolean containsAll(Collection<?> c);
 
     /**
      * Adds all of the elements in the specified collection to this set if
@@ -163,7 +163,7 @@ public interface Chain<K,V> extends Entry<K,V>, java.util.Set<Entry<K,V>> {
      * @param  c collection containing elements to be added to this set
      * @return {@code true} if this set changed as a result of the call
      */
-    boolean addAll(Entry<K,V> c);
+    boolean addAll(Collection<? extends Entry<K,V>> c);
 
     /**
      * Retains only the elements in this set that are contained in the
@@ -176,7 +176,7 @@ public interface Chain<K,V> extends Entry<K,V>, java.util.Set<Entry<K,V>> {
      * @param  c collection containing elements to be retained in this set
      * @return {@code true} if this set changed as a result of the call
      */
-    boolean retainAll(Entry<K,V> c);
+    boolean retainAll(Collection<?> c);
 
     /**
      * Removes from this set all of its elements that are contained in the
@@ -188,5 +188,5 @@ public interface Chain<K,V> extends Entry<K,V>, java.util.Set<Entry<K,V>> {
      * @param  c collection containing elements to be removed from this set
      * @return {@code true} if this set changed as a result of the call
      */
-    boolean removeAll(Entry<K,V> c);
+    boolean removeAll(Collection<?> c);
 }

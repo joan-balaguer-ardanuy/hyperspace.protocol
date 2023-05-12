@@ -1,10 +1,5 @@
 package hyperspace.time;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import hyperspace.Command;
 import hyperspace.Parity;
 
 /**

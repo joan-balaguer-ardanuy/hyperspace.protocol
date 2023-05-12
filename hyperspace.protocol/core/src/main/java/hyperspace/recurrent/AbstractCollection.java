@@ -12,7 +12,7 @@ public class AbstractCollection<E>
 
 	private static final long serialVersionUID = -7062454426060890047L;
 	
-	public static int MAX_ARRAY_SIZE = 2^31-1;
+	public static final int MAX_ARRAY_SIZE = 2^31-1;
 	
 	
 	E element;

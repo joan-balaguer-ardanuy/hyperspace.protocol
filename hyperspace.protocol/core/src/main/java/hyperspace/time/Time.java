@@ -80,7 +80,105 @@ public abstract class Time
 			call().permuteChild(getParent(), getParent().getChild());
 		}
 	}
+	@Override
+	public V getChild(K key) {
+		Enumerator<K> en = enumerator();
+		while(en.hasMoreElements()) {
+			if(en.nextElement() == key)
+				return key.getChild();
+		}
+		return null;
+	}
 
+	/**
+	 * {@inheritDoc}
+     *
+     * @implSpec
+     * This implementation delegates the method to the child
+	 */
+	@Override
+	public K getParent(V value) {
+		return getChild().getChild(value);
+	}
+
+	@Override
+	public V getChildOrDefault(K parent, V defaultChild) {
+		V v;
+		return (((v = getChild(parent)) != null) || hasParent(parent)) ? v : defaultChild;
+	}
+
+	/**
+	 * {@inheritDoc}
+     *
+     * @implSpec
+     * This implementation delegates the method to the child
+	 */
+	@Override
+	public K getParentOrDefault(V value, K defaultKey) {
+		return getChild().getChildOrDefault(value, defaultKey);
+	}
+	@Override
+	public V putChild(K key, V value) {
+		Enumerator<K> en = enumerator();
+		while(en.hasMoreElements())  {
+			if(en.nextElement() == key) {
+				value.setParent(key.getParent().getChild());
+				key.getChild().getChild().getChild().setParent(value);
+				value.setChild(key.getChild().getChild());
+				return key.setChild(value);
+			}
+		}
+		submitChild(key, value);
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+     *
+     * @implSpec
+     * This implementation delegates the method to the child
+	 */
+	@Override
+	public K putParent(V value, K key) {
+		return getChild().putChild(value, key);
+	}
+	@Override
+	public V putChildIfAbsent(K key, V value) {
+		V v = key.getChild();
+        if (v == null) {
+            v = putChild(key, value);
+        }
+        return v;
+	}
+
+	/**
+	 * {@inheritDoc}
+     *
+     * @implSpec
+     * This implementation delegates the method to the child
+	 */
+	@Override
+	public K putParentIfAbsent(V value, K key) {
+		return getChild().putChildIfAbsent(value, key);
+	}
+	public void putAllChildren(Recursion<? extends K,? extends V> m) {
+		Enumerator<? extends K> en = m.enumerator();
+		while(en.hasMoreElements()) {
+			K parent = en.nextElement();
+			putChild(parent, parent.getChild());
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+     *
+     * @implSpec
+     * This implementation delegates the method to the child
+	 */
+	@Override
+	public void putAllParents(Recursion<? extends V, ? extends K> m) {
+		getChild().putAllChildren(m);
+	}
 	@Override
 	public boolean releaseChild(K key, V value) {
 		Object curValue = key.getChild();
@@ -90,6 +188,13 @@ public abstract class Time
 		key.release();
 		return true;
 	}
+
+	/**
+	 * {@inheritDoc}
+     *
+     * @implSpec
+     * This implementation delegates the method to the child
+	 */
 	@Override
 	public boolean releaseParent(V value, K key) {
 		return getChild().releaseChild(value, key);
@@ -103,6 +208,13 @@ public abstract class Time
 			action.accept(parent, parent.getChild());
 		}
 	}
+
+	/**
+	 * {@inheritDoc}
+     *
+     * @implSpec
+     * This implementation delegates the method to the child
+	 */
 	@Override
 	public void forEachParent(BiConsumer<? super V, ? super K> action) {
 		getChild().forEachChild(action);
