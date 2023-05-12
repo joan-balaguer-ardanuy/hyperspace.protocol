@@ -97,7 +97,7 @@ public class Chromosome extends Screw<Genomap, Haploid> {
 			Genomap entry = (Genomap) e.getSource();
 			switch (e.getCommand()) {
 			case Command.TRANSFER:
-				if(!isRoot() && entry.isRoot()) {
+				if(!isRoot()) {
 					getKey().comparator(new Haploid()).compare(entry, getValue());
 					Haploid source = (Haploid) getKey().comparator().source();
 					getStem().putValue(source, (Genomap) source.getChild());

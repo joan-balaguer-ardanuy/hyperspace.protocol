@@ -99,7 +99,7 @@ public class Genomap extends Screw<Hypercube, Hyperchain> {
 			Hypercube entry = (Hypercube) e.getSource();
 			switch (e.getCommand()) {
 			case Command.TRANSFER:
-				if(!isRoot() && entry.isRoot()) {
+				if(!isRoot()) {
 					getKey().comparator(new Hyperchain()).compare(entry, getValue());
 					Hyperchain source = (Hyperchain) getKey().comparator().source();
 					getStem().putValue(source, (Hypercube) source.getChild());

@@ -101,7 +101,7 @@ public class Diploid extends ScrewNut<Haploid, Genomap> {
 			Haploid entry = (Haploid) e.getSource();
 			switch (e.getCommand()) {
 			case Command.LISTEN:
-				if (!isRoot() && entry.isRoot()) {
+				if (!isRoot()) {
 					getKey().comparator(new Genomap()).compare(entry, getValue());
 					sendEvent(new EventArgs(getKey().comparator().source()));
 				}

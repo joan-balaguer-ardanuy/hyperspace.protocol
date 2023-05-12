@@ -96,7 +96,7 @@ public class Ribosome extends Screw<Chromosome,Diploid> {
 			Chromosome entry = (Chromosome) e.getSource();
 			switch (e.getCommand()) {
 			case Command.TRANSFER:
-				if(!isRoot() && entry.isRoot()) {
+				if(!isRoot()) {
 					getKey().comparator(new Diploid()).compare(entry, getValue());
 					Diploid source = (Diploid) getKey().comparator().source();
 					getStem().putValue(source, (Chromosome) source.getChild());

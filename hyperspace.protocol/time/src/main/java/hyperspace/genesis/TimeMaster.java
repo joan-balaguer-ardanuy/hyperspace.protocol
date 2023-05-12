@@ -101,7 +101,7 @@ public class TimeMaster extends ScrewNut<BigBong,BigBang> {
 			BigBong entry = (BigBong) e.getSource();
 			switch (e.getCommand()) {
 			case Command.LISTEN:
-				if (!isRoot() && entry.isRoot()) {
+				if (!isRoot()) {
 					getKey().comparator(new BigBang()).compare(entry, getValue());
 					sendEvent(new EventArgs(getKey().comparator().source()));
 				}

@@ -96,7 +96,7 @@ public class Earth extends Screw<Operon,Polyploid> {
 			Operon entry = (Operon) e.getSource();
 			switch (e.getCommand()) {
 			case Command.TRANSFER:
-				if(!isRoot() && entry.isRoot()) {
+				if(!isRoot()) {
 					getKey().comparator(new Polyploid()).compare(entry, getValue());
 					Polyploid source = (Polyploid) getKey().comparator().source();
 					getStem().putValue(source, (Operon) source.getChild());

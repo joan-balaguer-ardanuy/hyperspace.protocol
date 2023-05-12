@@ -101,7 +101,7 @@ public class AlphaCentauri extends ScrewNut<Gliese,Earth> {
 			Gliese entry = (Gliese) e.getSource();
 			switch (e.getCommand()) {
 			case Command.LISTEN:
-				if (!isRoot() && entry.isRoot()) {
+				if (!isRoot()) {
 					getKey().comparator(new Earth()).compare(entry, getValue());
 					sendEvent(new EventArgs(getKey().comparator().source()));
 				}

@@ -97,7 +97,7 @@ public class MilkyWay extends Screw<Sun,AlphaCentauri> {
 			Sun entry = (Sun) e.getSource();
 			switch (e.getCommand()) {
 			case Command.TRANSFER:
-				if(!isRoot() && entry.isRoot()) {
+				if(!isRoot()) {
 					getKey().comparator(new AlphaCentauri()).compare(entry, getValue());
 					AlphaCentauri source = (AlphaCentauri) getKey().comparator().source();
 					getStem().putValue(source, (Sun) source.getChild());

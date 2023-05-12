@@ -96,7 +96,7 @@ public class Supercluster extends Screw<MilkyWay,Andromeda> {
 			MilkyWay entry = (MilkyWay) e.getSource();
 			switch (e.getCommand()) {
 			case Command.TRANSFER:
-				if(!isRoot() && entry.isRoot()) {
+				if(!isRoot()) {
 					getKey().comparator(new Andromeda()).compare(entry, getValue());
 					Andromeda source = (Andromeda) getKey().comparator().source();
 					getStem().putValue(source, (MilkyWay) source.getChild());

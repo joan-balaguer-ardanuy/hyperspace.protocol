@@ -101,7 +101,7 @@ public class Tetraploid extends ScrewNut<Diploid, Chromosome> {
 			Diploid entry = (Diploid) e.getSource();
 			switch (e.getCommand()) {
 			case Command.LISTEN:
-				if (!isRoot() && entry.isRoot()) {
+				if (!isRoot()) {
 					getKey().comparator(new Chromosome()).compare(entry, getValue());
 					sendEvent(new EventArgs(getKey().comparator().source()));
 				}

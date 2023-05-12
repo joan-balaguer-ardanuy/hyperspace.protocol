@@ -101,7 +101,7 @@ public class Polyploid extends ScrewNut<Tetraploid,Ribosome> {
 			Tetraploid entry = (Tetraploid) e.getSource();
 			switch (e.getCommand()) {
 			case Command.LISTEN:
-				if (!isRoot() && entry.isRoot()) {
+				if (!isRoot()) {
 					getKey().comparator(new Ribosome()).compare(entry, getValue());
 					sendEvent(new EventArgs(getKey().comparator().source()));
 				}

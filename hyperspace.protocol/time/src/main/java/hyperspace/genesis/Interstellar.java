@@ -101,7 +101,7 @@ public class Interstellar extends ScrewNut<Andromeda,MilkyWay> {
 			Andromeda entry = (Andromeda) e.getSource();
 			switch (e.getCommand()) {
 			case Command.LISTEN:
-				if (!isRoot() && entry.isRoot()) {
+				if (!isRoot()) {
 					getKey().comparator(new MilkyWay()).compare(entry, getValue());
 					sendEvent(new EventArgs(getKey().comparator().source()));
 				}

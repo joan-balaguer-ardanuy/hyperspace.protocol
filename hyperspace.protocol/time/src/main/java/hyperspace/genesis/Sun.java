@@ -96,7 +96,7 @@ public class Sun extends Screw<Earth,Gliese> {
 			Earth entry = (Earth) e.getSource();
 			switch (e.getCommand()) {
 			case Command.TRANSFER:
-				if(!isRoot() && entry.isRoot()) {
+				if(!isRoot()) {
 					getKey().comparator(new Gliese()).compare(entry, getValue());
 					Gliese source = (Gliese) getKey().comparator().source();
 					getStem().putValue(source, (Earth) source.getChild());
