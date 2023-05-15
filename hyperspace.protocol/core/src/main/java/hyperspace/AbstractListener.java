@@ -4,6 +4,8 @@ import hyperspace.recurrent.Set;
 
 import java.util.Iterator;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 public abstract class AbstractListener
 	extends XML
 		implements Listener {
@@ -16,6 +18,7 @@ public abstract class AbstractListener
 	private Set<Listener> listeners;
 	
 	@Override
+	@XmlTransient
 	public String getCommand() {
 		return super.getCommand();
 	}

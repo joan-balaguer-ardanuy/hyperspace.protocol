@@ -76,12 +76,14 @@ public abstract class ScrewNut<K,V>
 	}
 	/**
 	 * {@link ScrewNut} class constructor.
-	 * @param childClass {@link Class} the child class
+	 * @param childClass  {@link Class} the child class
 	 * @param root the root
-	 * @param stem the stem
+	 * @param parity {@link Parity} the parity
+	 * @param key the key
+	 * @param value the value
 	 */
 	public ScrewNut(Class<? extends Screw<V,K>> childClass, ScrewNut<K,V> root, Parity parity, K key, V value) {
-		super(childClass, root, key, value);
+		super(childClass, root, parity, key, value);
 	}
 
 	@Override
@@ -89,7 +91,6 @@ public abstract class ScrewNut<K,V>
 		return (DNA<V,K>) getChild();
 	}
 
-	@Override
 	public void clear() {
 		release();
 	}
@@ -173,7 +174,6 @@ public abstract class ScrewNut<K,V>
 		}
 		return modified;
 	}
-	@Override
 	public int size() {
 		int i = 0;
 		Iterator<?> it = iterator();
@@ -184,7 +184,6 @@ public abstract class ScrewNut<K,V>
 		return i;
 	}
 
-	@Override
 	public Iterator<Entry<K,V>> iterator() {
 		Enumerator<Entry<K,V>> en = enumerator();
 		return new Iterator<Entry<K,V>>() {
@@ -204,7 +203,6 @@ public abstract class ScrewNut<K,V>
 		};
 	}
 
-	@Override
 	public Object[] toArray() {
 		// Estimate size of array; be prepared to see more or fewer elements
         Object[] r = new Object[size()];
@@ -218,7 +216,6 @@ public abstract class ScrewNut<K,V>
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public <T> T[] toArray(T[] a) {
 		 // Estimate size of array; be prepared to see more or fewer elements
         int size = size();

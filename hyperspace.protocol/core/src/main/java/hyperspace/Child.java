@@ -51,8 +51,6 @@ public abstract class Child
 	 */
 	public Child(Parity parity, V child) {
 		super(parity, child);
-		child.setChild(getParent());
-		child.setParent(child);
 	}
 	/**
 	 * {@link Child} class constructor.
@@ -69,9 +67,7 @@ public abstract class Child
 	@SuppressWarnings("unchecked")
 	public Child(K parent, V child) {
 		super(parent, child);
-		parent.put((K) this);
-		call().setParent(parent.call());
-		get().setParent(child);
+		parent.getChild().setChild((K) this);
 	}
 
 	@Override

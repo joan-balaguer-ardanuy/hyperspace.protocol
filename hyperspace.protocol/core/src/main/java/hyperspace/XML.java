@@ -11,6 +11,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlTransient;
 
 public abstract class XML implements Message {
 
@@ -31,6 +32,7 @@ public abstract class XML implements Message {
 	public abstract String getName();
 	
 	@Override
+	@XmlTransient
 	public String getCommand() {
 		return command;
 	}
@@ -38,6 +40,8 @@ public abstract class XML implements Message {
 	public void setCommand(String command) {
 		this.command = command;
 	}
+	@Override
+	@XmlTransient
 	public Parity getParity() {
 		return parity;
 	}

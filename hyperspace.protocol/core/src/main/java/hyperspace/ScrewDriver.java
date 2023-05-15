@@ -200,7 +200,10 @@ public abstract class ScrewDriver<K,V>
 	@SuppressWarnings("unchecked")
 	@Override
 	public Entry<K,V> putValue(K key, V value) {
-		return (Entry<K,V>) instance(getClass(), getParent(), key, value);
+		getRoot().setKey(key);
+		getStem().setKey(value);
+		Entry<K,V> entry = (Entry<K,V>) instance(getClass(), getParent(), key, value);
+		return entry;
 	}
 	@Override
 	public Entry<V,K> putKey(V value, K key) {
@@ -429,8 +432,19 @@ public abstract class ScrewDriver<K,V>
 		}
 		@SuppressWarnings("unchecked")
 		public Grid(V value, K key) {
-			super((Entry<V,K>) instance(ScrewDriver.this.getChild().getClass(), Parity.random(), value, key));
+			super((Entry<V,K>) instance(ScrewDriver.this.getChild().getClass(), getStem(), Parity.random(), value, key));
+		}
+		@Override
+		public void addParent(Entry<K, V> key) {
+			super.addParent(key);
+			source().getRoot().setKey(key.getValue());
+			source().getStem().setKey(key.getKey());
+		}
+		@Override
+		public void addChild(Entry<V, K> value) {
+			super.addChild(value);
+			source().getStem().setKey(value.getValue());
+			source().getRoot().setKey(value.getKey());
 		}
 	}
-	
 }

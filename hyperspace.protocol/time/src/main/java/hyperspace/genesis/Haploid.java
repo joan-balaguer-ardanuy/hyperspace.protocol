@@ -88,6 +88,14 @@ public class Haploid extends ScrewNut<Hyperchain, Hypercube> {
 			switch (e.getCommand()) {
 			case Command.LISTEN:
 				if(!isRoot()) {
+//					Entry<Character,Integer> test1 = getValue().getParent();
+//					Entry<Integer,Character> test2 = entry.getParent();
+//					do {
+//						test1 = test1.getParent();
+//						test2 = test2.getParent();
+//					} while(test1 != getValue() && test2 != entry);
+//					System.out.println("SURT");
+//					
 					getKey().comparator(new Hypercube()).compare(entry, getValue());
 					sendEvent(new EventArgs(getKey().comparator().source()));
 				}

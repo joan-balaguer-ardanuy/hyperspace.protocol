@@ -159,13 +159,7 @@ public abstract class Recursive
 	public void replaceAllParents(BiFunction<? super V, ? super K, ? extends K> function) {
 		getChild().replaceAllChildren(function);
 	}
-	
-	@Override
-	public abstract int compareTo(V o);
 
-	@Override
-	public abstract Recursion.Reproducer<K,V> comparator();
-	
 	/**
 	 * <tt>this</tt> is your not first {@link java.util.EventObject}. Not before <tt>this</tt>, there is no recurrence.
 	 * You get parent ultravioled XML —parent time terminates, you fall down in your XML
@@ -185,7 +179,7 @@ public abstract class Recursive
 		public Matrix(V source) {
 			super(source);
 		}
-
+		
 		public void addParent(K key) {
 			key.setStem(source());
 			key.setRoot(source().getStem());

@@ -135,9 +135,9 @@ public abstract class Abstraction
 	@Override
 	public void submitChild(K key, V value) {
 		if(random().nextBoolean()) {
-			concurChild(key, value);
-		} else {
 			recurChild(key, value);
+		} else {
+			concurChild(key, value);
 		}
 	}
 	@Override

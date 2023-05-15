@@ -97,7 +97,7 @@ public abstract class Screw<K,V>
     public void putAll(Map<? extends K,? extends V> m) {
     	Enumerator<hyperspace.Entry<K,V>> en = enumerator();
     	while(en.hasMoreElements())  {
-    		Entry<K,V> entry = en.nextElement();
+    		hyperspace.Entry<K,V> entry = en.nextElement();
 			put(entry.getKey(), entry.getValue());
 		}
     }
@@ -125,7 +125,7 @@ public abstract class Screw<K,V>
         }
         return oldValue;
 	}
-	@Override
+
 	public int size() {
 		Enumerator<hyperspace.Entry<K,V>> en = enumerator();
 		int i = 0;
@@ -135,7 +135,7 @@ public abstract class Screw<K,V>
 		}
 		return i;
 	}
-	@Override
+	
 	public void clear() {
 		release();
 	}
@@ -146,9 +146,8 @@ public abstract class Screw<K,V>
 	
 	transient Set<K> keySet;
     transient Collection<V> values;
-    transient Set<Entry<K,V>> entrySet;
+    transient Set<java.util.Map.Entry<K,V>> entrySet;
     
-	@Override
 	public Set<K> keySet() {
 		return keySet == null ? keySet = new AbstractSet<K>() {
 			@Override
@@ -186,7 +185,7 @@ public abstract class Screw<K,V>
 			
 		} : keySet;
 	}
-	@Override
+	
 	public Collection<V> values() {
 		return values == null ? values = new AbstractCollection<V>() {
 			public Iterator<V> iterator() {
@@ -224,12 +223,11 @@ public abstract class Screw<K,V>
             }
 		}: values;
 	}
-	@Override
-	public Set<Entry<K, V>> entrySet() {
+	public Set<java.util.Map.Entry<K, V>> entrySet() {
 		return entrySet == null ? entrySet = new AbstractSet<Map.Entry<K,V>>() {
 
 			@Override
-			public Iterator<Entry<K, V>> iterator() {
+			public Iterator<java.util.Map.Entry<K, V>> iterator() {
 				// TODO Auto-generated method stub
 				return new Iterator<Map.Entry<K,V>>() {
 					private Enumerator<hyperspace.Entry<K,V>> en = enumerator();
@@ -238,8 +236,9 @@ public abstract class Screw<K,V>
 						return en.hasMoreElements();
 					}
 					@Override
-					public Entry<K, V> next() {
-						return en.nextElement();
+					public java.util.Map.Entry<K, V> next() {
+//						return en.nextElement();
+						return null;
 					}
 					@Override
 					public void remove() {

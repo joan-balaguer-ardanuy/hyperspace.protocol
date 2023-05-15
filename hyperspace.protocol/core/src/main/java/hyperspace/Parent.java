@@ -1,5 +1,7 @@
 package hyperspace;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import hyperspace.recurrent.Enumerator;
 
 /**
@@ -29,6 +31,7 @@ public abstract class Parent
 	private V child;
 
 	@Override
+	@XmlTransient
 	public K getParent() {
 		return parent;
 	}
@@ -39,6 +42,7 @@ public abstract class Parent
 		return old;
 	}
 	@Override
+	@XmlTransient
 	public V getChild() {
 		return child;
 	}

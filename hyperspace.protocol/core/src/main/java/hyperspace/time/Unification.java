@@ -108,6 +108,7 @@ public abstract class Unification
 	K root;
 	
 	@Override
+	@XmlTransient
 	public K getRoot() {
 		return root;
 	}
@@ -118,6 +119,7 @@ public abstract class Unification
 		return old;
 	}
 	@Override
+	@XmlTransient
 	public V getStem() {
 		return getChild().getRoot();
 	}
@@ -157,8 +159,6 @@ public abstract class Unification
 	 */
 	public Unification(K parent) {
 		super(parent);
-		// set root
-		setRoot(parent.getRoot());
 	}
 	/**
 	 * {@link Unification} class constructor.
@@ -169,6 +169,7 @@ public abstract class Unification
 		super(parent, instance(childClass, parent.getChild()));
 		// set root
 		setRoot(parent.getRoot());
+		setStem(parent.getStem());
 	}
 	/**
 	 * {@link Unification} class constructor.
@@ -176,9 +177,9 @@ public abstract class Unification
 	 * @param parity {@link Parity} the parity
 	 */
 	public Unification(K root, Parity parity) {
-		super(root, parity);;
+		super(parity);
 		// set root
-		setRoot(root);
+//		setRoot(root);
 	}
 	/**
 	 * {@link Unification} class constructor.
@@ -187,9 +188,10 @@ public abstract class Unification
 	 * @param child the child
 	 */
 	public Unification(Class<? extends V> childClass, K root, Parity parity) {
-		super(root, parity, instance(childClass, root.getStem(), parity.oposed()));
+		super(parity, instance(childClass, root.getStem(), parity.oposed()));
 		// set root
 		setRoot(root);
+		setStem(root.getStem());
 	}
 
 	@Override

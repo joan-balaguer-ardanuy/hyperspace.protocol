@@ -1,23 +1,31 @@
 package hyperspace.genesis;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import hyperspace.Command;
 import hyperspace.Entry;
 import hyperspace.Parity;
+import hyperspace.recurrent.Enumerator;
 
+@XmlRootElement
+@XmlType(propOrder={"key", "value", "entry"})
 public class Hyperchain extends ScrewNut<Integer,Character> {
 
 	private static final long serialVersionUID = -626650173493948273L;
 	@Override
 	public String getName() {
 		StringBuilder stringBuilder = new StringBuilder();
-		for(Entry<Integer,Character> entrada : this) {
+		Enumerator<Entry<Integer,Character>> en = enumerator();
+		while(en.hasMoreElements()) {
+			Entry<Integer,Character> entrada = en.nextElement();
 			stringBuilder.append(entrada.getValue());
 		}
 		return stringBuilder.toString();
 	}
 	@Override
+	@XmlElement
 	public Integer getKey() {
 		return super.getKey();
 	}
@@ -26,6 +34,7 @@ public class Hyperchain extends ScrewNut<Integer,Character> {
 		return super.setKey(key);
 	}
 	@Override
+	@XmlElement
 	public Character getValue() {
 		return super.getValue();
 	}
@@ -61,7 +70,7 @@ public class Hyperchain extends ScrewNut<Integer,Character> {
 	}
 	
 	@Override
-	public int compareTo(Entry<Character, Integer> o) {
+	public synchronized int compareTo(Entry<Character, Integer> o) {
 		switch (getParity()) {
 		case XY:
 			if(getKey() < o.getValue()) {

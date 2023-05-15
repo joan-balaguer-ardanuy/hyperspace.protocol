@@ -2,8 +2,6 @@ package hyperspace;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
 
 import hyperspace.genesis.Aaron;
@@ -35,7 +33,7 @@ public class Execution {
 
 	public static void main(String[] args) {
 		int dilatation = 1;
-		Hypercube hypercube = new Hypercube();
+		Hypercube hypercube = new Hypercube(Hyperchain.class, Parity.XX);
 		hypercube.put('A', 1*dilatation);
 		hypercube.put('B', 2*dilatation);
 		hypercube.put('C', 3*dilatation);
@@ -64,41 +62,42 @@ public class Execution {
 		hypercube.put('Z', 26*dilatation);
 		hypercube.put('Ç', 27*dilatation);
 
-		Genomap genomap = new Genomap();
+		Genomap genomap = new Genomap(Haploid.class, Parity.YY);
 		genomap.put(hypercube, (Hyperchain) hypercube.getChild());
 		
-		Chromosome chromosome = new Chromosome();
+		Chromosome chromosome = new Chromosome(Diploid.class, Parity.YY);
 		chromosome.put(genomap, (Haploid) genomap.getChild());
 
-		Ribosome ribosome = new Ribosome();
+		Ribosome ribosome = new Ribosome(Tetraploid.class, Parity.YY);
 		ribosome.put(chromosome, (Diploid) chromosome.getChild());
 		
-		Operon operon = new Operon();
+		Operon operon = new Operon(Polyploid.class, Parity.YY);
 		operon.put(ribosome, (Tetraploid) ribosome.getChild());
 		
-		Earth earth = new Earth();
+		Earth earth = new Earth(Gliese.class, Parity.YY);
 		earth.put(operon, (Polyploid) operon.getChild());
 		
-		Sun sun = new Sun();
+		Sun sun = new Sun(AlphaCentauri.class, Parity.YY);
 		sun.put(earth, (Gliese) earth.getChild());
 		
-		MilkyWay milkyWay = new MilkyWay();
+		MilkyWay milkyWay = new MilkyWay(Andromeda.class, Parity.YY);
 		milkyWay.put(sun, (AlphaCentauri) sun.getChild());
 		
-		Supercluster supercluster = new Supercluster();
+		Supercluster supercluster = new Supercluster(Interstellar.class, Parity.YY);
 		supercluster.put(milkyWay, (Andromeda) milkyWay.getChild());
 		
-		Matter matter = new Matter();
+		Matter matter = new Matter(Antimatter.class, Parity.YY);
 		matter.put(supercluster, (Interstellar) supercluster.getChild());
 		
-		BigBang bigBang = new BigBang();
+		BigBang bigBang = new BigBang(BigBong.class, Parity.YY);
 		bigBang.put(matter, (Antimatter) matter.getChild());
 		
-		Aaron aaron = new Aaron();
+		Aaron aaron = new Aaron(TimeMaster.class, Parity.YY);
 		aaron.put(bigBang, (BigBong) bigBang.getChild());
 		
 		Listener timeListener = new Listener() {
 			
+			private static final long serialVersionUID = 9215158565934363875L;
 			@Override
 			public void execute(Runnable command) {
 				newThread(command).start();
@@ -142,6 +141,7 @@ public class Execution {
 				switch (e.getCommand()) {
 				case Command.INSTANCE:
 					if(listener instanceof BigBang) {
+						System.out.println("ENTRA");
 						BigBang entry = (BigBang) listener;
 						entry.addEventListener(this);
 						entry.getChild().addEventListener(this);
@@ -175,14 +175,14 @@ public class Execution {
 		
 		aaron.addEventListener(timeListener);
 		aaron.getChild().addEventListener(timeListener);
-		System.setErr(new PrintStream(new OutputStream() {
-			
-			@Override
-			public void write(int b) throws IOException {
-				// TODO Auto-generated method stub
-				
-			}
-		}));
+//		System.setErr(new PrintStream(new OutputStream() {
+//			
+//			@Override
+//			public void write(int b) throws IOException {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		}));
 		aaron.execute(aaron);
 	}
 }

@@ -6,7 +6,7 @@ package hyperspace.genesis;
 import hyperspace.Entry;
 
 /**
- * The DNA interface. Inherits {@link Entry} interface that it's a recursive {@link java.util.Map.Entry}.
+ * The DNA interface. Inherits {@link hyperspace.Entry} interface that it's a recursive {@link java.util.Map.Entry}.
  * It is a {@link java.util.Map} and is {@link Iterable} of its keys.
  * 
  * An object that maps keys to values. A DNA cannot contain duplicate keys;

@@ -34,8 +34,8 @@ public abstract class Time
 	 * @param childClass {@link Class} the child class
 	 * @param parity {@link Parity} the parity
 	 */
-	public Time(Class<? extends V> parentClass, Parity parity) {
-		super(parentClass, parity);
+	public Time(Class<? extends V> childClass, Parity parity) {
+		super(childClass, parity);
 	}
 	/**
 	 * {@link Time} class constructor.

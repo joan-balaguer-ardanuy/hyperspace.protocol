@@ -26,6 +26,7 @@ public class Hypercube extends Screw<Character,Integer> {
 		return stringBuilder.toString();
 	}
 	@Override
+	@XmlElement
 	public Character getKey() {
 		return super.getKey();
 	}
@@ -34,6 +35,7 @@ public class Hypercube extends Screw<Character,Integer> {
 		return super.setKey(key);
 	}
 	@Override
+	@XmlElement
 	public Integer getValue() {
 		return super.getValue();
 	}
@@ -69,7 +71,7 @@ public class Hypercube extends Screw<Character,Integer> {
 	}
 	
 	@Override
-	public int compareTo(hyperspace.Entry<Integer, Character> o) {
+	public synchronized int compareTo(hyperspace.Entry<Integer, Character> o) {
 		switch (getParity()) {
 		case XX:
 			if (getValue() > o.getKey()) {
@@ -105,7 +107,6 @@ public class Hypercube extends Screw<Character,Integer> {
 	}
 	@Override
 	public void run() {
-		super.run();
 		try {
 			Thread.sleep(getValue());
 		} catch (InterruptedException e) {
