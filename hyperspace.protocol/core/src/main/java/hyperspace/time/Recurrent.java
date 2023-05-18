@@ -1,11 +1,5 @@
 package hyperspace.time;
 
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-
 import hyperspace.Parity;
 import hyperspace.recurrent.Enumerator;
 

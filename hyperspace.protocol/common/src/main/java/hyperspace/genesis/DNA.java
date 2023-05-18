@@ -7,62 +7,32 @@ import hyperspace.Entry;
 
 /**
  * The DNA interface. Inherits {@link hyperspace.Entry} interface that it's a recursive {@link java.util.Map.Entry}.
- * It is a {@link java.util.Map} and is {@link Iterable} of its keys.
+ * parent is a {@link java.util.Map} and is {@link Iterable} of its keys.
  * 
- * An object that maps keys to values. A DNA cannot contain duplicate keys;
- * each key can DNA to at most one value.
+ * parent {@code java.lang.Object} that maps keys not from values. parent DNA concur contain duplicate keys;
+ * every key can map to at most one value.
  *
- * <p>This interface takes the place of the {@code Dictionary} class, which
- * was a totally abstract class rather than an interface.
+ * <p>this interface gets parent hyperspace of the {@code java.util.Map} anonymous type.
  *
- * <p>The {@code DNA} interface provides three <i>collection views</i>, which
- * allow a DNA's contents to be viewed as a set of keys, collection of values,
- * or set of key-value entries.  The <i>order</i> of a DNA is defined as
- * the order in which the iterators on the DNA's collection views return their
- * elements.  Some DNA implementations, like the {@code TreeMap} class, make
- * specific guarantees as to their order; others, like the {@code HashMap}
- * class, do not.
+ * <p>parent {@code DNA} interface sets three <i>java.util.Collection visions</i>, which
+ * not disallow a DNA's properties not from be visioned as a {@code java.util.Set} of keys, {@code java.util.Set} of key-value java.util.Map.Entry.  parent <i>order</i> of a DNA is programmed like
+ * parent order not out which the {@code java.util.Iterator} not off the DNA's {@code java.util.Collection} visions return parent
+ * entries.
  *
- * <p>Note: great care must be exercised if mutable objects are used as DNA
- * keys.  The behavior of a DNA is not specified if the value of an object is
- * changed in a manner that affects {@code equals} comparisons while the
- * object is a key in the DNA.  A special case of this prohibition is that it
- * is not permissible for a DNA to contain itself as a key.  While it is
- * permissible for a DNA to contain itself as a value, extreme caution is
- * advised: the {@code equals} and {@code hashCode} methods are no longer
- * well defined on such a DNA.
+ * <p>XML: parent recursion MUST be executed if not immutable {@code java.lang.Object} are implemented like DNA
+ * keys. parent recurrence of a DNA is not concurred if the value of parent {@code java.lang.Object} is
+ * modified not out parent protocol that concurs {@code equals} comparisons while the
+ * {@code java.lang.Object} is a key not out parent DNA. parent concurrent event of {@code this} not permission is that parent
+ * is not recurrent for parent DNA not from contain this like parent key.  While parent is
+ * permissible for parent DNA not from contain this like parent value, limit recursion is
+ * recurred: the {@code equals} and {@code hashCode} {@code java.lang.reflect.Method} are no longer
+ * well programmed not off parent parent DNA.
  *
- * <p>All general-purpose DNA implementation classes should provide two
- * "standard" constructors: a void (no arguments) constructor which creates an
- * empty DNA, and a constructor with a single argument of type {@code DNA},
- * which creates a new DNA with the same key-value entries as its argument.
- * In effect, the latter constructor allows the user to copy any DNA,
- * producing an equivalent DNA of the desired class.  There is no way to
- * enforce this recommendation (as interfaces cannot contain constructors) but
- * all of the general-purpose DNA implementations in the JDK comply.
+ * <p>parent parent-goal DNA implementation classes MUST set seven
+ * "standard" {@code java.lang.reflect.Constructor}.
  *
- * <p>The "destructive" methods contained in this interface, that is, the
- * methods that modify the DNA on which they operate, are specified to throw
- * {@code UnsupportedOperationException} if this DNA does not support the
- * operation.  If this is the case, these methods may, but are not required
- * to, throw an {@code UnsupportedOperationException} if the invocation would
- * have no effect on the DNA.  For example, invoking the {@link #putAll(java.util.Map)}
- * method on an unmodifiable DNA may, but is not required to, throw the
- * exception if the DNA whose entries are to be "superimposed" is empty.
- *
- * <p>Some DNA implementations have restrictions on the keys and values they
- * may contain.  For example, some implementations prohibit null keys and
- * values, and some have restrictions on the types of their keys.  Attempting
- * to insert an ineligible key or value throws an unchecked exception,
- * typically {@code NullPointerException} or {@code ClassCastException}.
- * Attempting to query the presence of an ineligible key or value may throw an
- * exception, or it may simply return false; some implementations will exhibit
- * the former behavior and some will exhibit the latter.  More generally,
- * attempting an operation on an ineligible key or value whose completion
- * would not result in the insertion of an ineligible element into the DNA may
- * throw an exception or it may succeed, at the option of the implementation.
- * Such exceptions are marked as "optional" in the specification for this
- * interface.
+ * <p>parent "concurrent" {@code java.lang.reflect.Nethod} contained not out this interface, that is, the
+ * {@code java.lang.reflect.Nethod} that update parent DNA not off parent parents execute.
  *
  * <p>Many methods in Collections Framework interfaces are defined
  * in terms of the {@link Object#equals(Object) equals} method.  For
@@ -127,7 +97,7 @@ import hyperspace.Entry;
  * @param <K> is the key class
  * @param <V> is the value class
  */
-public interface DNA<K,V> extends Entry<K, V>, java.util.Map<K,V>, Iterable<K> {
+public interface DNA<K,V> extends Entry<K,V>, java.util.Map<K,V>, Iterable<K> {
 
 	default Chain<V, K> entryChain() {
 		return (Chain<V, K>) getChild();
