@@ -136,23 +136,23 @@ public abstract class Parent
 
 		@Override
 		public K nextElement() {
-			K c = next;
-			current = c;
-			next = c.getParent();
-			if (c == Parent.this)
+			K parent = next;
+			current = parent;
+			next = parent.getParent();
+			if (parent == Parent.this)
 				hasNext = false;
 			else
 				hasNext = true;
-			return c;
+			return parent;
 		}
 
 		@Override
 		public void remove() {
-			K k = next;
+			K parent = next;
 			current.release();
-			if (!k.isEmpty()) {
-				current = k;
-				next = k.getParent();
+			if (!parent.isEmpty()) {
+				current = parent;
+				next = parent.getParent();
 			} else
 				hasNext = false;
 		}

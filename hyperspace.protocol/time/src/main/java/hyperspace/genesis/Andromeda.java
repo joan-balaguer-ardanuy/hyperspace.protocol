@@ -83,28 +83,24 @@ public class Andromeda extends ScrewNut<AlphaCentauri,Sun> {
 	@Override
 	public void event(EventArgs e) {
 		super.event(e);
-		if(e.getSource() instanceof Earth) {
-			Earth entry = (Earth) e.getSource();
+		if(e.getSource() instanceof Sun) {
 			switch (e.getCommand()) {
 			case Command.INSTANCE:
 				if(isRoot()) {
-					Sun sun = new Sun();
-					sun.putValue(entry, (Gliese) entry.getChild());
-					sendEvent(new EventArgs(sun));
+					Sun entry = (Sun) e.getSource();
+					getStem().putValue(entry, (AlphaCentauri) entry.getChild());
 				}
 				break;
 			default:
 				break;
 			}
-		} 
-		else if(e.getSource() instanceof AlphaCentauri) {
-			AlphaCentauri entry = (AlphaCentauri) e.getSource();
+		}
+		else if(e.getSource() instanceof Andromeda) {
 			switch (e.getCommand()) {
 			case Command.LISTEN:
-				if (!isRoot()) {
-					getKey().comparator(new Sun()).compare(entry, getValue());
-					sendEvent(new EventArgs(getKey().comparator().source()));
-				}
+				Andromeda entry = (Andromeda) e.getSource();
+				comparator(new MilkyWay()).compare(entry, getStem());
+				sendEvent(new EventArgs(comparator().source()));
 				break;
 			default:
 				break;

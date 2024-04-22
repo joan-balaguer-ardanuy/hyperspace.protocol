@@ -70,6 +70,7 @@ public class Supercluster extends Screw<MilkyWay,Andromeda> {
 		key.addEventListener(this);
 		value.addEventListener(getChild());
 	}
+	
 	@Override
 	public int compareTo(hyperspace.Entry<Andromeda,MilkyWay> o) {
 		getKey().comparator(new Andromeda()).compare(getKey(), o.getKey());
@@ -85,22 +86,6 @@ public class Supercluster extends Screw<MilkyWay,Andromeda> {
 			switch (e.getCommand()) {
 			case Command.LISTEN:
 				entry.permuteChild(call(), get());
-				break;
-			case Command.TRANSFER:
-				entry.release();
-				break;
-			default:
-				break;
-			}
-		} else if(e.getSource() instanceof MilkyWay) {
-			MilkyWay entry = (MilkyWay) e.getSource();
-			switch (e.getCommand()) {
-			case Command.TRANSFER:
-				if(!isRoot()) {
-					getKey().comparator(new Andromeda()).compare(entry, getValue());
-					Andromeda source = (Andromeda) getKey().comparator().source();
-					getStem().putValue(source, (MilkyWay) source.getChild());
-				}
 				break;
 			default:
 				break;

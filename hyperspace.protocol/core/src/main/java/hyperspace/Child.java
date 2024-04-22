@@ -79,26 +79,24 @@ public abstract class Child
 		getChild().setParent(getChild());
 	}
 	@Override
+	@Deprecated
 	public boolean cancel(boolean mayInterruptIfRunning) {
-		try {
-			if(mayInterruptIfRunning && Thread.currentThread().isAlive())
-				setCommand(Command.TRANSFER);
-			return true;
-		}
-		catch(Throwable t) {
-			return false;
-		}
+		return false;
 	}
 	@Override
+	@Deprecated
 	public boolean isCancelled() {
 		return false;
 	}
 	@Override
+	@Deprecated
 	public boolean isDone() {
 		return false;
 	}
 	@Override
-	public V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-		return get();
+	@Deprecated
+	public V get(long timeout, TimeUnit unit) 
+			throws InterruptedException, ExecutionException, TimeoutException {
+		return null;
 	}
 }

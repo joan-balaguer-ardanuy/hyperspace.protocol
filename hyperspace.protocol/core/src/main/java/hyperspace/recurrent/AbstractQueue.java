@@ -1,5 +1,7 @@
 package hyperspace.recurrent;
 
+import java.util.NoSuchElementException;
+
 public abstract class AbstractQueue<E>
 	extends AbstractCollection<E> 
 		implements Queue<E> {
@@ -19,22 +21,30 @@ public abstract class AbstractQueue<E>
 	}
 	@Override
 	public E remove() {
+		if(isEmpty())
+			throw new NoSuchElementException();
 		Collection<E> parent = getParent();
 		parent.release();
 		return parent.getEntry();
 	}
 	@Override
 	public E poll() {
+		if(isEmpty())
+			return null;
 		Collection<E> parent = getParent();
 		parent.release();
 		return parent.getEntry();
 	}
 	@Override
 	public E element() {
+		if(isEmpty())
+			throw new NoSuchElementException();
 		return getParent().getEntry();
 	}
 	@Override
 	public E peek() {
+		if(isEmpty())
+			return null;
 		return getParent().getEntry();
 	}
 }

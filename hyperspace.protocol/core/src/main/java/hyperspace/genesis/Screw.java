@@ -14,6 +14,7 @@ import hyperspace.ScrewDriver;
 import hyperspace.recurrent.Enumerator;
 import hyperspace.Parity;
 
+
 /**
  * @author joan
  *
@@ -88,44 +89,36 @@ public abstract class Screw<K,V>
 	public V get(Object key) {
     	return getValue(key);
     }
+	
     public V put(K key, V value) {
     	V old = get(key);
-    	putValue(key, value).getValue();
+    	putValue(key, value);
     	return old;
     }
     
     public void putAll(Map<? extends K,? extends V> m) {
-    	Enumerator<hyperspace.Entry<K,V>> en = enumerator();
-    	while(en.hasMoreElements())  {
-    		hyperspace.Entry<K,V> entry = en.nextElement();
-			put(entry.getKey(), entry.getValue());
-		}
+    	for (Map.Entry<? extends K, ? extends V> e : m.entrySet())
+            put(e.getKey(), e.getValue());
     }
+    
 	@Override
 	public V remove(Object key) {
-		Enumerator<hyperspace.Entry<K,V>> en = enumerator();
-		hyperspace.Entry<K,V> correctEntry = null;
-        if (key==null) {
-            while (correctEntry==null && en.hasMoreElements()) {
-            	hyperspace.Entry<K,V> e = en.nextElement();
-                if (e.getKey()==null)
-                    correctEntry = e;
-            }
-        } else {
-            while (correctEntry==null && en.hasMoreElements()) {
-            	hyperspace.Entry<K,V> e = en.nextElement();
-                if (key.equals(e.getKey()))
-                    correctEntry = e;
-            }
-        }
-        V oldValue = null;
-        if (correctEntry !=null) {
-            oldValue = correctEntry.getValue();
-            correctEntry.release();
-        }
-        return oldValue;
+		Enumerator<hyperspace.Entry<K, V>> en = enumerator();
+		hyperspace.Entry<K, V> correctEntry = null;
+		while (correctEntry == null && en.hasMoreElements()) {
+			hyperspace.Entry<K, V> e = en.nextElement();
+			if (key.equals(e.getKey()))
+				correctEntry = e;
+		}
+		V oldValue = null;
+		if (correctEntry != null) {
+			oldValue = correctEntry.getValue();
+			correctEntry.release();
+		}
+		return oldValue;
 	}
 
+	@Deprecated
 	public int size() {
 		Enumerator<hyperspace.Entry<K,V>> en = enumerator();
 		int i = 0;
@@ -139,36 +132,25 @@ public abstract class Screw<K,V>
 	public void clear() {
 		release();
 	}
+	
 	@Override
 	public Iterator<K> iterator() {
 		return new KeyIterator(getParent());
 	}
 	
+	
 	transient Set<K> keySet;
+	
     transient Collection<V> values;
+    
     transient Set<java.util.Map.Entry<K,V>> entrySet;
     
 	public Set<K> keySet() {
 		return keySet == null ? keySet = new AbstractSet<K>() {
 			@Override
 			public Iterator<K> iterator() {
-                return new Iterator<K>() {
-                    private Iterator<K> i = new KeyIterator(getParent());
-
-                    public boolean hasNext() {
-                        return i.hasNext();
-                    }
-
-                    public K next() {
-                        return i.next();
-                    }
-
-                    public void remove() {
-                        i.remove();
-                    }
-                };
-            }
-
+                return new KeyIterator(getParent());
+			}
 			@Override
 			public int size() {
 				return Screw.this.size();
@@ -189,40 +171,24 @@ public abstract class Screw<K,V>
 	public Collection<V> values() {
 		return values == null ? values = new AbstractCollection<V>() {
 			public Iterator<V> iterator() {
-                return new Iterator<V>() {
-                    private Iterator<V> i = new ValueIterator(getParent());
-
-                    public boolean hasNext() {
-                        return i.hasNext();
-                    }
-
-                    public V next() {
-                        return i.next();
-                    }
-
-                    public void remove() {
-                        i.remove();
-                    }
-                };
+				return new ValueIterator(getParent());
             }
-
             public int size() {
                 return Screw.this.size();
             }
-
             public boolean isEmpty() {
                 return Screw.this.isEmpty();
             }
-
             public void clear() {
             	Screw.this.clear();
             }
-
             public boolean contains(Object v) {
                 return Screw.this.containsValue(v);
             }
 		}: values;
 	}
+	
+	@Deprecated
 	public Set<java.util.Map.Entry<K, V>> entrySet() {
 		return entrySet == null ? entrySet = new AbstractSet<Map.Entry<K,V>>() {
 
@@ -237,8 +203,7 @@ public abstract class Screw<K,V>
 					}
 					@Override
 					public java.util.Map.Entry<K, V> next() {
-//						return en.nextElement();
-						return null;
+						return en.nextElement();
 					}
 					@Override
 					public void remove() {

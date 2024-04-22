@@ -70,6 +70,7 @@ public class BigBang extends Screw<Matter,Antimatter> {
 		key.addEventListener(this);
 		value.addEventListener(getChild());
 	}
+	
 	@Override
 	public int compareTo(hyperspace.Entry<Antimatter,Matter> o) {
 		getKey().comparator(new Antimatter()).compare(getKey(), o.getKey());
@@ -81,26 +82,10 @@ public class BigBang extends Screw<Matter,Antimatter> {
 	public void event(EventArgs e) {
 		super.event(e);
 		if(e.getSource() instanceof BigBang) {
-			BigBang entry = (BigBang) e.getSource();
 			switch (e.getCommand()) {
 			case Command.LISTEN:
+				BigBang entry = (BigBang) e.getSource();
 				entry.permuteChild(call(), get());
-				break;
-			case Command.TRANSFER:
-				entry.release();
-				break;
-			default:
-				break;
-			}
-		} else if(e.getSource() instanceof Matter) {
-			Matter entry = (Matter) e.getSource();
-			switch (e.getCommand()) {
-			case Command.TRANSFER:
-				if(!isRoot()) {
-					getKey().comparator(new Antimatter()).compare(entry, getValue());
-					Antimatter source = (Antimatter) getKey().comparator().source();
-					getStem().putValue(source, (Matter) source.getChild());
-				}
 				break;
 			default:
 				break;

@@ -72,7 +72,7 @@ public class Genomap extends Screw<Hypercube, Hyperchain> {
 		key.addEventListener(this);
 		value.addEventListener(getChild());
 	}
-
+	
 	@Override
 	public int compareTo(hyperspace.Entry<Hyperchain,Hypercube> o) {
 		getKey().comparator(new Hyperchain()).compare(getKey(), o.getKey());
@@ -89,22 +89,6 @@ public class Genomap extends Screw<Hypercube, Hyperchain> {
 			case Command.LISTEN:
 				entry.permuteChild(call(), get());
 				break;
-			case Command.TRANSFER:
-				entry.release();
-				break;
-			default:
-				break;
-			}
-		} else if(e.getSource() instanceof Hypercube) {
-			Hypercube entry = (Hypercube) e.getSource();
-			switch (e.getCommand()) {
-			case Command.TRANSFER:
-				if(!isRoot()) {
-					getKey().comparator(new Hyperchain()).compare(entry, getValue());
-					Hyperchain source = (Hyperchain) getKey().comparator().source();
-					getStem().putValue(source, (Hypercube) source.getChild());
-				}
-				break;
 			default:
 				break;
 			}
@@ -112,7 +96,7 @@ public class Genomap extends Screw<Hypercube, Hyperchain> {
 	}
 	@Override
 	public void run() {
-		getValue().run();
+		getKey().run();
 		super.run();
 	}
 }

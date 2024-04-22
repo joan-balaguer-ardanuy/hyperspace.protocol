@@ -83,28 +83,24 @@ public class Interstellar extends ScrewNut<Andromeda,MilkyWay> {
 	@Override
 	public void event(EventArgs e) {
 		super.event(e);
-		if(e.getSource() instanceof Sun) {
-			Sun entry = (Sun) e.getSource();
+		if(e.getSource() instanceof MilkyWay) {
 			switch (e.getCommand()) {
 			case Command.INSTANCE:
 				if(isRoot()) {
-					MilkyWay milkyWay = new MilkyWay();
-					milkyWay.putValue(entry, (AlphaCentauri) entry.getChild());
-					sendEvent(new EventArgs(milkyWay));
+					MilkyWay entry = (MilkyWay) e.getSource();
+					getStem().putValue(entry, (Andromeda) entry.getChild());
 				}
 				break;
 			default:
 				break;
 			}
-		} 
-		else if(e.getSource() instanceof Andromeda) {
-			Andromeda entry = (Andromeda) e.getSource();
+		}
+		else if(e.getSource() instanceof Interstellar) {
 			switch (e.getCommand()) {
 			case Command.LISTEN:
-				if (!isRoot()) {
-					getKey().comparator(new MilkyWay()).compare(entry, getValue());
-					sendEvent(new EventArgs(getKey().comparator().source()));
-				}
+				Interstellar entry = (Interstellar) e.getSource();
+				comparator(new Supercluster()).compare(entry, getStem());
+				sendEvent(new EventArgs(comparator().source()));
 				break;
 			default:
 				break;
@@ -112,7 +108,7 @@ public class Interstellar extends ScrewNut<Andromeda,MilkyWay> {
 		}
 	}
 	public void run() {
-		getValue().run();
+		getKey().run();
 		super.run();
 	}
 }

@@ -83,28 +83,25 @@ public class Tetraploid extends ScrewNut<Diploid, Chromosome> {
 	@Override
 	public void event(EventArgs e) {
 		super.event(e);
-		if(e.getSource() instanceof Genomap) {
-			Genomap entry = (Genomap) e.getSource();
+		if(e.getSource() instanceof Chromosome) {
 			switch (e.getCommand()) {
 			case Command.INSTANCE:
 				if(isRoot()) {
-					Chromosome chromosome = new Chromosome();
-					chromosome.putValue(entry, (Haploid) entry.getChild());
-					sendEvent(new EventArgs(chromosome));
+					Chromosome entry = (Chromosome) e.getSource();
+					getStem().putValue(entry, (Diploid) entry.getChild());
 				}
 				break;
 			default:
 				break;
 			}
-		} 
-		else if(e.getSource() instanceof Diploid) {
-			Diploid entry = (Diploid) e.getSource();
+		}
+		else if(e.getSource() instanceof Tetraploid) {
 			switch (e.getCommand()) {
 			case Command.LISTEN:
-				if (!isRoot()) {
-					getKey().comparator(new Chromosome()).compare(entry, getValue());
-					sendEvent(new EventArgs(getKey().comparator().source()));
-				}
+				Tetraploid entry = (Tetraploid) e.getSource();
+				comparator(new Ribosome()).compare(entry, getStem());
+				System.out.println(comparator().source().getName());
+				sendEvent(new EventArgs(comparator().source()));
 				break;
 			default:
 				break;
@@ -112,7 +109,7 @@ public class Tetraploid extends ScrewNut<Diploid, Chromosome> {
 		}
 	}
 	public void run() {
-		getValue().run();
+		getKey().run();
 		super.run();
 	}
 }

@@ -7,7 +7,7 @@ package hyperspace.time;
  *
  * @param <K> is the key
  */
-public interface Recurrence<K> extends Past<K> {
+public interface Recurrent<K> extends Past<K> {
 
 	/**
 	 * Gets the root corresponding to this time-listener.

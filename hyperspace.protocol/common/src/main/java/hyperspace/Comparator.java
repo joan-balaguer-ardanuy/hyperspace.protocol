@@ -7,6 +7,7 @@ package hyperspace;
  * @author joan
  *
  */
+
 public interface Comparator<K,V> {
 
 	/**

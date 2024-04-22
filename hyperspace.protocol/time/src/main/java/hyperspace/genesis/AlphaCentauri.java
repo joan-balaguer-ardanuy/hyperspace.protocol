@@ -83,28 +83,24 @@ public class AlphaCentauri extends ScrewNut<Gliese,Earth> {
 	@Override
 	public void event(EventArgs e) {
 		super.event(e);
-		if(e.getSource() instanceof Operon) {
-			Operon entry = (Operon) e.getSource();
+		if(e.getSource() instanceof Earth) {
 			switch (e.getCommand()) {
 			case Command.INSTANCE:
 				if(isRoot()) {
-					Earth earth = new Earth();
-					earth.putValue(entry, (Polyploid) entry.getChild());
-					sendEvent(new EventArgs(earth));
+					Earth entry = (Earth) e.getSource();
+					getStem().putValue(entry, (Gliese) entry.getChild());
 				}
 				break;
 			default:
 				break;
 			}
-		} 
-		else if(e.getSource() instanceof Gliese) {
-			Gliese entry = (Gliese) e.getSource();
+		}
+		else if(e.getSource() instanceof AlphaCentauri) {
 			switch (e.getCommand()) {
 			case Command.LISTEN:
-				if (!isRoot()) {
-					getKey().comparator(new Earth()).compare(entry, getValue());
-					sendEvent(new EventArgs(getKey().comparator().source()));
-				}
+				AlphaCentauri entry = (AlphaCentauri) e.getSource();
+				comparator(new Sun()).compare(entry, getStem());
+				sendEvent(new EventArgs(comparator().source()));
 				break;
 			default:
 				break;
@@ -112,7 +108,7 @@ public class AlphaCentauri extends ScrewNut<Gliese,Earth> {
 		}
 	}
 	public void run() {
-		getValue().run();
+		getKey().run();
 		super.run();
 	}
 }

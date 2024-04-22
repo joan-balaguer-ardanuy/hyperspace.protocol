@@ -83,28 +83,24 @@ public class BigBong extends ScrewNut<Antimatter,Matter> {
 	@Override
 	public void event(EventArgs e) {
 		super.event(e);
-		if(e.getSource() instanceof Supercluster) {
-			Supercluster entry = (Supercluster) e.getSource();
+		if(e.getSource() instanceof Matter) {
 			switch (e.getCommand()) {
 			case Command.INSTANCE:
 				if(isRoot()) {
-					Matter matter = new Matter();
-					matter.putValue(entry, (Interstellar) entry.getChild());
-					sendEvent(new EventArgs(matter));
+					Matter entry = (Matter) e.getSource();
+					getStem().putValue(entry, (Antimatter) entry.getChild());
 				}
 				break;
 			default:
 				break;
 			}
-		} 
-		else if(e.getSource() instanceof Antimatter) {
-			Antimatter entry = (Antimatter) e.getSource();
+		}
+		else if(e.getSource() instanceof BigBong) {
 			switch (e.getCommand()) {
 			case Command.LISTEN:
-				if (!isRoot()) {
-					getKey().comparator(new Matter()).compare(entry, getValue());
-					sendEvent(new EventArgs(getKey().comparator().source()));
-				}
+				BigBong entry = (BigBong) e.getSource();
+				comparator(new BigBang()).compare(entry, getStem());
+				sendEvent(new EventArgs(comparator().source()));
 				break;
 			default:
 				break;
@@ -112,7 +108,7 @@ public class BigBong extends ScrewNut<Antimatter,Matter> {
 		}
 	}
 	public void run() {
-		getValue().run();
+		getKey().run();
 		super.run();
 	}
 }

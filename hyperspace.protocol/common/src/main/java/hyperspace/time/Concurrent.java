@@ -8,7 +8,7 @@ package hyperspace.time;
  * @param <V> is the value
  * @param <K> is the key
  */
-public interface Concurrence<V> extends Future<V> {
+public interface Concurrent<V> extends Future<V> {
 
 	/**
 	 * Gets the stem corresponding to <tt>this</tt> time-listener.

@@ -83,27 +83,12 @@ public class TimeMaster extends ScrewNut<BigBong,BigBang> {
 	@Override
 	public void event(EventArgs e) {
 		super.event(e);
-		if(e.getSource() instanceof Matter) {
-			Matter entry = (Matter) e.getSource();
+		if(e.getSource() instanceof BigBang) {
 			switch (e.getCommand()) {
 			case Command.INSTANCE:
 				if(isRoot()) {
-					BigBang bigBang = new BigBang();
-					bigBang.putValue(entry, (Antimatter) entry.getChild());
-					sendEvent(new EventArgs(bigBang));
-				}
-				break;
-			default:
-				break;
-			}
-		} 
-		else if(e.getSource() instanceof BigBong) {
-			BigBong entry = (BigBong) e.getSource();
-			switch (e.getCommand()) {
-			case Command.LISTEN:
-				if (!isRoot()) {
-					getKey().comparator(new BigBang()).compare(entry, getValue());
-					sendEvent(new EventArgs(getKey().comparator().source()));
+					BigBang entry = (BigBang) e.getSource();
+					getStem().putValue(entry, (BigBong) entry.getChild());
 				}
 				break;
 			default:

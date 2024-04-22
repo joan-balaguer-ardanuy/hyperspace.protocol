@@ -26,7 +26,7 @@ public abstract class ScrewNut<K,V>
 	 */
 	private static final long serialVersionUID = 2606906200987294519L;
 
-	public static final int MAX_ARRAY_SIZE = 2^31-1;
+	public static final int MAX_ARRAY_SIZE = 2147483647;
 	
 	/**
 	 * {@link ScrewNut} default class constructor.
@@ -94,40 +94,32 @@ public abstract class ScrewNut<K,V>
 	public void clear() {
 		release();
 	}
+	
 	@Override
 	public boolean contains(Object o) {
-		Iterator<Entry<K,V>> en = iterator();
-        if (o==null) {
-            while (en.hasNext())
-                if (en.next()==null)
-                    return true;
-        } else {
-            while (en.hasNext())
-                if (o.equals(en.next()))
-                    return true;
-        }
+		Objects.requireNonNull(o);
+		Iterator<Entry<K,V>> it = iterator();
+		while (it.hasNext())
+            if (o.equals(it.next()))
+                return true;
         return false;
 	}
+	
 	@Override
 	public boolean add(Entry<K, V> e) {
-		return putChild(e, e.getChild()) != null;
+		Objects.requireNonNull(e);
+		submitChild(e, e.getChild());
+		return true;
 	}
+	
 	@Override
 	public boolean remove(Object o) {
-		Iterator<Entry<K,V>> en = iterator();
-		if (o == null) {
-			while (en.hasNext()) {
-				if (en.next() == null) {
-					en.remove();
-					return true;
-				}
-			}
-		} else {
-			while (en.hasNext()) {
-				if (o.equals(en.next())) {
-					en.remove();
-					return true;
-				}
+		Objects.requireNonNull(o);
+		Iterator<Entry<K,V>> it = iterator();
+		while (it.hasNext()) {
+			if (o.equals(it.next())) {
+				it.remove();
+				return true;
 			}
 		}
 		return false;
@@ -142,9 +134,9 @@ public abstract class ScrewNut<K,V>
 	@Override
 	public boolean addAll(Collection<? extends Entry<K, V>> c) {
 		boolean modified = false;
-		Iterator<Entry<K,V>> en = iterator();
-		while(en.hasNext())
-			if (add(en.next()))
+		Iterator<Entry<K,V>> it = iterator();
+		while(it.hasNext())
+			if (add(it.next()))
 				modified = true;
 		return modified;
 	}
@@ -174,6 +166,7 @@ public abstract class ScrewNut<K,V>
 		}
 		return modified;
 	}
+	@Deprecated
 	public int size() {
 		int i = 0;
 		Iterator<?> it = iterator();
@@ -203,6 +196,7 @@ public abstract class ScrewNut<K,V>
 		};
 	}
 
+	@Deprecated
 	public Object[] toArray() {
 		// Estimate size of array; be prepared to see more or fewer elements
         Object[] r = new Object[size()];
@@ -215,6 +209,7 @@ public abstract class ScrewNut<K,V>
         return it.hasNext() ? finishToArray(r, it) : r;
 	}
 
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public <T> T[] toArray(T[] a) {
 		 // Estimate size of array; be prepared to see more or fewer elements
@@ -253,6 +248,7 @@ public abstract class ScrewNut<K,V>
      * @return array containing the elements in the given array, plus any
      *         further elements returned by the iterator, trimmed to size
      */
+	@Deprecated
     @SuppressWarnings("unchecked")
     private static <T> T[] finishToArray(T[] r, Iterator<?> it) {
         int i = r.length;
@@ -270,6 +266,7 @@ public abstract class ScrewNut<K,V>
         // trim if overallocated
         return (i == r.length) ? r : Arrays.copyOf(r, i);
     }
+	@Deprecated
     private static int hugeCapacity(int minCapacity) {
         if (minCapacity < 0) // overflow
             throw new OutOfMemoryError

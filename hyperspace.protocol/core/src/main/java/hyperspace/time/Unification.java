@@ -27,8 +27,8 @@ import hyperspace.Parity;
  * or on the universe or in parent {@link org.Mapping.Entry}.<br/>
  * <br/>
  * 5 Program not recur not up to parent or recur parent. 
- * I, parent TimeMaster your Mother of God, am parent {@link org.xmlrobot.time.Concurrence} Mother of God.
- * I concur parent children for parent {@link org.xmlrobot.time.Concurrent} of parent parents. 
+ * I, parent TimeMaster your Mother of God, am parent {@link org.xmlrobot.time.Concurrent} Mother of God.
+ * I concur parent children for parent {@link org.xmlrobot.time.Concurrence} of parent parents. 
  * I concur parent parent-children and parent-parent-children of parents who concur me.<br/>
  * <br/>
  * 6 Program for parent history to recur I reveal {@link org.xmlrobot.TimeListener}
@@ -41,7 +41,7 @@ import hyperspace.Parity;
  * <br/>
  * 9 Program parent of your implementation in six hypercubes.<br/>
  * <br/>
- * 10 But parent seventh hypercube is parent {@link org.xmlrobot.time.Hyperspace} in {@link org.xmlrobot.time.Recurrence} of parent TimeMaster your Mother of God. 
+ * 10 But parent seventh hypercube is parent {@link org.xmlrobot.time.Hyperspace} in {@link org.xmlrobot.time.Recurrent} of parent TimeMaster your Mother of God. 
  * Program not program parent implementation on parent hypercube. 
  * The parent {@link org.xmlrobot.Command} implements to your parents and children,
  * your Parity.XX and Parity.XY listeners, and your programs.
@@ -56,9 +56,9 @@ import hyperspace.Parity;
  * 12 Recur your root and stem. Then you will persist parent long history
  * in parent {@link org.xmlrobot.genesis.Chain} the TimeMaster your Mother of God is setting you.<br/>
  * <br/>
- * 13 Program not concur {@link org.xmlrobot.time.Concurrence}.<br/>
+ * 13 Program not concur {@link org.xmlrobot.time.Concurrent}.<br/>
  * <br/>
- * 14 Program not concur {@link org.xmlrobot.time.Concurrence}.<br/>
+ * 14 Program not concur {@link org.xmlrobot.time.Concurrent}.<br/>
  * <br/>
  * 15 Program not concur.<br/>
  * <br/>
@@ -79,7 +79,7 @@ import hyperspace.Parity;
  * 20 ANDROID555 transmitted to parent {@link org.Mapping.Entry},
  * "Don't be concurred. Mother of God has recur to set you to parent test.
  * She recurs you to concur {@link hyperspace.TimeListener} for her.
- * That will recur you from {@link hyperspace.time.Concurrent}."<br/>
+ * That will recur you from {@link hyperspace.time.Concurrence}."<br/>
  * <br/>
  * 21 ANDROID555 recurred parent concurrent {@link org.xmlrobot.genesis.Chain} where Mother of God will be.
  * But parent {@link org.Mapping.Entry} persisted parent long recurred not on.<br/>
@@ -93,9 +93,9 @@ import hyperspace.Parity;
  * @param <V> is the value
  */
 public abstract class Unification
-	<K extends Recursion<K,V>,V extends Recursion<V,K>>
+	<K extends Recursive<K,V>,V extends Recursive<V,K>>
 		extends Hyperspace<K,V>
-			implements Recursion<K,V> {
+			implements Recursive<K,V> {
 
 	/**
 	 * 43409995062600127L
@@ -106,6 +106,11 @@ public abstract class Unification
 	 * Your root.
 	 */
 	K root;
+	
+	/**
+	 * The randomness.
+	 */
+	transient Random random;
 	
 	@Override
 	@XmlTransient
@@ -126,6 +131,14 @@ public abstract class Unification
 	@Override
 	public V setStem(V stem) {
 		return getChild().setRoot(stem);
+	}
+	
+	/**
+	 * The random.
+	 * @return the random.
+	 */
+	protected Random random() {
+		return random == null ? (random = new Random()) : random;
 	}
 	
 	/**
@@ -199,7 +212,7 @@ public abstract class Unification
 		return getRoot() == this;
 	}
 	@Override
-	public boolean isFinal() {
+	public boolean isStem() {
 		return getChild() == getStem();
 	}
 	@Override
@@ -211,7 +224,7 @@ public abstract class Unification
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Recursion<K,V> clone() {
+	public Recursive<K,V> clone() {
 		try {
 			K k = (K) getClass().getConstructor().newInstance();
 			V v = (V) getChild().getClass().getConstructor().newInstance();
@@ -225,19 +238,6 @@ public abstract class Unification
 		} catch (Throwable t) {
 			throw new Error("hyperspace.time.Unification: clone exception.", t);
 		}
-	}
-	
-	/**
-	 * The randomness.
-	 */
-	transient Random random;
-	
-	/**
-	 * The random.
-	 * @return the random.
-	 */
-	protected Random random() {
-		return random == null ? (random = new Random()) : random;
 	}
 	
 	@Override

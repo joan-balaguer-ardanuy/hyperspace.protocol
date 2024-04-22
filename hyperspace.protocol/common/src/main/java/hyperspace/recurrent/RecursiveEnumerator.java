@@ -1,7 +1,5 @@
 package hyperspace.recurrent;
 
-import java.util.NoSuchElementException;
-
 public interface RecursiveEnumerator<E> extends Enumerator<E> {
 
     /**

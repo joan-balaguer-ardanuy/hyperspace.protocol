@@ -70,6 +70,7 @@ public class Sun extends Screw<Earth,Gliese> {
 		key.addEventListener(this);
 		value.addEventListener(getChild());
 	}
+	
 	@Override
 	public int compareTo(hyperspace.Entry<Gliese,Earth> o) {
 		getKey().comparator(new Gliese()).compare(getKey(), o.getKey());
@@ -85,22 +86,6 @@ public class Sun extends Screw<Earth,Gliese> {
 			switch (e.getCommand()) {
 			case Command.LISTEN:
 				entry.permuteChild(call(), get());
-				break;
-			case Command.TRANSFER:
-				entry.release();
-				break;
-			default:
-				break;
-			}
-		} else if(e.getSource() instanceof Earth) {
-			Earth entry = (Earth) e.getSource();
-			switch (e.getCommand()) {
-			case Command.TRANSFER:
-				if(!isRoot()) {
-					getKey().comparator(new Gliese()).compare(entry, getValue());
-					Gliese source = (Gliese) getKey().comparator().source();
-					getStem().putValue(source, (Earth) source.getChild());
-				}
 				break;
 			default:
 				break;

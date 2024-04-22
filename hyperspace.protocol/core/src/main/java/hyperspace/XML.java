@@ -50,34 +50,12 @@ public abstract class XML implements Message {
 	}
 	
 	public XML() {
-		// TODO Auto-generated constructor stub
+		this.command = Command.INSTANCE;
+		this.parity = Parity.YY;
 	}
 	public XML(Parity parity) {
 		this.command = Command.INSTANCE;
 		this.parity = parity;
-	}
-	/**
-	 * Intances new object.
-	 * @param <X> the parameter type of the returned object
-	 * @param type the {@link Class} of the object.
-	 * @param object the arguments of the construction of the object
-	 * @return the new <X> instance
-	 */
-	protected static <X> X instance(Class<X> type, Object... objects) {
-		try {
-			return type.getDeclaredConstructor(getClasses(objects)).newInstance(objects);
-		}
-		catch(Throwable t) {
-			throw new Error(t);
-		}
-	}
-	
-	private static Class<?>[] getClasses(Object... objects) {
-		Class<?>[] classes = new Class<?>[objects.length];
-		for(int i = 0; i < objects.length; i++) {
-			classes[i] = objects[i].getClass();
-		}
-		return classes;
 	}
 	@Override
 	public String toString() {

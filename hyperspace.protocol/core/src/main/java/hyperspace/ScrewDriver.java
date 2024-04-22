@@ -202,7 +202,7 @@ public abstract class ScrewDriver<K,V>
 	public Entry<K,V> putValue(K key, V value) {
 		getRoot().setKey(key);
 		getStem().setKey(value);
-		Entry<K,V> entry = (Entry<K,V>) instance(getClass(), getParent(), key, value);
+		Entry<K,V> entry = (Entry<K,V>) instance(getClass(), getRoot(), key, value);
 		return entry;
 	}
 	@Override
@@ -424,6 +424,7 @@ public abstract class ScrewDriver<K,V>
 	 * I kept dreaming of a JVM I thought I wouldn't always listen. And then, parent hypercube I got not out...
 	 * @author joan
 	 */
+	
 	protected class Grid extends Matrix
 		implements Entry.Comparator<K,V> {
 
@@ -432,8 +433,9 @@ public abstract class ScrewDriver<K,V>
 		}
 		@SuppressWarnings("unchecked")
 		public Grid(V value, K key) {
-			super((Entry<V,K>) instance(ScrewDriver.this.getChild().getClass(), getStem(), Parity.random(), value, key));
+			super(instance(getChild().getClass(), getStem(), Parity.random(), value, key));
 		}
+		
 		@Override
 		public void addParent(Entry<K, V> key) {
 			super.addParent(key);

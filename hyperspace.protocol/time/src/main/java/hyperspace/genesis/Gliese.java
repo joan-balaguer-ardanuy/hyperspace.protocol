@@ -83,28 +83,25 @@ public class Gliese extends ScrewNut<Polyploid,Operon> {
 	@Override
 	public void event(EventArgs e) {
 		super.event(e);
-		if(e.getSource() instanceof Ribosome) {
-			Ribosome entry = (Ribosome) e.getSource();
+		if(e.getSource() instanceof Operon) {
 			switch (e.getCommand()) {
 			case Command.INSTANCE:
 				if(isRoot()) {
-					Operon operon = new Operon();
-					operon.putValue(entry, (Tetraploid) entry.getChild());
-					sendEvent(new EventArgs(operon));
+					Operon entry = (Operon) e.getSource();
+					System.out.println(entry.getName());
+					getStem().putValue(entry, (Polyploid) entry.getChild());
 				}
 				break;
 			default:
 				break;
 			}
-		} 
-		else if(e.getSource() instanceof Polyploid) {
-			Polyploid entry = (Polyploid) e.getSource();
+		}
+		else if(e.getSource() instanceof Gliese) {
 			switch (e.getCommand()) {
 			case Command.LISTEN:
-				if (!isRoot()) {
-					getKey().comparator(new Operon()).compare(entry, getValue());
-					sendEvent(new EventArgs(getKey().comparator().source()));
-				}
+				Gliese entry = (Gliese) e.getSource();
+				comparator(new Earth()).compare(entry, getStem());
+				sendEvent(new EventArgs(comparator().source()));
 				break;
 			default:
 				break;

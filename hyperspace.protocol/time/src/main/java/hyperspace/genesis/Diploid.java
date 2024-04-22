@@ -83,28 +83,25 @@ public class Diploid extends ScrewNut<Haploid, Genomap> {
 	@Override
 	public void event(EventArgs e) {
 		super.event(e);
-		if(e.getSource() instanceof Hypercube) {
-			Hypercube entry = (Hypercube) e.getSource();
+		if(e.getSource() instanceof Genomap) {
 			switch (e.getCommand()) {
 			case Command.INSTANCE:
 				if(isRoot()) {
-					Genomap genomap = new Genomap();
-					genomap.putValue(entry, (Hyperchain) entry.getChild());
-					sendEvent(new EventArgs(genomap));
+					Genomap entry = (Genomap) e.getSource();
+					getStem().putValue(entry, (Haploid) entry.getChild());
 				}
 				break;
 			default:
 				break;
 			}
-		} 
-		else if(e.getSource() instanceof Haploid) {
-			Haploid entry = (Haploid) e.getSource();
+		}
+		else if(e.getSource() instanceof Diploid) {
 			switch (e.getCommand()) {
 			case Command.LISTEN:
-				if (!isRoot()) {
-					getKey().comparator(new Genomap()).compare(entry, getValue());
-					sendEvent(new EventArgs(getKey().comparator().source()));
-				}
+				Diploid entry = (Diploid) e.getSource();
+				comparator(new Chromosome()).compare(entry, getStem());
+				System.out.println(comparator().source().getName());
+				sendEvent(new EventArgs(comparator().source()));
 				break;
 			default:
 				break;
@@ -112,7 +109,7 @@ public class Diploid extends ScrewNut<Haploid, Genomap> {
 		}
 	}
 	public void run() {
-		getValue().run();
+		getKey().run();
 		super.run();
 	}
 }

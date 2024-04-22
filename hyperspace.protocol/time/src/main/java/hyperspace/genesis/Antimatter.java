@@ -83,28 +83,24 @@ public class Antimatter extends ScrewNut<Interstellar,Supercluster> {
 	@Override
 	public void event(EventArgs e) {
 		super.event(e);
-		if(e.getSource() instanceof MilkyWay) {
-			MilkyWay entry = (MilkyWay) e.getSource();
+		if(e.getSource() instanceof Supercluster) {
 			switch (e.getCommand()) {
 			case Command.INSTANCE:
 				if(isRoot()) {
-					Supercluster supercluster = new Supercluster();
-					supercluster.putValue(entry, (Andromeda) entry.getChild());
-					sendEvent(new EventArgs(supercluster));
+					Supercluster entry = (Supercluster) e.getSource();
+					getStem().putValue(entry, (Interstellar) entry.getChild());
 				}
 				break;
 			default:
 				break;
 			}
-		} 
-		else if(e.getSource() instanceof Interstellar) {
-			Interstellar entry = (Interstellar) e.getSource();
+		}
+		else if(e.getSource() instanceof Antimatter) {
 			switch (e.getCommand()) {
 			case Command.LISTEN:
-				if (!isRoot()) {
-					getKey().comparator(new Supercluster()).compare(entry, getValue());
-					sendEvent(new EventArgs(getKey().comparator().source()));
-				}
+				Antimatter entry = (Antimatter) e.getSource();
+				comparator(new Matter()).compare(entry, getStem());
+				sendEvent(new EventArgs(comparator().source()));
 				break;
 			default:
 				break;

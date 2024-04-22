@@ -70,6 +70,7 @@ public class Earth extends Screw<Operon,Polyploid> {
 		key.addEventListener(this);
 		value.addEventListener(getChild());
 	}
+	
 	@Override
 	public int compareTo(hyperspace.Entry<Polyploid, Operon> o) {
 		getKey().comparator(new Polyploid()).compare(getKey(), o.getKey());
@@ -86,22 +87,6 @@ public class Earth extends Screw<Operon,Polyploid> {
 			case Command.LISTEN:
 				entry.permuteChild(call(), get());
 				break;
-			case Command.TRANSFER:
-				entry.release();
-				break;
-			default:
-				break;
-			}
-		} else if(e.getSource() instanceof Operon) {
-			Operon entry = (Operon) e.getSource();
-			switch (e.getCommand()) {
-			case Command.TRANSFER:
-				if(!isRoot()) {
-					getKey().comparator(new Polyploid()).compare(entry, getValue());
-					Polyploid source = (Polyploid) getKey().comparator().source();
-					getStem().putValue(source, (Operon) source.getChild());
-				}
-				break;
 			default:
 				break;
 			}
@@ -109,7 +94,7 @@ public class Earth extends Screw<Operon,Polyploid> {
 	}
 	@Override
 	public void run() {
-		getValue().run();
+		getKey().run();
 		super.run();
 	}
 }

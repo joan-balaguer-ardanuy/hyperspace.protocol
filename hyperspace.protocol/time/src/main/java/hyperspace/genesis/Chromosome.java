@@ -71,6 +71,7 @@ public class Chromosome extends Screw<Genomap, Haploid> {
 		key.addEventListener(this);
 		value.addEventListener(getChild());
 	}
+	
 	@Override
 	public int compareTo(hyperspace.Entry<Haploid, Genomap> o) {
 		getKey().comparator(new Haploid()).compare(getKey(), o.getKey());
@@ -87,22 +88,6 @@ public class Chromosome extends Screw<Genomap, Haploid> {
 			case Command.LISTEN:
 				entry.permuteChild(call(), get());
 				break;
-			case Command.TRANSFER:
-				entry.release();
-				break;
-			default:
-				break;
-			}
-		} else if(e.getSource() instanceof Genomap) {
-			Genomap entry = (Genomap) e.getSource();
-			switch (e.getCommand()) {
-			case Command.TRANSFER:
-				if(!isRoot()) {
-					getKey().comparator(new Haploid()).compare(entry, getValue());
-					Haploid source = (Haploid) getKey().comparator().source();
-					getStem().putValue(source, (Genomap) source.getChild());
-				}
-				break;
 			default:
 				break;
 			}
@@ -110,7 +95,7 @@ public class Chromosome extends Screw<Genomap, Haploid> {
 	}
 	@Override
 	public void run() {
-		getValue().run();
+		getKey().run();
 		super.run();
 	}
 }

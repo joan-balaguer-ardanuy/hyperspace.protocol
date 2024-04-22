@@ -83,28 +83,25 @@ public class Polyploid extends ScrewNut<Tetraploid,Ribosome> {
 	@Override
 	public void event(EventArgs e) {
 		super.event(e);
-		if(e.getSource() instanceof Chromosome) {
-			Chromosome entry = (Chromosome) e.getSource();
+		if(e.getSource() instanceof Ribosome) {
 			switch (e.getCommand()) {
 			case Command.INSTANCE:
 				if(isRoot()) {
-					Ribosome ribosome = new Ribosome();
-					ribosome.putValue(entry, (Diploid) entry.getChild());
-					sendEvent(new EventArgs(ribosome));
+					Ribosome entry = (Ribosome) e.getSource();
+					System.out.println(entry.getName());
+					getStem().putValue(entry, (Tetraploid) entry.getChild());
 				}
 				break;
 			default:
 				break;
 			}
-		} 
-		else if(e.getSource() instanceof Tetraploid) {
-			Tetraploid entry = (Tetraploid) e.getSource();
+		}
+		else if(e.getSource() instanceof Polyploid) {
 			switch (e.getCommand()) {
 			case Command.LISTEN:
-				if (!isRoot()) {
-					getKey().comparator(new Ribosome()).compare(entry, getValue());
-					sendEvent(new EventArgs(getKey().comparator().source()));
-				}
+				Polyploid entry = (Polyploid) e.getSource();
+				comparator(new Operon()).compare(entry, getStem());
+				sendEvent(new EventArgs(comparator().source()));
 				break;
 			default:
 				break;
@@ -112,7 +109,7 @@ public class Polyploid extends ScrewNut<Tetraploid,Ribosome> {
 		}
 	}
 	public void run() {
-		getValue().run();
+		getKey().run();
 		super.run();
 	}
 }

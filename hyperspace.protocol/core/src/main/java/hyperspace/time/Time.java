@@ -7,9 +7,9 @@ import hyperspace.Parity;
 import hyperspace.recurrent.Enumerator;
 
 public abstract class Time
-	<K extends Recursion<K,V>,V extends Recursion<V,K>>
+	<K extends Recursive<K,V>,V extends Recursive<V,K>>
 		extends Inheritance<K,V>
-			implements Recursion<K,V> {
+			implements Recursive<K,V> {
 
 	/**
 	 * -1495539127840786666L
@@ -71,16 +71,6 @@ public abstract class Time
 		super(childClass, root, parity);
 	}
 	@Override
-	public void spin() {
-		if(random().nextBoolean()) {
-			// rotate
-			getParent().permuteChild(call(), get());
-		} else {
-			// revolve  
-			call().permuteChild(getParent(), getParent().getChild());
-		}
-	}
-	@Override
 	public V getChild(K key) {
 		Enumerator<K> en = enumerator();
 		while(en.hasMoreElements()) {
@@ -128,7 +118,6 @@ public abstract class Time
 				return key.setChild(value);
 			}
 		}
-		submitChild(key, value);
 		return null;
 	}
 
@@ -161,7 +150,7 @@ public abstract class Time
 	public K putParentIfAbsent(V value, K key) {
 		return getChild().putChildIfAbsent(value, key);
 	}
-	public void putAllChildren(Recursion<? extends K,? extends V> m) {
+	public void putAllChildren(Recursive<? extends K,? extends V> m) {
 		Enumerator<? extends K> en = m.enumerator();
 		while(en.hasMoreElements()) {
 			K parent = en.nextElement();
@@ -176,7 +165,7 @@ public abstract class Time
      * This implementation delegates the method to the child
 	 */
 	@Override
-	public void putAllParents(Recursion<? extends V, ? extends K> m) {
+	public void putAllParents(Recursive<? extends V, ? extends K> m) {
 		getChild().putAllChildren(m);
 	}
 	@Override

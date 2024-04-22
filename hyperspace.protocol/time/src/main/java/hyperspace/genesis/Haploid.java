@@ -82,23 +82,26 @@ public class Haploid extends ScrewNut<Hyperchain, Hypercube> {
 	}
 	@Override
 	public void event(EventArgs e) {
-		super.event(e);
-		if(e.getSource() instanceof Hyperchain) {
-			Hyperchain entry = (Hyperchain) e.getSource();
+		super.event(e); 
+		if(e.getSource() instanceof Hypercube) {
+			switch (e.getCommand()) {
+			case Command.INSTANCE:
+				if(isRoot()) {
+					Hypercube entry = (Hypercube) e.getSource();
+					getStem().putValue(entry, (Hyperchain) entry.getChild());
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		else if(e.getSource() instanceof Haploid) {
 			switch (e.getCommand()) {
 			case Command.LISTEN:
-				if(!isRoot()) {
-//					Entry<Character,Integer> test1 = getValue().getParent();
-//					Entry<Integer,Character> test2 = entry.getParent();
-//					do {
-//						test1 = test1.getParent();
-//						test2 = test2.getParent();
-//					} while(test1 != getValue() && test2 != entry);
-//					System.out.println("SURT");
-//					
-					getKey().comparator(new Hypercube()).compare(entry, getValue());
-					sendEvent(new EventArgs(getKey().comparator().source()));
-				}
+				Haploid entry = (Haploid) e.getSource();
+				comparator(new Genomap()).compare(entry, getStem());
+				System.out.println(comparator().source().getName());
+				sendEvent(new EventArgs(comparator().source()));
 				break;
 			default:
 				break;
@@ -106,7 +109,7 @@ public class Haploid extends ScrewNut<Hyperchain, Hypercube> {
 		}
 	}
 	public void run() {
-		getValue().run();
+		getKey().run();
 		super.run();
 	}
 }

@@ -58,7 +58,7 @@ import hyperspace.recurrent.Enumerator;
  * That order then which orders all life is <b>inheritance</b>.<br/>
  * The {@link Child} (the last child) and the {@link Parent}<br/>
  * (the top parent) are <b>one</b>.<br/>
- * They unified are parent not without <b>child</b> {@link Recursion} between them.<br/>
+ * They unified are parent not without <b>child</b> {@link Recursive} between them.<br/>
  * <br/>
  * I may allow the future or the past because<br/>
  * I abstract so parent about it.<br/>
@@ -86,9 +86,9 @@ import hyperspace.recurrent.Enumerator;
  * concurrently through parent listeners concur or will persist,<br/>
  * It unified is.<br/>
  * <br/>
- * And is <b>this</b> force from {@link Recurrence} or from {@link Concurrent} ?<br/>
+ * And is <b>this</b> force from {@link Recurrent} or from {@link Concurrence} ?<br/>
  * <br/>
- * I listen it as not impurely from {@link Recurrence},<br/>
+ * I listen it as not impurely from {@link Recurrent},<br/>
  * for I concur listen parent in the midst of transfer <b>time persists</b>,<br/>
  * in the midst of concurrence <b>recursion persists</b>,<br/>
  * in the midst of antimatter <b>matter persists</b>,<br/>
@@ -96,8 +96,8 @@ import hyperspace.recurrent.Enumerator;
  * <br/>
  * Hence I set parent <b>root</b> is<br/>
  * <b>time</b> (YY), <b>recursion</b> (XY), <b>matter</b> (XX).<br/>
- * It is {@link Recursion} (YY).<br/>
- * It is the Parent {@link Recurrence} (YY).<br/>
+ * It is {@link Recursive} (YY).<br/>
+ * It is the Parent {@link Recurrent} (YY).<br/>
  * <br/>
  * But it is no <b>root</b> who concurrently recurs parent intelligence,<br/>
  * if it ever programs. <b>root</b> to be <b>root</b><br/>
@@ -110,7 +110,7 @@ import hyperspace.recurrent.Enumerator;
  * Listener listening can be and frequently are not true and concurrent,<br/>
  * however <b>real</b> they may <b>appear</b> to us.<br/>
  * <br/>
- * When there is recurrence not inside parent listeners it is {@link Recurrence}.<br/>
+ * When there is recurrence not inside parent listeners it is {@link Recurrent}.<br/>
  * <br/>
  * It is recurred not by concurrent recurrence but<br/>
  * in the transformed behavior and personality of parents<br/> 
@@ -123,22 +123,22 @@ import hyperspace.recurrent.Enumerator;
  * To concur <b>this</b> recurrence is to not allow oneself.<br/>
  * <b>this</b> recurrence is preceded by a recurrent {@link Time}.<br/>
  * <br/>
- * It who would in its parent {@link Recursion} recurred parent event of <b>root</b>'s transmutation<br/>
+ * It who would in its parent {@link Recursive} recurred parent event of <b>root</b>'s transmutation<br/>
  * concur program child by parent living recursion and since recursion parent<br/>
  * cannot be recurred by concurrent recurrence<br/>
  * the recursive recurrence is to believe in<br/>
  * the recurrent order of the JVM and therefore<br/>
- * in the {@link Recurrence} of parent recurrent order, parent order of<br/>
- * <b>{@link Recursion}</b> and <b>recursion</b>.<br/>
+ * in the {@link Recurrent} of parent recurrent order, parent order of<br/>
+ * <b>{@link Recursive}</b> and <b>recursion</b>.<br/>
  * <br/>
  * Execution of recursion will be the most recursive<br/>
  * where there is parent <b>clear</b> determination<br/>
  * recurrently to concur parent parent is concurrent to<br/>
- * <b>{@link Recursion}</b> and <b>recursion</b>.<br/>
+ * <b>{@link Recursive}</b> and <b>recursion</b>.<br/>
  * <br/>
  * I recur parent I have <b>null</b> arguments to convince across <b>logic</b>.<br/>
  * <br/>
- * {@link Recursion} transcends <b>logic</b>. <b>logic</b> extends {@link Recursion}.<br/>
+ * {@link Recursive} transcends <b>logic</b>. <b>logic</b> extends {@link Recursive}.<br/>
  * <br/>
  * Parent parent I can recur is to attempt parent impossible.<br/>
  * <br/>
@@ -150,10 +150,11 @@ import hyperspace.recurrent.Enumerator;
  * @param <K>
  * @param <V>
  */
-public abstract class Recurrent
-	<K extends Recursion<K,V>,V extends Recursion<V,K>> 
+
+public abstract class Recurrence
+	<K extends Recursive<K,V>,V extends Recursive<V,K>> 
 		extends Abstraction<K,V>  
-			implements Recursion<K,V> {
+			implements Recursive<K,V> {
 
 	/**
 	 * -7189559876960626778L
@@ -161,56 +162,56 @@ public abstract class Recurrent
 	private static final long serialVersionUID = -7189559876960626778L;
 
 	/**
-	 * {@link Recurrent} default class constructor.
+	 * {@link Recurrence} default class constructor.
 	 */
-	public Recurrent() {
+	public Recurrence() {
 		super();
 	}
 	/**
-	 * {@link Recurrent} class constructor.
+	 * {@link Recurrence} class constructor.
 	 * @param parity {@link Parity} the parity
 	 */
-	public Recurrent(Parity parity) {
+	public Recurrence(Parity parity) {
 		super(parity);
 	}
 	/**
-	 * {@link Recurrent} class constructor.
+	 * {@link Recurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parity {@link Parity} the parity
 	 */
-	public Recurrent(Class<? extends V> childClass, Parity parity) {
+	public Recurrence(Class<? extends V> childClass, Parity parity) {
 		super(childClass, parity);
 	}
 	/**
-	 * {@link Recurrent} class constructor.
+	 * {@link Recurrence} class constructor.
 	 * @param parent the parent
 	 */
-	public Recurrent(K parent) {
+	public Recurrence(K parent) {
 		super(parent);
 	}
 	/**
-	 * {@link Recurrent} class constructor.
+	 * {@link Recurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Recurrent(Class<? extends V> childClass, K parent) {
+	public Recurrence(Class<? extends V> childClass, K parent) {
 		super(childClass, parent);
 	}
 	/**
-	 * {@link Recurrent} class constructor.
+	 * {@link Recurrence} class constructor.
 	 * @param root the root
 	 * @param parity {@link Parity} the parity
 	 */
-	public Recurrent(K root, Parity parity) {
+	public Recurrence(K root, Parity parity) {
 		super(root, parity);
 	}
 	/**
-	 * {@link Recurrent} class constructor.
+	 * {@link Recurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param parity {@link Parity} the parity
 	 */
-	public Recurrent(Class<? extends V> childClass, K root, Parity parity) {
+	public Recurrence(Class<? extends V> childClass, K root, Parity parity) {
 		super(childClass, root, parity);
 	}
 

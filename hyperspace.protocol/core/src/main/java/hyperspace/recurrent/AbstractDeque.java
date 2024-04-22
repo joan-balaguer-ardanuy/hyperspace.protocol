@@ -1,6 +1,8 @@
 package hyperspace.recurrent;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class AbstractDeque<E> 
 	extends AbstractQueue<E> 
@@ -17,31 +19,32 @@ public class AbstractDeque<E>
 
 	@Override
 	public void addFirst(E e) {
-		super.offer(e);
+		Objects.requireNonNull(e);
+		instance(getClass(), getRoot().getParent(), e);
 	}
 	@Override
 	public void addLast(E e) {
-		instance(getClass(), this, e);	
+		super.offer(e);
 	}
 	@Override
 	public E removeFirst() {
-		Collection<E> parent = getParent();
-		parent.release();
-		return parent.getEntry();
+		return super.remove();
 	}
 	@Override
 	public E removeLast() {
-		Collection<E> child = call();
-		child.release();
-		return child.getEntry();
+		Collection<E> past = call();
+		past.release();
+		return past.getEntry();
 	}
 	@Override
 	public E getFirst() {
-		return getParent().getEntry();
+		return super.element();
 	}
 	@Override
 	public E getLast() {
-		return getEntry();
+		if(isEmpty())
+			throw new NoSuchElementException();
+		return call().getEntry();
 	}
 	@Override
 	public boolean removeFirstOccurrence(Object o) {
@@ -67,29 +70,34 @@ public class AbstractDeque<E>
 	}
 	@Override
 	public boolean offerFirst(E e) {
-		addFirst(e);
-		return true;
+		Objects.requireNonNull(e);
+		return instance(getClass(), getRoot().getParent(), e) != null;
 	}
 	@Override
 	public boolean offerLast(E e) {
-		addLast(e);
-		return true;
+		return super.offer(e);
 	}
 	@Override
 	public E pollFirst() {
-		return removeFirst();
+		return super.poll();
 	}
 	@Override
 	public E pollLast() {
-		return removeLast();
+		if(isEmpty())
+			return null;
+		Collection<E> past = call();
+		past.release();
+		return past.getEntry();
 	}
 	@Override
 	public E peekFirst() {
-		return getFirst();
+		return super.peek();
 	}
 	@Override
 	public E peekLast() {
-		return getLast();
+		if(isEmpty())
+			return null;
+		return call().getEntry();
 	}
 	@Override
 	public Iterator<E> descendingIterator() {

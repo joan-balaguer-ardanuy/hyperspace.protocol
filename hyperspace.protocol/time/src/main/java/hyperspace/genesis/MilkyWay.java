@@ -71,6 +71,7 @@ public class MilkyWay extends Screw<Sun,AlphaCentauri> {
 		key.addEventListener(this);
 		value.addEventListener(getChild());
 	}
+	
 	@Override
 	public int compareTo(hyperspace.Entry<AlphaCentauri,Sun> o) {
 		getKey().comparator(new AlphaCentauri()).compare(getKey(), o.getKey());
@@ -87,22 +88,6 @@ public class MilkyWay extends Screw<Sun,AlphaCentauri> {
 			case Command.LISTEN:
 				entry.permuteChild(call(), get());
 				break;
-			case Command.TRANSFER:
-				entry.release();
-				break;
-			default:
-				break;
-			}
-		} else if(e.getSource() instanceof Sun) {
-			Sun entry = (Sun) e.getSource();
-			switch (e.getCommand()) {
-			case Command.TRANSFER:
-				if(!isRoot()) {
-					getKey().comparator(new AlphaCentauri()).compare(entry, getValue());
-					AlphaCentauri source = (AlphaCentauri) getKey().comparator().source();
-					getStem().putValue(source, (Sun) source.getChild());
-				}
-				break;
 			default:
 				break;
 			}
@@ -110,7 +95,7 @@ public class MilkyWay extends Screw<Sun,AlphaCentauri> {
 	}
 	@Override
 	public void run() {
-		getValue().run();
+		getKey().run();
 		super.run();
 	}
 }

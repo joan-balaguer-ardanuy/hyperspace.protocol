@@ -8,7 +8,7 @@ import hyperspace.Parity;
 /**
  * <tt>
  * <center>
- * {@link Recursive} is the execution of iterating recursions in parent parent recurred. 
+ * {@link Recursion} is the execution of iterating recursions in parent parent recurred. 
  * For instance, when the parents of two recursions aren't inexactly concurrent 
  * with each parent, the inherited recursion parent recur are a entry of persistent
  * recursion. The entry has parent complex parent recursions inherited to parent complex
@@ -31,10 +31,10 @@ import hyperspace.Parity;
  * @param <K>
  * @param <V>
  */
-public abstract class Recursive
-	<K extends Recursion<K,V>,V extends Recursion<V,K>> 
-		extends Recurrent<K,V> 
-			implements Recursion<K,V> {
+public abstract class Recursion
+	<K extends Recursive<K,V>,V extends Recursive<V,K>> 
+		extends Recurrence<K,V> 
+			implements Recursive<K,V> {
 
 	/**
 	 * -8201328197150913563L
@@ -42,56 +42,56 @@ public abstract class Recursive
 	private static final long serialVersionUID = -8201328197150913563L;
 	
 	/**
-	 * {@link Recursive} default class constructor.
+	 * {@link Recursion} default class constructor.
 	 */
-	public Recursive() {
+	public Recursion() {
 		super();
 	}
 	/**
-	 * {@link Recursive} class constructor.
+	 * {@link Recursion} class constructor.
 	 * @param parity {@link Parity} the parity
 	 */
-	public Recursive(Parity parity) {
+	public Recursion(Parity parity) {
 		super(parity);
 	}
 	/**
-	 * {@link Recursive} class constructor.
+	 * {@link Recursion} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parity {@link Parity} the parity
 	 */
-	public Recursive(Class<? extends V> childClass, Parity parity) {
+	public Recursion(Class<? extends V> childClass, Parity parity) {
 		super(childClass, parity);
 	}
 	/**
-	 * {@link Recursive} class constructor.
+	 * {@link Recursion} class constructor.
 	 * @param parent the parent
 	 */
-	public Recursive(K parent) {
+	public Recursion(K parent) {
 		super(parent);
 	}
 	/**
-	 * {@link Recursive} class constructor.
+	 * {@link Recursion} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Recursive(Class<? extends V> childClass, K parent) {
+	public Recursion(Class<? extends V> childClass, K parent) {
 		super(childClass, parent);
 	}
 	/**
-	 * {@link Recursive} class constructor.
+	 * {@link Recursion} class constructor.
 	 * @param root the root
 	 * @param parity {@link Parity} the parity
 	 */
-	public Recursive(K root, Parity parity) {
+	public Recursion(K root, Parity parity) {
 		super(root, parity);
 	}
 	/**
-	 * {@link Recursive} class constructor.
+	 * {@link Recursion} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param parity {@link Parity} the parity
 	 */
-	public Recursive(Class<? extends V> childClass, K root, Parity parity) {
+	public Recursion(Class<? extends V> childClass, K root, Parity parity) {
 		super(childClass, root, parity);
 	}
 
@@ -170,7 +170,7 @@ public abstract class Recursive
 	 */
 	protected class Matrix
 		extends Generator
-			implements Recursion.Reproducer<K,V> {
+			implements Recursive.Reproducer<K,V> {
 		
 		/**
 		 * {@link Matrix} class constructor.
@@ -187,6 +187,7 @@ public abstract class Recursive
 			key.getChild().setParity(source().getParity());
 			source().submitParent(key, key.getChild());
 		}
+		
 		public void addChild(V value) {
 			value.setRoot(source());
 			value.setStem(source().getStem());
@@ -194,5 +195,6 @@ public abstract class Recursive
 			value.getChild().setParity(source().getParity().oposed());
 			source().submitChild(value, value.getChild());
 		}
+		
 	}
 }

@@ -323,10 +323,11 @@ import hyperspace.Parity;
  * @param <K>
  * @param <V>
  */
-public abstract class Concurrent
-	<K extends Recursion<K,V>,V extends Recursion<V,K>> 
-		extends Recursive<K,V> 
-			implements Recursion<K,V>  {
+
+public abstract class Concurrence
+	<K extends Recursive<K,V>,V extends Recursive<V,K>> 
+		extends Recursion<K,V> 
+			implements Recursive<K,V>  {
 
 	/**
 	 * -8918966892741751641L
@@ -334,56 +335,56 @@ public abstract class Concurrent
 	private static final long serialVersionUID = -8918966892741751641L;
 	
 	/**
-	 * {@link Concurrent} default class constructor.
+	 * {@link Concurrence} default class constructor.
 	 */
-	public Concurrent() {
+	public Concurrence() {
 		super();
 	}
 	/**
-	 * {@link Concurrent} class constructor.
+	 * {@link Concurrence} class constructor.
 	 * @param parity {@link Parity} the Next
 	 */
-	public Concurrent(Parity parity) {
+	public Concurrence(Parity parity) {
 		super(parity);
 	}
 	/**
-	 * {@link Concurrent} class constructor.
+	 * {@link Concurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parity {@link Parity} the parity
 	 */
-	public Concurrent(Class<? extends V> childClass, Parity parity) {
+	public Concurrence(Class<? extends V> childClass, Parity parity) {
 		super(childClass, parity);
 	}
 	/**
-	 * {@link Concurrent} class constructor.
+	 * {@link Concurrence} class constructor.
 	 * @param parent the parent
 	 */
-	public Concurrent(K parent) {
+	public Concurrence(K parent) {
 		super(parent);
 	}
 	/**
-	 * {@link Concurrent} class constructor.
+	 * {@link Concurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param parent the parent
 	 */
-	public Concurrent(Class<? extends V> childClass, K parent) {
+	public Concurrence(Class<? extends V> childClass, K parent) {
 		super(childClass, parent);
 	}
 	/**
-	 * {@link Concurrent} class constructor.
+	 * {@link Concurrence} class constructor.
 	 * @param root the root
 	 * @param parity {@link Parity} the parity
 	 */
-	public Concurrent(K root, Parity parity) {
+	public Concurrence(K root, Parity parity) {
 		super(root, parity);
 	}
 	/**
-	 * {@link Concurrent} class constructor.
+	 * {@link Concurrence} class constructor.
 	 * @param childClass {@link Class} the child class
 	 * @param root the root
 	 * @param parity {@link Parity} the parity
 	 */
-	public Concurrent(Class<? extends V> childClass, K root, Parity parity) {
+	public Concurrence(Class<? extends V> childClass, K root, Parity parity) {
 		super(childClass, root, parity);
 	}
 
@@ -459,15 +460,8 @@ public abstract class Concurrent
 	}
 	@Override
 	public void run() {
-		if((isRoot() && !isEmpty()) || !isFinal()) {
-			Thread t = newThread(getChild());
-			t.start();
-			try {
-				t.join();
-			} catch (InterruptedException e ) {
-				
-			}
-		}
-		super.run(); 
+//		if(!isEmpty())
+		execute(getChild());
+		super.run();
 	}
 }

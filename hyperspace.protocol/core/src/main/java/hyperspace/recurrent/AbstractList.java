@@ -5,7 +5,9 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class AbstractList<E> extends AbstractCollection<E> implements List<E> {
+public class AbstractList<E> 
+	extends AbstractCollection<E> 
+		implements List<E> {
 
 	private static final long serialVersionUID = -6164865301667522745L;
 
@@ -15,6 +17,93 @@ public class AbstractList<E> extends AbstractCollection<E> implements List<E> {
 
 	public AbstractList(AbstractList<E> parent, E entry) {
 		super(parent, entry);
+	}
+
+	@Override
+	public E get(int index) {
+		ListIterator<E> it = listIterator();
+		do {
+			E entry = it.next();
+			if (index == 0) {
+				return entry;
+			}
+			index--;
+		} while (it.hasNext());
+		return null;
+	}
+
+	@Override
+	public void add(int index, E entry) {
+		ListIterator<E> it = listIterator();
+		do {
+			it.next();
+			if (index == 0) {
+				it.add(entry);
+			}
+			index--;
+		} while (it.hasNext());
+	}
+
+	@Override
+	public E set(int index, E entry) {
+		ListIterator<E> it = listIterator();
+		do {
+			E current = it.next();
+			if (index == 0) {
+				it.set(entry);
+				return current;
+			}
+			index--;
+		} while (it.hasNext());
+		return null;
+	}
+
+	@Override
+	public int indexOf(Object o) {
+		ListIterator<E> it = listIterator();
+		int index = 0;
+		do {
+			index++;
+			E element = it.next();
+			if (element == o) {
+				return index;
+			}
+		} while (it.hasNext());
+		return -1;
+	}
+
+	@Override
+	@Deprecated
+	public int lastIndexOf(Object o) {
+		ListIterator<E> it = listIterator();
+		int index = 0;
+		do {
+			E element = it.previous();
+			if (element == o) {
+				return size() - index;
+			}
+			index++;
+		} while (it.hasPrevious());
+		return -1;
+	}
+
+	@Override
+	public E release(int index) {
+		ListIterator<E> it = listIterator();
+		do {
+			E entry = it.next();
+			if (index == 0) {
+				it.remove();
+				return entry;
+			}
+			index--;
+		} while (it.hasNext());
+		return null;
+	}
+
+	@Override
+	public E remove(int index) {
+		return release(index);
 	}
 	
 	@Override
@@ -28,106 +117,12 @@ public class AbstractList<E> extends AbstractCollection<E> implements List<E> {
 	}
 
 	@Override
-	public void add(int index, E element) {
-		ListIterator<E> it = new RecursiveListIterator(getParent(), 0);
-		do {
-			it.next();
-			if (index == 0) {
-				it.add(element);
-			}
-			index--;
-		} while (it.hasNext());
-	}
-
-	@Override
-	public E get(int index) {
-		ListIterator<E> it = new RecursiveListIterator(getParent(), 0);
-		do {
-			E element = it.next();
-			if (index == 0) {
-				return element;
-			}
-			index--;
-		} while (it.hasNext());
-		return null;
-	}
-
-	@Override
-	public E set(int index, E element) {
-		ListIterator<E> it = new RecursiveListIterator(getParent(), 0);
-		do {
-			E current = it.next();
-			if (index == 0) {
-				it.set(element);
-				return current;
-			}
-			index--;
-		} while (it.hasNext());
-		return null;
-	}
-
-	@Override
-	public E release(int index) {
-		ListIterator<E> it = new RecursiveListIterator(getParent(), 0);
-		do {
-			E element = it.next();
-			if (index == 0) {
-				it.remove();
-				return element;
-			}
-			index--;
-		} while (it.hasNext());
-		return null;
-	}
-
-	@Override
-	public int indexOf(Object o) {
-		ListIterator<E> it = new RecursiveListIterator(getParent(), 0);
-		int index = 0;
-		do {
-			index++;
-			E element = it.next();
-			if (element == o) {
-				return index;
-			}
-		} while (it.hasNext());
-		return 0;
-	}
-
-	@Override
-	public int lastIndexOf(Object o) {
-		ListIterator<E> it = new RecursiveListIterator(getParent(), size());
-		int index = 0;
-		do {
-			E element = it.previous();
-			if (element == o) {
-				return index;
-			}
-			index++;
-		} while (it.hasPrevious());
-		return 0;
-	}
-
-	@Override
-	public E remove(int index) {
-		ListIterator<E> it = new RecursiveListIterator(getParent(), 0);
-		do {
-			E element = it.next();
-			if (index == 0) {
-				it.remove();
-				return element;
-			}
-			index--;
-		} while (it.hasNext());
-		return null;
-	}
-
-	@Override
 	public ListIterator<E> listIterator() {
-		return new RecursiveListIterator(getParent(), 0);
+		return new RecursiveListIterator(getParent());
 	}
 
 	@Override
+	@Deprecated
 	public ListIterator<E> listIterator(int index) {
 		return new RecursiveListIterator(getParent(), index);
 	}
@@ -140,84 +135,71 @@ public class AbstractList<E> extends AbstractCollection<E> implements List<E> {
 	protected final class RecursiveListIterator implements ListIterator<E> {
 
 		/**
-		 * The current time-listener.
+		 * The current collection.
 		 */
-		Collection<E> init;
+		private Collection<E> current;
 
 		/**
-		 * The current time-listener.
+		 * The next collection.
 		 */
-		Collection<E> current;
+		private Collection<E> next;
 
 		/**
-		 * The next time-listener.
+		 * The previous collection.
 		 */
-		Collection<E> next;
-
-		/**
-		 * The next time-listener.
-		 */
-		Collection<E> previous;
+		private Collection<E> previous;
 		
 		/**
-         * Index of element to be returned by subsequent call to next.
-         */
-		int cursor;
-
-        /**
-         * Index of element returned by most recent call to next or
-         * previous.  Reset to -1 if this element is deleted by a call
-         * to remove.
-         */
-        int lastRet = -1;
-		/**
-		 * If this recursor has next time-listener.
+		 * If this recursor has more entries.
 		 */
-		boolean hasMoreElements;
+		private boolean hasMoreEntries;
 
+		public RecursiveListIterator(Collection<E> source) {
+			next = previous = current = source;
+		}
+		
+		@Deprecated
 		public RecursiveListIterator(Collection<E> source, int index) {
-			init = next = previous = current = source;
-			cursor = index;
+			Collection<E> parent = source;
+			for(int i = 0; i < index; i++) {
+				next = previous = current = parent;
+				parent = parent.getParent();
+			}
 		}
 
 		@Override
 		public boolean hasNext() {
-			return hasMoreElements;
+			return hasMoreEntries;
 		}
 
 		@Override
 		public E next() {
-			int i = cursor;
 			Collection<E> c = next;
 			current = c;
 			next = c.getParent();
 			previous = c.call();
-			lastRet = i;
-			cursor = i + 1;
 			if (c == AbstractList.this)
-				hasMoreElements = false;
+				hasMoreEntries = false;
 			else
-				hasMoreElements = true;
+				hasMoreEntries = true;
 			return c.getEntry();
 		}
 
 		@Override
 		public boolean hasPrevious() {
-			return hasMoreElements;
+			return hasMoreEntries;
 		}
 
 		@Override
 		public E previous() {
-			int i = cursor - 1;
 			Collection<E> c = previous;
 			current = c;
 			next = c.getParent();
 			previous = c.call();
-			lastRet = cursor = i;
 			if (c == AbstractList.this)
-				hasMoreElements = false;
+				hasMoreEntries = false;
 			else
-				hasMoreElements = true;
+				hasMoreEntries = true;
 			return c.getEntry();
 		}
 
@@ -225,15 +207,12 @@ public class AbstractList<E> extends AbstractCollection<E> implements List<E> {
 		public void remove() {
 			Collection<E> k = next;
 			current.release();
-			if(lastRet < cursor)
-				cursor--;
-			lastRet = -1;
 			if (!k.isEmpty()) {
 				current = k;
 				next = k.getParent();
 				previous = k.call();
 			} else
-				hasMoreElements = false;
+				hasMoreEntries = false;
 		}
 
 		@Override
@@ -244,22 +223,23 @@ public class AbstractList<E> extends AbstractCollection<E> implements List<E> {
 		@SuppressWarnings("unchecked")
 		@Override
 		public void add(E e) {
-			int i = cursor;
+			if(e == null)
+				throw new NullPointerException();
 			current = (Collection<E>) instance(current.getClass(), current, e);
 			next = current.getParent();
 			previous = current.call();
-			lastRet = -1;
-			cursor = i + 1;
 		}
 
 		@Override
+		@Deprecated
 		public int nextIndex() {
-			return cursor;
+			return -1;
 		}
 
 		@Override
+		@Deprecated
 		public int previousIndex() {
-			return cursor-1;
+			return -1;
 		}
 	}
 
@@ -329,49 +309,40 @@ public class AbstractList<E> extends AbstractCollection<E> implements List<E> {
 
 		public ListIterator<E> listIterator(int index) {
 			rangeCheckForAdd(index);
-
 			return new ListIterator<E>() {
 				private final ListIterator<E> i = root.listIterator(offset + index);
 
 				public boolean hasNext() {
 					return nextIndex() < size;
 				}
-
 				public E next() {
 					if (hasNext())
 						return i.next();
 					else
 						throw new NoSuchElementException();
 				}
-
 				public boolean hasPrevious() {
 					return previousIndex() >= 0;
 				}
-
 				public E previous() {
 					if (hasPrevious())
 						return i.previous();
 					else
 						throw new NoSuchElementException();
 				}
-
 				public int nextIndex() {
 					return i.nextIndex() - offset;
 				}
-
 				public int previousIndex() {
 					return i.previousIndex() - offset;
 				}
-
 				public void remove() {
 					i.remove();
 					updateSizeAndModCount(-1);
 				}
-
 				public void set(E e) {
 					i.set(e);
 				}
-
 				public void add(E e) {
 					i.add(e);
 					updateSizeAndModCount(1);
@@ -433,6 +404,7 @@ public class AbstractList<E> extends AbstractCollection<E> implements List<E> {
 	 * @param fromIndex index of first element to be removed
 	 * @param toIndex   index after last element to be removed
 	 */
+	
 	protected void removeRange(int fromIndex, int toIndex) {
 		ListIterator<E> it = listIterator(fromIndex);
 		for (int i = 0, n = toIndex - fromIndex; i < n; i++) {
@@ -440,4 +412,5 @@ public class AbstractList<E> extends AbstractCollection<E> implements List<E> {
 			it.remove();
 		}
 	}
+	
 }

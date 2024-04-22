@@ -11,7 +11,7 @@ import hyperspace.recurrent.Enumerator;
 
 @XmlRootElement
 @XmlType(propOrder={"key", "value", "entry"})
-public class Hypercube extends Screw<Character,Integer> {
+public final class Hypercube extends Screw<Character,Integer> {
 
 	private static final long serialVersionUID = 2736421359601432040L;
 
@@ -108,20 +108,10 @@ public class Hypercube extends Screw<Character,Integer> {
 	@Override
 	public void run() {
 		try {
-			Thread.sleep(getValue());
+			Thread.sleep(getKey());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		if((isRoot() && !isEmpty()) || !isFinal()) {
-			getChild().run();
-		}
-		switch (getCommand()) {
-		case Command.LISTEN:
-			setCommand(Command.TRANSFER);
-			break;
-		default:
-			setCommand(Command.LISTEN);
-			break;
-		}
+		super.run();
 	}
 }

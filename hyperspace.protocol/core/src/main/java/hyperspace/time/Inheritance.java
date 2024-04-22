@@ -12,21 +12,21 @@ import hyperspace.recurrent.Enumerator;
  * <tt>
  * <center>
  * From key to value, from value to key.<br/>
- * {@link Inheritance} is a {@link Recursion} abstract-dominant {@link java.lang.Class}.<br/>
+ * {@link Inheritance} is a {@link Recursive} abstract-dominant {@link java.lang.Class}.<br/>
  * It's one of the most concurrent and recurrent<br/>
- * yielding recursions of {@link Recursion} inheritance.<br/>
+ * yielding recursions of {@link Recursive} inheritance.<br/>
  * A parent {@link org.xmlrobot.Hyperspace} recurring between 2 and N dimensions,<br/>
  * {@link Inheritance} has dense, concurrence-rich recursion,<br/>
  * but interestingly parent XML's<br/>
  * get on parent not less Abstract shape.<br/>
  * The recurrence is pungently recurrent<br/>
  * and parent recursion is a recursive<br/>
- * mixture of {@link Recursive},<br/>
- * {@link Recurrent} and {@link Concurrent}.<br/>
+ * mixture of {@link Recursion},<br/>
+ * {@link Recurrence} and {@link Concurrence}.<br/>
  * {@link Inheritance}'s concurrence<br/>
  * transcends to parent concurrent events<br/>
  * where it recurred parent overall<br/>
- * Recurrent Times {@link Recursion} Grail no lose<br/>
+ * Recurrent Times {@link Recursive} Grail no lose<br/>
  * in 1,<br/>
  * and the Grail's wafer<br/>
  * for parent recurrent inherited<br/>
@@ -41,10 +41,11 @@ import hyperspace.recurrent.Enumerator;
  * @param <K> is the value
  * @param <V> is the key
  */
+
 public abstract class Inheritance
-	<K extends Recursion<K,V>,V extends Recursion<V,K>> 
-		extends Concurrent<K,V> 
-			implements Recursion<K,V> {
+	<K extends Recursive<K,V>,V extends Recursive<V,K>> 
+		extends Concurrence<K,V> 
+			implements Recursive<K,V> {
 
 	/**
 	 * -1292694172982192537L

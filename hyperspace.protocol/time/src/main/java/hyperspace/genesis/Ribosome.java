@@ -70,6 +70,7 @@ public class Ribosome extends Screw<Chromosome,Diploid> {
 		key.addEventListener(this);
 		value.addEventListener(getChild());
 	}
+	
 	@Override
 	public int compareTo(hyperspace.Entry<Diploid, Chromosome> o) {
 		getKey().comparator(new Diploid()).compare(getKey(), o.getKey());
@@ -86,22 +87,6 @@ public class Ribosome extends Screw<Chromosome,Diploid> {
 			case Command.LISTEN:
 				entry.permuteChild(call(), get());
 				break;
-			case Command.TRANSFER:
-				entry.release();
-				break;
-			default:
-				break;
-			}
-		} else if(e.getSource() instanceof Chromosome) {
-			Chromosome entry = (Chromosome) e.getSource();
-			switch (e.getCommand()) {
-			case Command.TRANSFER:
-				if(!isRoot()) {
-					getKey().comparator(new Diploid()).compare(entry, getValue());
-					Diploid source = (Diploid) getKey().comparator().source();
-					getStem().putValue(source, (Chromosome) source.getChild());
-				}
-				break;
 			default:
 				break;
 			}
@@ -109,7 +94,7 @@ public class Ribosome extends Screw<Chromosome,Diploid> {
 	}
 	@Override
 	public void run() {
-		getValue().run();
+		getKey().run();
 		super.run();
 	}
 }

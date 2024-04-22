@@ -70,6 +70,7 @@ public class Matter extends Screw<Supercluster,Interstellar> {
 		key.addEventListener(this);
 		value.addEventListener(getChild());
 	}
+	
 	@Override
 	public int compareTo(hyperspace.Entry<Interstellar,Supercluster> o) {
 		getKey().comparator(new Interstellar()).compare(getKey(), o.getKey());
@@ -86,22 +87,6 @@ public class Matter extends Screw<Supercluster,Interstellar> {
 			case Command.LISTEN:
 				entry.permuteChild(call(), get());
 				break;
-			case Command.TRANSFER:
-				entry.release();
-				break;
-			default:
-				break;
-			}
-		} else if(e.getSource() instanceof Supercluster) {
-			Supercluster entry = (Supercluster) e.getSource();
-			switch (e.getCommand()) {
-			case Command.TRANSFER:
-				if(!isRoot()) {
-					getKey().comparator(new Interstellar()).compare(entry, getValue());
-					Interstellar source = (Interstellar) getKey().comparator().source();
-					getStem().putValue(source, (Supercluster) source.getChild());
-				}
-				break;
 			default:
 				break;
 			}
@@ -109,7 +94,7 @@ public class Matter extends Screw<Supercluster,Interstellar> {
 	}
 	@Override
 	public void run() {
-		getValue().run();
+		getKey().run();
 		super.run();
 	}
 }

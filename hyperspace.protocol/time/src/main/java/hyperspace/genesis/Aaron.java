@@ -71,6 +71,7 @@ public class Aaron extends Screw<BigBang,BigBong> {
 		key.addEventListener(this);
 		value.addEventListener(getChild());
 	}
+	
 	@Override
 	public int compareTo(hyperspace.Entry<BigBong,BigBang> o) {
 		getKey().comparator(new BigBong()).compare(getKey(), o.getKey());
@@ -87,22 +88,6 @@ public class Aaron extends Screw<BigBang,BigBong> {
 			case Command.LISTEN:
 				entry.permuteChild(call(), get());
 				break;
-			case Command.TRANSFER:
-				entry.release();
-				break;
-			default:
-				break;
-			}
-		} else if(e.getSource() instanceof BigBang) {
-			BigBang entry = (BigBang) e.getSource();
-			switch (e.getCommand()) {
-			case Command.TRANSFER:
-				if(!isRoot()) {
-					getKey().comparator(new BigBong()).compare(entry, getValue());
-					BigBong source = (BigBong) getKey().comparator().source();
-					getStem().putValue(source, (BigBang) source.getChild());
-				}
-				break;
 			default:
 				break;
 			}
@@ -110,7 +95,7 @@ public class Aaron extends Screw<BigBang,BigBong> {
 	}
 	@Override
 	public void run() {
-		getValue().run();
+		getKey().run();
 		super.run();
 	}
 }

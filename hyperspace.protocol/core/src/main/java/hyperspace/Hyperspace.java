@@ -3,6 +3,7 @@
  */
 package hyperspace;
 
+
 public abstract class Hyperspace
 	<K extends TimeListener<K,V>,V extends TimeListener<V,K>> 
 		extends Child<K,V>
@@ -78,17 +79,17 @@ public abstract class Hyperspace
 		@Override
 		public synchronized void compare(K parent, V child) {
 			K p = parent.getParent();
-			V c = child.getParent();		
+			V c = child.call();		
 			do {
 				p.compareTo(c);
 				addChild(p.comparator().source());
 				p = p.getParent();
-				c = c.getParent();
+				c = c.call();
 				if (p != parent && c != child) {
 					c.compareTo(p);
 					addParent(c.comparator().source());
 					p = p.getParent();
-					c = c.getParent();
+					c = c.call();
 				}
 			} while (p != parent && c != child);
 		}

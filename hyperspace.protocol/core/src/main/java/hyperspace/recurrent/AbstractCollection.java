@@ -12,36 +12,35 @@ public class AbstractCollection<E>
 
 	private static final long serialVersionUID = -7062454426060890047L;
 	
-	public static final int MAX_ARRAY_SIZE = 2^31-1;
-	
-	
-	E element;
+	public static final int MAX_ARRAY_SIZE = 2147483647;
+		
+	E entry;
 	
 	@Override
 	@XmlTransient
 	public E getEntry() {
-		return element;
+		return entry;
 	}
-
 	@Override
-	public E setEntry(E element) {
-		E old = this.element;
-		this.element = element;
+	public E setEntry(E entry) {
+		if(entry == null)
+			throw new NullPointerException();
+		E old = this.entry;
+		this.entry = entry;
 		return old;
 	}
 	
 	public AbstractCollection() {
 		super();
 	}
-	public AbstractCollection(Collection<E> parent, E element) {
-		super(parent);
-		setEntry(element);
-	}
 	
-	@Override
-	public boolean isEmpty() {
-		return super.isEmpty() ? this.element == null : false;
+	public AbstractCollection(Collection<E> parent, E entry) {
+		super(parent);
+		setEntry(entry);
+		getRoot().setEntry(entry);
 	}
+
+	@Deprecated
 	@Override
 	public int size() {
 		int i = 0;
@@ -52,82 +51,61 @@ public class AbstractCollection<E>
 		}
 		return i;
 	}
+	
 	@Override
 	public void clear() {
 		release();
 	}
-	@Override
-	public Collection<E> clone() {
-		try {
-			@SuppressWarnings("unchecked")
-			Collection<E> c = (Collection<E>) getClass().getDeclaredConstructor().newInstance();
-			c.setEntry(getEntry());
-			return c;
-		} catch (Throwable e) {
-			return null;
-		}
-	}
 
 	@Override
 	public boolean contains(Object o) {
+		Objects.requireNonNull(o);
 		Iterator<E> en = iterator();
-        if (o==null) {
-            while (en.hasNext())
-                if (en.next()==null)
-                    return true;
-        } else {
-            while (en.hasNext())
-                if (o.equals(en.next()))
-                    return true;
-        }
+		while (en.hasNext())
+            if (o.equals(en.next()))
+                return true;
         return false;
 	}
 
 	@Override
 	public boolean add(E e) {
-		if(isEmpty()) {
-			setEntry(e);
-			return true;
-		}
-		return instance(getClass(), getParent(), e) != null;
+		Objects.requireNonNull(e);
+		return instance(getClass(), getRoot(), e) != null;
 	}
 	
 	@Override
 	public boolean remove(Object o) {
+		Objects.requireNonNull(o);
 		Iterator<E> en = iterator();
-		if (o == null) {
-			while (en.hasNext()) {
-				if (en.next() == null) {
-					en.remove();
-					return true;
-				}
-			}
-		} else {
-			while (en.hasNext()) {
-				if (o.equals(en.next())) {
-					en.remove();
-					return true;
-				}
+		while (en.hasNext()) {
+			if (o.equals(en.next())) {
+				en.remove();
+				return true;
 			}
 		}
 		return false;
 	}
+	
 	@Override
 	public boolean containsAll(java.util.Collection<?> c) {
+		Objects.requireNonNull(c);
 		for (Object o : c)
 			if (!contains(o))
 				return false;
 		return true;
 	}
+	
 	@Override
 	public boolean addAll(java.util.Collection<? extends E> c) {
+		Objects.requireNonNull(c);
 		boolean modified = false;
-		Iterator<E> en = iterator();
+		Iterator<? extends E> en = c.iterator();
 		while(en.hasNext())
 			if (add(en.next()))
 				modified = true;
 		return modified;
 	}
+	
 	@Override
 	public boolean removeAll(java.util.Collection<?> c) {
 		Objects.requireNonNull(c);
@@ -141,6 +119,7 @@ public class AbstractCollection<E>
 		}
 		return modified;
 	}
+	
 	@Override
 	public boolean retainAll(java.util.Collection<?> c) {
 		Objects.requireNonNull(c);
@@ -154,29 +133,31 @@ public class AbstractCollection<E>
 		}
 		return modified;
 	}
+	
 	@Override
 	public Iterator<E> iterator() {
 		return new RecurrentIterator(getParent());
 	}
+	
 	protected final class RecurrentIterator implements Iterator<E> {
 		
 		/**
-		 * The current time-listener.
+		 * The current collection.
 		 */
-		protected Collection<E> current;
+		private Collection<E> current;
 		
 		/**
-		 * The next time-listener.
+		 * The next collection.
 		 */
-		protected Collection<E> next;
+		private Collection<E> next;
 		
 		/**
-		 * If this recursor has next time-listener.
+		 * If this recursor has next collection.
 		 */
-		protected boolean hasNext;
+		private boolean hasNext;
 		
-		public RecurrentIterator(Collection<E> key) {
-			next = current = key;
+		public RecurrentIterator(Collection<E> c) {
+			next = current = c;
 			hasNext = true;
 		}
 		@Override
@@ -185,21 +166,21 @@ public class AbstractCollection<E>
 		}
 		@Override
 		public E next() {
-			Collection<E> e = next;
-			current = e;
-			next = e.getParent();
-			if(e == AbstractCollection.this)
+			Collection<E> c = next;
+			current = c;
+			next = c.getParent();
+			if(c == AbstractCollection.this)
 				hasNext = false;
 			else hasNext = true;
-			return e.getEntry();
+			return c.getEntry();
 		}
 		@Override
 		public void remove() {
-			Collection<E> k = next;
+			Collection<E> c = next;
 			current.release();
-			if (!k.isEmpty()) {
-				current = k;
-				next = k.getParent();
+			if (!c.isEmpty()) {
+				current = c;
+				next = c.getParent();
 			} else
 				hasNext = false;
 		}
@@ -207,22 +188,22 @@ public class AbstractCollection<E>
 	protected final class ConcurrentIterator implements Iterator<E> {
 		
 		/**
-		 * The current time-listener.
+		 * The current collection.
 		 */
-		protected Collection<E> current;
+		private Collection<E> current;
 		
 		/**
-		 * The next time-listener.
+		 * The next collection.
 		 */
-		protected Collection<E> next;
+		private Collection<E> next;
 		
 		/**
-		 * If this recursor has next time-listener.
+		 * If this recursor has next collection.
 		 */
-		protected boolean hasNext;
+		private boolean hasNext;
 		
-		public ConcurrentIterator(Collection<E> key) {
-			next = current = key;
+		public ConcurrentIterator(Collection<E> c) {
+			next = current = c;
 			hasNext = true;
 		}
 		@Override
@@ -231,25 +212,26 @@ public class AbstractCollection<E>
 		}
 		@Override
 		public E next() {
-			Collection<E> e = next;
-			current = e;
-			next = e.call();
-			if(e == AbstractCollection.this)
+			Collection<E> c = next;
+			current = c;
+			next = c.call();
+			if(c == AbstractCollection.this)
 				hasNext = false;
 			else hasNext = true;
-			return e.getEntry();
+			return c.getEntry();
 		}
 		@Override
 		public void remove() {
-			Collection<E> k = next;
+			Collection<E> c = next;
 			current.release();
-			if (!k.isEmpty()) {
-				current = k;
-				next = k.call();
+			if (!c.isEmpty()) {
+				current = c;
+				next = c.call();
 			} else
 				hasNext = false;
 		}
 	}
+	@Deprecated
 	@Override
 	public Object[] toArray() {
 		// Estimate size of array; be prepared to see more or fewer elements
@@ -263,6 +245,7 @@ public class AbstractCollection<E>
         return it.hasNext() ? finishToArray(r, it) : r;
 	}
 
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T[] toArray(T[] a) {
@@ -302,6 +285,7 @@ public class AbstractCollection<E>
      * @return array containing the elements in the given array, plus any
      *         further elements returned by the iterator, trimmed to size
      */
+	@Deprecated
     @SuppressWarnings("unchecked")
     private static <T> T[] finishToArray(T[] r, Iterator<?> it) {
         int i = r.length;
@@ -319,6 +303,7 @@ public class AbstractCollection<E>
         // trim if overallocated
         return (i == r.length) ? r : Arrays.copyOf(r, i);
     }
+	@Deprecated
     private static int hugeCapacity(int minCapacity) {
         if (minCapacity < 0) // overflow
             throw new OutOfMemoryError

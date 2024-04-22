@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import hyperspace.Command;
 import hyperspace.Entry;
+import hyperspace.EventArgs;
 import hyperspace.Parity;
 import hyperspace.recurrent.Enumerator;
 
@@ -68,7 +69,7 @@ public class Hyperchain extends ScrewNut<Integer,Character> {
 	public Hyperchain(Hyperchain root, Parity parity, Integer key, Character value) {
 		super(Hypercube.class, root, parity, key, value);
 	}
-	
+
 	@Override
 	public synchronized int compareTo(Entry<Character, Integer> o) {
 		switch (getParity()) {
@@ -91,22 +92,28 @@ public class Hyperchain extends ScrewNut<Integer,Character> {
 		}
 	}
 	@Override
+	public void event(EventArgs e) {
+		super.event(e); 
+			if(e.getSource() instanceof Hyperchain) {
+			switch (e.getCommand()) {
+			case Command.LISTEN:
+				Hyperchain entry = (Hyperchain) e.getSource();
+				comparator(new Hypercube()).compare(entry, getStem());
+				System.out.println(comparator().source().getName());
+				sendEvent(new EventArgs(comparator().source()));
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	@Override
 	public void run() {
 		try {
-			Thread.sleep(getValue());
+			Thread.sleep(getKey());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		if((isRoot() && !isEmpty()) || !isFinal()) {
-			getChild().run();
-		}
-		switch (getCommand()) {
-		case Command.LISTEN:
-			setCommand(Command.TRANSFER);
-			break;
-		default:
-			setCommand(Command.LISTEN);
-			break;
-		}
+		super.run();
 	}
 }

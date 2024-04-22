@@ -1,8 +1,8 @@
 package hyperspace.recurrent;
 
 public interface Map<K,V>
-	extends Set<java.util.Map.Entry<K,V>>, java.util.Map.Entry<K,V> {
-    
+	extends Set<Mapping<K,V>>, Mapping<K,V> {
+	
     /**
      * Returns {@code true} if this map contains a mapping for the specified
      * key.  More formally, returns {@code true} if and only if
@@ -81,5 +81,5 @@ public interface Map<K,V>
      *
      * @param m mappings to be stored in this map
      */
-    void putAll(Map<? extends K, ? extends V> m);
+    void putAll(Map<K,V> m);
 }

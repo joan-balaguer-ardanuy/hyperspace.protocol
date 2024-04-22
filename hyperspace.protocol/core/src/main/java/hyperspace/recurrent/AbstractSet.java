@@ -1,13 +1,15 @@
 package hyperspace.recurrent;
 
-public class AbstractSet<E> extends AbstractCollection<E> implements Set<E> {
+public class AbstractSet<E> 
+	extends AbstractCollection<E> 
+		implements Set<E> {
 
 	private static final long serialVersionUID = 6434843938453234940L;
 
 	public AbstractSet() {
 		super();
 	}
-	public AbstractSet(Set<E> parent, E element) {
+	public AbstractSet(AbstractSet<E> parent, E element) {
 		super(parent, element);
 	}
 	@Override

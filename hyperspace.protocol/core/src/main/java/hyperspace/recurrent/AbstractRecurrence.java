@@ -1,18 +1,21 @@
 package hyperspace.recurrent;
 
 import java.io.Serializable;
-import hyperspace.time.Recurrence;
+import hyperspace.time.Recurrent;
 
 public class AbstractRecurrence
-	<K extends Recurrence<K>>
-		implements Recurrence<K>, Serializable {
+	<K extends Recurrent<K>>
+		implements Recurrent<K>, Serializable {
 	
 	private static final long serialVersionUID = -2189724676292955895L;
 
 	K root;
+	
 	K parent;
+	
 	K past;
 
+	
 	@Override
 	public K getRoot() {
 		return root;
@@ -23,6 +26,7 @@ public class AbstractRecurrence
 		this.root = root;
 		return old;
 	}
+	
 	@Override
 	public K getParent() {
 		return parent;
@@ -33,6 +37,7 @@ public class AbstractRecurrence
 		this.parent = parent;
 		return old;
 	}
+	
 	@Override
 	public K call() {
 		return this.past;
@@ -48,6 +53,7 @@ public class AbstractRecurrence
 	public AbstractRecurrence() {
 		root = parent = past = (K) this;
 	}
+	
 	@SuppressWarnings("unchecked")
 	public AbstractRecurrence(K parent) {
 		setParent(parent);
@@ -59,24 +65,25 @@ public class AbstractRecurrence
 	
 	@Override
 	public boolean isEmpty() {
-		return this.parent == this;
+		return getParent() == this;
 	}
+	
 	@SuppressWarnings("unchecked")
-	public boolean recur(K e) {
-		e.setParent(getParent());
-		e.put((K) this);
-		getParent().put(e);
-		setParent(e);
-		return true;
+	public void recur(K parent) {
+		parent.setParent(getParent());
+		parent.put((K) this);
+		getParent().put(parent);
+		setParent(parent);
 	}
+	
 	@SuppressWarnings("unchecked")
-	public boolean concur(K e) {
-		e.setParent((K) this);
-		e.put(call());
-		call().setParent(e);
-		put(e);
-		return true;
+	public void concur(K parent) {
+		parent.setParent((K) this);
+		parent.put(call());
+		call().setParent(parent);
+		put(parent);
 	}
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public void release() {
@@ -84,6 +91,7 @@ public class AbstractRecurrence
 		call().setParent(getParent());
 		this.parent = this.past = (K) this;
 	}
+	
 	@Override
 	public boolean hasParent(K parent) {
 		Enumerator<K> en = enumerator();
@@ -217,7 +225,7 @@ public class AbstractRecurrence
 			return classe.getDeclaredConstructor(getClasses(arguments)).newInstance(arguments);
 		}
 		catch(Throwable t) {
-			throw new Error(t);
+			return null;
 		}
 	}
 	/**

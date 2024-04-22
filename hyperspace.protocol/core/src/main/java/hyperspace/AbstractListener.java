@@ -36,7 +36,7 @@ public abstract class AbstractListener
 	}
 	/**
 	 * {@link AbstractListener} class constructor.
-	 * @param message {@link ScrewDriver} the name
+	 * @param message {@link Parity} the parity
 	 */
 	public AbstractListener(Parity parity) {
 		super(parity);
@@ -89,11 +89,34 @@ public abstract class AbstractListener
 			newThread(command).start();
 		}
 		catch (Throwable t) {
-			throw new Error(t);
+			return;
 		}
 	}
 	@Override
 	public Thread newThread(Runnable r) {
 		return new Thread(r);
+	}
+	/**
+	 * Intances new object.
+	 * @param <X> the parameter type of the returned object
+	 * @param type the {@link Class} of the object.
+	 * @param object the arguments of the construction of the object
+	 * @return the new <X> instance
+	 */
+	protected static <X> X instance(Class<X> type, Object... objects) {
+		try {
+			return type.getDeclaredConstructor(getClasses(objects)).newInstance(objects);
+		}
+		catch(Throwable t) {
+			throw new Error(t);
+		}
+	}
+	
+	private static Class<?>[] getClasses(Object... objects) {
+		Class<?>[] classes = new Class<?>[objects.length];
+		for(int i = 0; i < objects.length; i++) {
+			classes[i] = objects[i].getClass();
+		}
+		return classes;
 	}
 }

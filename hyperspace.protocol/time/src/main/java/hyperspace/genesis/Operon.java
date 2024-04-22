@@ -70,6 +70,7 @@ public class Operon extends Screw<Ribosome,Tetraploid> {
 		key.addEventListener(this);
 		value.addEventListener(getChild());
 	}
+	
 	@Override
 	public int compareTo(hyperspace.Entry<Tetraploid, Ribosome> o) {
 		getKey().comparator(new Tetraploid()).compare(getKey(), o.getKey());
@@ -85,22 +86,6 @@ public class Operon extends Screw<Ribosome,Tetraploid> {
 			switch (e.getCommand()) {
 			case Command.LISTEN:
 				entry.permuteChild(call(), get());
-				break;
-			case Command.TRANSFER:
-				entry.release();
-				break;
-			default:
-				break;
-			}
-		} else if(e.getSource() instanceof Ribosome) {
-			Ribosome entry = (Ribosome) e.getSource();
-			switch (e.getCommand()) {
-			case Command.TRANSFER:
-				if(!isRoot()) {
-					getKey().comparator(new Tetraploid()).compare(entry, getValue());
-					Tetraploid source = (Tetraploid) getKey().comparator().source();
-					getStem().putValue(source, (Ribosome) source.getChild());
-				}
 				break;
 			default:
 				break;
